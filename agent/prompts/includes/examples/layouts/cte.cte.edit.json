@@ -1,0 +1,1268 @@
+{
+    "escopo": "cte",
+    "codigo": "cte.edit",
+    "descricao": "Layout de edição de uma CT-e",
+    "tenant": 0,
+    "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+    "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+    "created_by": "versionamento@nasajon.com.br",
+    "updated_by": "versionamento@nasajon.com.br",
+    "resumo_prompt_origem": "Crie uma tela para o escopo de 'cte' com o código 'cte.edit' e descrição 'Layout de edição de uma CTe'. A tela deve exibir o título 'CT-e' alinhado à esquerda e, ao lado direito, um botão com o rótulo 'Emitir CT-e'. Em seguida, apresente uma seção chamada 'Identificação da CT-e' com os seguintes campos: 'número', 'tipo_redespacho', 'emissão', 'cfop', 'valor' e 'tipo_transporte'. Abaixo, exiba a seção 'Remetente e destinatário', com os dados completos de ambos, incluindo: 'nome', 'cep', 'logradouro', 'cidade', 'uf', 'inscrição estadual', 'cnpj' e 'telefone'. Após essa, apresente a seção 'Expedidor e recebedor', também contendo os mesmos dados de identificação de ambas as partes. Por fim, exiba uma área com abas, sendo a primeira com o título 'Dados do tomador', contendo as informações de identificação do tomador, e uma segunda aba chamada 'Nota fiscal', onde devem ser exibidos os dados da nota fiscal.",
+    "json_schema": {
+        "id": "cte_cte-edit",
+        "type": "div",
+        "props": {
+            "style": {
+                "maxWidth": "72rem",
+                "margin": "0 auto"
+            }
+        },
+        "transaction": {
+            "name": "cte",
+            "entities": [
+                {
+                    "name": "cte",
+                    "schema": "cte/Cte",
+                    "load": true,
+                    "loadingMessage": "Carregando dados da CT-e",
+                    "main": true,
+                    "cardinality": "one"
+                },
+                {
+                    "name": "nfes",
+                    "schema": "cte/Nfe",
+                    "load": false,
+                    "create": false
+                },
+                {
+                    "name": "cobrancas",
+                    "schema": "cte/Cobranca",
+                    "load": false,
+                    "create": false
+                },
+                {
+                    "name": "formas_pagamento",
+                    "schema": "cte/FormaPagamento",
+                    "load": true,
+                    "loadingMessage": "Carregando formas de pagamento",
+                    "cardinality": "many"
+                },
+                {
+                    "name": "estabelecimentos",
+                    "schema": "cte/Estabelecimento",
+                    "load": true,
+                    "create": false,
+                    "cardinality": "many"
+                },
+                {
+                    "name": "municipios",
+                    "schema": "cte/Municipio",
+                    "load": false,
+                    "create": false,
+                    "cardinality": "many"
+                },
+                {
+                    "name": "configuracoes",
+                    "schema": "cte/Configuracoes",
+                    "load": true,
+                    "create": false,
+                    "cardinality": "many"
+                }
+            ]
+        },
+        "children": [
+            {
+                "type": "Row",
+                "props": {
+                    "horizontalAlignment": "space-between",
+                    "verticalAlignment": "center"
+                },
+                "children": [
+                    {
+                        "type": "Row",
+                        "props": {
+                            "horizontalAlignment": "space-between",
+                            "verticalAlignment": "center",
+                            "style": {
+                                "gap": "1rem"
+                            }
+                        },
+                        "children": [
+                            {
+                                "type": "h2",
+                                "children": [
+                                    "CT-e"
+                                ]
+                            },
+                            {
+                                "type": "AmbienteEmissao",
+                                "props": {
+                                    "configDataRef": "configuracoes"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Row",
+                        "props": {
+                            "horizontalAlignment": "flex-end",
+                            "verticalAlignment": "center",
+                            "style": {
+                                "gap": "0.5rem"
+                            }
+                        },
+                        "children": [
+                            {
+                                "type": "BaixarDocumentos",
+                                "props": {
+                                    "dataRef": "cte"
+                                }
+                            },
+                            {
+                                "type": "StateAvailableActions",
+                                "props": {
+                                    "dataRef": "cte",
+                                    "extraActions": [
+                                        {
+                                            "type": "Button",
+                                            "props": {
+                                                "buttonType": "secondary",
+                                                "onClick": "commit"
+                                            },
+                                            "children": ["Salvar"]
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "div",
+                "props": {
+                    "style": {
+                        "height": "1rem"
+                    }
+                }
+            },
+            {
+                "type": "Card",
+                "props": {
+                    "style": {
+                        "height": "fit-content"
+                    }
+                },
+                "children": [
+                    {
+                        "type": "CardTitle",
+                        "props": {
+                            "style": {
+                                "padding": "1rem",
+                                "paddingBottom": "0"
+                            }
+                        },
+                        "children": [
+                            {
+                                "type": "h3",
+                                "props": {
+                                    "style": {
+                                        "fontSize": "1rem"
+                                    }
+                                },
+                                "children": [
+                                    "Dados gerais"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "CardBody",
+                        "children": [
+                            {
+                                "type": "ItensList",
+                                "props": {
+                                    "dataRef": "cte.selected",
+                                    "includeItems": [
+                                        "sinal",
+                                        "numero",
+                                        "numero_externo",
+                                        "situacao",
+                                        "tipo_redespacho",
+                                        "emissao",
+                                        "cfop",
+                                        "tipo_transporte"
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "GenericForm",
+                                "props": {
+                                    "dataRef": "cte.selected",
+                                    "isEdit": true
+                                },
+                                "children": [
+                                    {
+                                        "type": "div",
+                                        "props": {
+                                            "style": { "height": "0.5rem" }
+                                        }
+                                    },
+                                    {
+                                        "type": "div",
+                                        "props": {
+                                            "style": {
+                                                "display": "flex",
+                                                "gap": "1rem",
+                                                "flexWrap": "wrap"
+                                            }
+                                        },
+                                        "children": [
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "valor",
+                                                    "label": "Valor",
+                                                    "inputType": "currency",
+                                                    "style": { "width": "12rem" }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "div",
+                "props": {
+                    "style": {
+                        "height": "1rem"
+                    }
+                }
+            },
+            {
+                "type": "Card",
+                "props": {
+                    "style": {
+                        "height": "fit-content"
+                    }
+                },
+                "children": [
+                    {
+                        "type": "CardTitle",
+                        "props": {
+                            "style": {
+                                "padding": "1rem",
+                                "paddingBottom": "0"
+                            }
+                        },
+                        "children": [
+                            {
+                                "type": "h3",
+                                "props": {
+                                    "style": {
+                                        "fontSize": "1rem"
+                                    }
+                                },
+                                "children": [
+                                    "Municípios de início e fim"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "CardBody",
+                        "props": {
+                            "style": {
+                                "display": "flex",
+                                "justifyContent": "space-evenly"
+                            }
+                        },
+                        "children": [
+                            {
+                                "type": "EditMunicipio",
+                                "props": {
+                                    "documentDataRef": "cte",
+                                    "documentDataRefKey": "municipio_inicio_ibge",
+                                    "schemaId": "cte/Municipio",
+                                    "title": "Município de início"
+                                }
+                            },
+                            {
+                                "type": "EditMunicipio",
+                                "props": {
+                                    "documentDataRef": "cte",
+                                    "documentDataRefKey": "municipio_fim_ibge",
+                                    "schemaId": "cte/Municipio",
+                                    "title": "Município de fim"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "div",
+                "props": {
+                    "style": {
+                        "height": "1rem"
+                    }
+                }
+            },
+            {
+                "type": "Card",
+                "props": {
+                    "style": {
+                        "height": "fit-content"
+                    }
+                },
+                "children": [
+                    {
+                        "type": "CardTitle",
+                        "props": {
+                            "style": {
+                                "padding": "1rem",
+                                "paddingBottom": "0"
+                            }
+                        },
+                        "children": [
+                            {
+                                "type": "h3",
+                                "props": {
+                                    "style": {
+                                        "fontSize": "1rem"
+                                    }
+                                },
+                                "children": [
+                                    "Remetente"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "CardBody",
+                        "children": [
+                            {
+                                "type": "ItensList",
+                                "props": {
+                                    "dataRef": "cte.selected",
+                                    "includeItems": [
+                                        "remetente_dados.nome",
+                                        "remetente_dados.inscricao_estadual",
+                                        "remetente_dados.cnpj",
+                                        "remetente_dados.telefone_principal"
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "GenericForm",
+                                "props": {
+                                    "dataRef": "cte.selected",
+                                    "isEdit": true
+                                },
+                                "children": [
+                                    {
+                                        "type": "div",
+                                        "props": {
+                                            "style": { "height": "0.5rem" }
+                                        }
+                                    },
+                                    {
+                                        "type": "div",
+                                        "props": {
+                                            "style": {
+                                                "display": "flex",
+                                                "gap": "1rem",
+                                                "flexWrap": "wrap"
+                                            }
+                                        },
+                                        "children": [
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "remetente_dados.endereco_padrao.cep",
+                                                    "label": "CEP",
+                                                    "inputType": "text",
+                                                    "style": { "width": "10rem" }
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "remetente_dados.endereco_padrao.tipo_logradouro",
+                                                    "label": "Tipo logradouro",
+                                                    "style": { "width": "12rem" }
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "remetente_dados.endereco_padrao.logradouro",
+                                                    "label": "Logradouro",
+                                                    "inputType": "text",
+                                                    "style": { "width": "30rem" }
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "remetente_dados.endereco_padrao.numero",
+                                                    "label": "Número",
+                                                    "inputType": "text",
+                                                    "style": { "width": "6rem" }
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "remetente_dados.endereco_padrao.complemento",
+                                                    "label": "Complemento",
+                                                    "inputType": "text",
+                                                    "style": { "width": "23rem" }
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "remetente_dados.endereco_padrao.bairro",
+                                                    "label": "Bairro",
+                                                    "inputType": "text",
+                                                    "style": { "width": "18rem" }
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "remetente_dados.endereco_padrao.cidade",
+                                                    "label": "Município",
+                                                    "inputType": "text",
+                                                    "style": { "width": "17rem" }
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "remetente_dados.endereco_padrao.uf",
+                                                    "label": "UF",
+                                                    "style": { "width": "6rem" }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "div",
+                "props": {
+                    "style": {
+                        "height": "1rem"
+                    }
+                }
+            },
+            {
+                "type": "Card",
+                "props": {
+                    "style": {
+                        "height": "fit-content"
+                    }
+                },
+                "children": [
+                    {
+                        "type": "CardTitle",
+                        "props": {
+                            "style": {
+                                "padding": "1rem",
+                                "paddingBottom": "0"
+                            }
+                        },
+                        "children": [
+                            {
+                                "type": "h3",
+                                "props": {
+                                    "style": {
+                                        "fontSize": "1rem"
+                                    }
+                                },
+                                "children": [
+                                    "Destinatário"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "CardBody",
+                        "children": [
+                            {
+                                "type": "ItensList",
+                                "props": {
+                                    "dataRef": "cte.selected",
+                                    "includeItems": [
+                                        "destinatario_dados.nome",
+                                        "destinatario_dados.inscricao_estadual",
+                                        "destinatario_dados.cnpj",
+                                        "destinatario_dados.telefone_principal"
+                                    ]
+                                }
+                            },
+                            {
+                                "type": "GenericForm",
+                                "props": {
+                                    "dataRef": "cte.selected",
+                                    "isEdit": true
+                                },
+                                "children": [
+                                    {
+                                        "type": "div",
+                                        "props": {
+                                            "style": { "height": "0.5rem" }
+                                        }
+                                    },
+                                    {
+                                        "type": "div",
+                                        "props": {
+                                            "style": {
+                                                "display": "flex",
+                                                "gap": "1rem",
+                                                "flexWrap": "wrap"
+                                            }
+                                        },
+                                        "children": [
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "destinatario_dados.endereco_padrao.cep",
+                                                    "label": "CEP",
+                                                    "inputType": "text",
+                                                    "style": { "width": "10rem" }
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "destinatario_dados.endereco_padrao.tipo_logradouro",
+                                                    "label": "Tipo logradouro",
+                                                    "style": { "width": "12rem" }
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "destinatario_dados.endereco_padrao.logradouro",
+                                                    "label": "Logradouro",
+                                                    "inputType": "text",
+                                                    "style": { "width": "30rem" }
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "destinatario_dados.endereco_padrao.numero",
+                                                    "label": "Número",
+                                                    "inputType": "text",
+                                                    "style": { "width": "6rem" }
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "destinatario_dados.endereco_padrao.complemento",
+                                                    "label": "Complemento",
+                                                    "inputType": "text",
+                                                    "style": { "width": "23rem" }
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "destinatario_dados.endereco_padrao.bairro",
+                                                    "label": "Bairro",
+                                                    "inputType": "text",
+                                                    "style": { "width": "18rem" }
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "destinatario_dados.endereco_padrao.cidade",
+                                                    "label": "Município",
+                                                    "inputType": "text",
+                                                    "style": { "width": "17rem" }
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "destinatario_dados.endereco_padrao.uf",
+                                                    "label": "UF",
+                                                    "style": { "width": "6rem" }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "div",
+                "props": {
+                    "style": {
+                        "height": "1rem"
+                    }
+                }
+            },
+            {
+                "type": "Card",
+                "props": {
+                    "style": {
+                        "height": "fit-content"
+                    }
+                },
+                "children": [
+                    {
+                        "type": "CardBody",
+                        "children": [
+                            {
+                                "type": "TabStrip",
+                                "children": [
+                                    {
+                                        "type": "TabStripTab",
+                                        "props": {
+                                            "title": "Dados do tomador"
+                                        },
+                                        "children": [
+                                            {
+                                                "type": "ItensList",
+                                                "props": {
+                                                    "dataRef": "cte.selected",
+                                                    "includeItems": [
+                                                        "tomador_dados.nome",
+                                                        "tomador_dados.inscricao_estadual",
+                                                        "tomador_dados.cnpj",
+                                                        "tomador_dados.telefone_principal",
+                                                        "tomador_dados.endereco_padrao.cep",
+                                                        "tomador_dados.endereco_padrao.tipo_logradouro",
+                                                        "tomador_dados.endereco_padrao.logradouro",
+                                                        "tomador_dados.endereco_padrao.cidade",
+                                                        "tomador_dados.endereco_padrao.uf"
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "TabStripTab",
+                                        "props": {
+                                            "title": "Dados do emitente"
+                                        },
+                                        "children": [
+                                            {
+                                                "type": "Emitente",
+                                                "props": {
+                                                    "documentDataRef": "cte",
+                                                    "listSourceDataRef": "estabelecimentos"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "type": "ItensList",
+                                                        "props": {
+                                                            "dataRef": "cte.selected",
+                                                            "includeItems": [
+                                                                "emitente_dados.nome",
+                                                                "emitente_dados.inscricao_estadual",
+                                                                "emitente_dados.cnpj",
+                                                                "emitente_dados.telefone_principal",
+                                                                "emitente_dados.endereco_padrao.cep",
+                                                                "emitente_dados.endereco_padrao.tipo_logradouro",
+                                                                "emitente_dados.endereco_padrao.logradouro",
+                                                                "emitente_dados.endereco_padrao.cidade",
+                                                                "emitente_dados.endereco_padrao.uf"
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "TabStripTab",
+                                        "props": {
+                                            "title": "Notas fiscais"
+                                        },
+                                        "children": [
+                                            {
+                                                "type": "GenericGrid",
+                                                "props": {
+                                                    "dataRef": "nfes",
+                                                    "style": {
+                                                        "maxHeight": "200px"
+                                                    },
+                                                    "resizable": true
+                                                },
+                                                "children": [
+                                                    {
+                                                        "type": "GridColumn",
+                                                        "props": {
+                                                            "field": "emissao",
+                                                            "title": "Data de emissão"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "GridColumn",
+                                                        "props": {
+                                                            "field": "chavene",
+                                                            "title": "Chave",
+                                                            "className": "overflown-column"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "GridColumn",
+                                                        "props": {
+                                                            "field": "numero",
+                                                            "title": "Número"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "GridColumn",
+                                                        "props": {
+                                                            "field": "serie",
+                                                            "title": "Série"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "GridColumn",
+                                                        "props": {
+                                                            "field": "estabelecimento_dados.nomefantasia",
+                                                            "title": "Estabelecimento",
+                                                            "className": "overflown-column"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "GridColumn",
+                                                        "props": {
+                                                            "field": "cliente_fornecedor_dados.nome",
+                                                            "title": "Participante",
+                                                            "className": "overflown-column"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "GridColumn",
+                                                        "props": {
+                                                            "field": "valor",
+                                                            "title": "Valor"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "GridColumn",
+                                                        "props": {
+                                                            "field": "situacao",
+                                                            "title": "Situação",
+                                                            "cell": "ChipCell"
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "TabStripTab",
+                                        "props": {
+                                            "title": "Impostos"
+                                        },
+                                        "children": [
+                                            {
+                                                "type": "Card",
+                                                "props": {
+                                                    "style": {
+                                                        "height": "fit-content"
+                                                    }
+                                                },
+                                                "children": [
+                                                    {
+                                                        "type": "CardTitle",
+                                                        "props": {
+                                                            "style": {
+                                                                "padding": "1rem",
+                                                                "paddingBottom": "0"
+                                                            }
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "type": "p",
+                                                                "children": [
+                                                                    "ICMS"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "CardBody",
+                                                        "children": [
+                                                            {
+                                                                "type": "GenericForm",
+                                                                "props": {
+                                                                    "dataRef": "cte.selected"
+                                                                },
+                                                                "children": [
+                                                                    {
+                                                                        "type": "div",
+                                                                        "props": {
+                                                                            "style": {
+                                                                                "display": "flex",
+                                                                                "flexDirection": "row",
+                                                                                "gap": "1rem"
+                                                                            }
+                                                                        },
+                                                                        "children": [
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "icms_base_calculo",
+                                                                                    "label": "Base de cálculo ICMS",
+                                                                                    "readOnly": true
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "icms_aliquota",
+                                                                                    "label": "Alíquota ICMS (%)"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "icms_valor",
+                                                                                    "label": "Valor ICMS",
+                                                                                    "readOnly": true
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "TabStripTab",
+                                        "props": {
+                                            "title": "Endereços de Retirada e Entrega"
+                                        },
+                                        "children": [
+                                            {
+                                                "type": "Card",
+                                                "props": {
+                                                    "style": {
+                                                        "height": "fit-content"
+                                                    }
+                                                },
+                                                "children": [
+                                                    {
+                                                        "type": "CardTitle",
+                                                        "props": {
+                                                            "style": {
+                                                                "padding": "1rem",
+                                                                "paddingBottom": "0"
+                                                            }
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "type": "p",
+                                                                "children": [
+                                                                    "Endereço de Retirada"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "CardBody",
+                                                        "children": [
+                                                            {
+                                                                "type": "GenericForm",
+                                                                "props": {
+                                                                    "dataRef": "cte.selected",
+                                                                    "isEdit": true
+                                                                },
+                                                                "children": [
+                                                                    {
+                                                                        "type": "div",
+                                                                        "props": {
+                                                                            "style": {
+                                                                                "display": "flex",
+                                                                                "gap": "1rem",
+                                                                                "flexWrap": "wrap"
+                                                                            }
+                                                                        },
+                                                                        "children": [
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_retirada_dados.cep",
+                                                                                    "label": "CEP",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "10rem" }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_retirada_dados.tipologradouro",
+                                                                                    "label": "Tipo logradouro",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "12rem" }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_retirada_dados.logradouro",
+                                                                                    "label": "Logradouro",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "30rem" }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_retirada_dados.numero",
+                                                                                    "label": "Número",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "6rem" }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_retirada_dados.complemento",
+                                                                                    "label": "Complemento",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "23rem" }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_retirada_dados.bairro",
+                                                                                    "label": "Bairro",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "16rem" }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_retirada_dados.municipio",
+                                                                                    "label": "Município",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "15rem" }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_retirada_dados.uf",
+                                                                                    "label": "UF",
+                                                                                    "style": { "width": "6rem" }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "div",
+                                                "props": {
+                                                    "style": {
+                                                        "height": "1rem"
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                "type": "Card",
+                                                "props": {
+                                                    "style": {
+                                                        "height": "fit-content"
+                                                    }
+                                                },
+                                                "children": [
+                                                    {
+                                                        "type": "CardTitle",
+                                                        "props": {
+                                                            "style": {
+                                                                "padding": "1rem",
+                                                                "paddingBottom": "0"
+                                                            }
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "type": "p",
+                                                                "children": [
+                                                                    "Endereço de Entrega"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "CardBody",
+                                                         "children": [
+                                                            {
+                                                                "type": "GenericForm",
+                                                                "props": {
+                                                                    "dataRef": "cte.selected",
+                                                                    "isEdit": true
+                                                                },
+                                                                "children": [
+                                                                    {
+                                                                        "type": "div",
+                                                                        "props": {
+                                                                            "style": {
+                                                                                "display": "flex",
+                                                                                "gap": "1rem",
+                                                                                "flexWrap": "wrap"
+                                                                            }
+                                                                        },
+                                                                        "children": [
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_entrega_dados.cep",
+                                                                                    "label": "CEP",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "10rem" }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_entrega_dados.tipologradouro",
+                                                                                    "label": "Tipo logradouro",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "12rem" }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_entrega_dados.logradouro",
+                                                                                    "label": "Logradouro",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "30rem" }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_entrega_dados.numero",
+                                                                                    "label": "Número",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "6rem" }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_entrega_dados.complemento",
+                                                                                    "label": "Complemento",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "23rem" }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_entrega_dados.bairro",
+                                                                                    "label": "Bairro",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "16rem" }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_entrega_dados.municipio",
+                                                                                    "label": "Município",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "15rem" }
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "endereco_entrega_dados.uf",
+                                                                                    "label": "UF",
+                                                                                    "inputType": "text",
+                                                                                    "style": { "width": "6rem" }
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "TabStripTab",
+                                        "props": {
+                                            "title": "Financeiro"
+                                        },
+                                        "children": [
+                                            {
+                                                "type": "Card",
+                                                "props": {
+                                                    "style": {
+                                                        "height": "fit-content"
+                                                    }
+                                                },
+                                                "children": [
+                                                    {
+                                                        "type": "CardTitle",
+                                                        "props": {
+                                                            "style": {
+                                                                "padding": "1rem",
+                                                                "paddingBottom": "0"
+                                                            }
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "type": "p",
+                                                                "children": [
+                                                                    "Cobrança"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "CardSubtitle",
+                                                        "props": {
+                                                            "style": {
+                                                                "padding": "1rem",
+                                                                "paddingBottom": "0"
+                                                            }
+                                                        },
+                                                        "children": [
+                                                            {
+                                                                "type": "p",
+                                                                "children": [
+                                                                    "Por enquanto o sistema trabalha apenas com 1 parcela"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "CardBody",
+                                                        "children": [
+                                                            {
+                                                                "type": "GenericForm",
+                                                                "props": {
+                                                                    "dataRef": "cobrancas.selected",
+                                                                    "isEdit": true
+                                                                },
+                                                                "children": [
+                                                                    {
+                                                                        "type": "div",
+                                                                        "props": {
+                                                                            "style": {
+                                                                                "display": "flex",
+                                                                                "flexDirection": "row",
+                                                                                "gap": "1rem"
+                                                                            }
+                                                                        },
+                                                                        "children": [
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "forma_pagamento",
+                                                                                    "label": "Forma de Pagamento"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "numero_parcelas",
+                                                                                    "label": "Número de Parcelas",
+                                                                                    "inputType": "number",
+                                                                                    "readOnly": true
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "valor",
+                                                                                    "label": "Valor Total",
+                                                                                    "readOnly": true,
+                                                                                    "helperText": "Preenchido automaticamente com o valor total do CTe"
+                                                                                }
+                                                                            },
+                                                                            {
+                                                                                "type": "Field",
+                                                                                "props": {
+                                                                                    "field": "vencimento",
+                                                                                    "label": "Vencimento"
+                                                                                }
+                                                                            }
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "TabStripTab",
+                                        "props": {
+                                            "title": "Dados adicionais"
+                                        },
+                                        "children": [
+                                            {
+                                                "type": "GenericForm",
+                                                "props": {
+                                                    "dataRef": "cte.selected"
+                                                },
+                                                "children": [
+                                                    {
+                                                        "type": "Field",
+                                                        "props": {
+                                                            "field": "observacao",
+                                                            "inputType": "textArea",
+                                                            "style": {
+                                                                "overflow": "auto"
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

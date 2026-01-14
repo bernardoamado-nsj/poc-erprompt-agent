@@ -1,0 +1,256 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "layout.schema.json",
+  "title": "erprompt-lib Layout Definition",
+  "description": "Schema that describes dynamic layout JSON files consumed by erprompt-lib.",
+  "type": "object",
+  "required": [
+    "escopo",
+    "codigo",
+    "descricao",
+    "json_schema"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "escopo": {
+      "type": "string",
+      "description": "Logical scope (namespace) of the layout."
+    },
+    "codigo": {
+      "type": "string",
+      "description": "Unique identifier of the layout inside its scope."
+    },
+    "descricao": {
+      "type": "string",
+      "description": "Human readable description."
+    },
+    "tenant": {
+      "type": "integer"
+    },
+    "grupo_empresarial": {
+      "type": "string"
+    },
+    "grupo_acesso": {
+      "type": "string"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "updated_by": {
+      "type": "string"
+    },
+    "resumo_prompt_origem": {
+      "type": "string",
+      "description": "Optional summary of the AI prompt that generated the layout."
+    },
+    "json_schema": {
+      "$ref": "#/definitions/layoutDefinition"
+    }
+  },
+  "definitions": {
+    "layoutDefinition": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "transaction",
+        "children"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "div"
+          ],
+          "description": "Root node type. Currently only div containers are supported at the top level."
+        },
+        "transaction": {
+          "$ref": "#/definitions/transaction"
+        },
+        "app_bar": {
+          "$ref": "#/definitions/appBar"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/componentNode"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "transaction": {
+      "type": "object",
+      "required": [
+        "name",
+        "entities"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Transaction store name."
+        },
+        "entities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/entityBinding"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "entityBinding": {
+      "type": "object",
+      "required": [
+        "name",
+        "schema"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Logical alias used inside the layout (dataRef)."
+        },
+        "schema": {
+          "type": "string",
+          "description": "Reference to the entity file (e.g. fluxus/ordem_pagamento)."
+        },
+        "cardinality": {
+          "type": "string",
+          "enum": [
+            "one",
+            "many"
+          ]
+        },
+        "load": {
+          "type": "boolean"
+        },
+        "main": {
+          "type": "boolean"
+        },
+        "loadingMessage": {
+          "type": "string"
+        },
+        "showCreate": {
+          "type": "boolean"
+        },
+        "lazy": {
+          "type": "boolean"
+        },
+        "useLocalCache": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "appBar": {
+      "type": "object",
+      "properties": {
+        "pageTitle": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "useContextualHeader": {
+          "type": "boolean"
+        },
+        "navigateBackRoute": {
+          "type": "string"
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/componentNode"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "componentNode": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Browser",
+            "BuiltInView",
+            "Button",
+            "Card",
+            "CardActions",
+            "CardBody",
+            "CardSubtitle",
+            "CardTitle",
+            "Chip",
+            "DatePicker",
+            "Field",
+            "FiltersGroup",
+            "FilterableGrid",
+            "FilterPanel",
+            "GridColumn",
+            "GridToolbar",
+            "GenericConditionalRender",
+            "GenericForm",
+            "GenericGrid",
+            "GenericList",
+            "GenericTitle",
+            "ItensList",
+            "NewFilter",
+            "NewItensList",
+            "NumericTextBox",
+            "Row",
+            "SearchInput",
+            "StateAvailableActions",
+            "Stepper",
+            "Step",
+            "TabStrip",
+            "TabStripTab",
+            "TaskBoard",
+            "TextBox",
+            "TitleDivider",
+            "TwoLinesItem",
+            "XmlViewer",
+            "div",
+            "p",
+            "span",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6"
+          ]
+        },
+        "props": {
+          "type": "object",
+          "description": "Component specific properties.",
+          "additionalProperties": true
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/componentChild"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "componentChild": {
+      "description": "A child can be another component node or a literal string (text node).",
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/definitions/componentNode"
+        }
+      ]
+    }
+  }
+}

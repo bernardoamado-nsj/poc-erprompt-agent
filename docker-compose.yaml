@@ -1,0 +1,85 @@
+version: "3.8"
+services:
+    install_dependencies:
+        image: nasajon/node-pnpm:20
+        volumes:
+            - .:/app
+            - node_modules_volume:/app/node_modules
+            - pnpm_cache_volume:/mnt/pnpm_cache
+        working_dir: /app
+        environment:
+            - PNPM_CONFIG_STORE_DIR=/mnt/pnpm_cache
+        command: pnpm install --frozen-lockfile
+    dev_server:
+        image: nasajon/node-pnpm:20
+        volumes:
+            - .:/app
+            - node_modules_volume:/app/node_modules
+        working_dir: /app
+        ports:
+            - "3715:5173"
+        command: npm run dev
+    prod_server:
+        image: nasajon/node-pnpm:20
+        volumes:
+            - .:/app
+            - node_modules_volume:/app/node_modules
+        working_dir: /app
+        ports:
+            - "9000:5173"
+        environment:
+            - NODE_ENV=production
+        command: npm run dev
+    activate_license:
+        image: nasajon/node-pnpm:20
+        volumes:
+            - .:/app
+            - node_modules_volume:/app/node_modules
+        working_dir: /app
+        command: pnpm exec kendo-ui-license activate
+    build_app:
+        image: nasajon/node-pnpm:20
+        volumes:
+            - .:/app
+            - node_modules_volume:/app/node_modules
+        working_dir: /app
+        environment:
+            - NODE_ENV=production
+        command: pnpm run build
+    app:
+        build:
+            context: .
+        ports:
+            - "8000:80"
+
+    update_schemas:
+        image: arquiteturansj/flask:2.2
+        volumes:
+            - $PWD:/var/www/html
+#            - venv_volume:/usr/lib/python3.10/site-packages
+        env_file:
+            - .env
+        working_dir: /var/www/html
+        command: python3 @schemas/job_update_schemas.py
+        networks:
+            - erprompt
+
+    update_menu:
+        image: arquiteturansj/flask:2.2
+        volumes:
+            - $PWD:/var/www/html
+#            - venv_volume:/usr/lib/python3.10/site-packages
+        env_file:
+            - .env
+        working_dir: /var/www/html
+        command: python3 @launcher/job_update_launcher.py
+        networks:
+            - erprompt
+
+volumes:
+    node_modules_volume:
+    pnpm_cache_volume:
+
+networks: # Add this new section
+  erprompt:
+    external: true # This is crucial. It tells Docker Compose that this network already exists

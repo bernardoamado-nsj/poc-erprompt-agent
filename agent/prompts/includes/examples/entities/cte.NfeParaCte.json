@@ -1,0 +1,187 @@
+{
+    "escopo": "cte",
+    "codigo": "NfeParaCte",
+    "descricao": "Entidade NfeParaCte do escopo cte",
+    "tenant": 0,
+    "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+    "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+    "created_by": "versionamento@nasajon.com.br",
+    "updated_by": "versionamento@nasajon.com.br",
+    "json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$id": "cte/NfeParaCte",
+        "title": "Nota de mercadoria",
+        "type": "object",
+        "required": [],
+        "properties": {
+            "id": {
+                "type": "string",
+                "format": "uuid",
+                "pk": true
+            },
+            "numero": {
+                "type": "string"
+            },
+            "emissao": {
+                "type": "string",
+                "format": "date"
+            },
+            "lancamento": {
+                "type": "string",
+                "format": "date"
+            },
+            "estabelecimento": {
+                "type": "object",
+                "properties": {
+                    "id": { "type": "string", "format": "uuid", "pk": true },
+                    "cnpj": { "type": "string" },
+                    "codigo": { "type": "string" },
+                    "descricao": { "type": "string" },
+                    "endereco": {
+                        "type": "object",
+                        "properties": {
+                            "cidade": { "type": "string" },
+                            "tipologradouro": { "type": "string" },
+                            "logradouro": { "type": "string" },
+                            "numero": { "type": "string" },
+                            "complemento": { "type": "string" },
+                            "bairro": { "type": "string" },
+                            "ibge": { "type": "string" },
+                            "cep": { "type": "string" },
+                            "uf": { "type": "string" },
+                            "municipio": { "type": "string" }
+                        }
+                    },
+                    "inscricaoestadual": { "type": "string" },
+                    "ddd": { "type": "string" },
+                    "telefone": { "type": "string" }
+                }
+            },
+            "chave": { "type": "string" },
+            "participante": { "$ref": "#/components/schemas/NfeParaCteParticipante" },
+            "emitente": { "$ref": "#/components/schemas/NfeParaCteParticipante" },
+            "destinatario": { "$ref": "#/components/schemas/NfeParaCteParticipante" },
+			"modelo": { "type": "string" },
+			"serie": { "type": "string" },
+			"sinal": { "type": "string" },
+			"situacao": { "type": "string" },
+			"subserie": { "type": "string" },
+            "valor": {
+                "type": "number",
+                "format": "currency",
+                "description": "Valor da nota"
+            },
+            "grupoempresarial": { "$ref": "#/components/schemas/StandardEntity" },
+			"empresa": { "$ref": "#/components/schemas/StandardEntity" },
+            "itens": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                    "$ref": "#/components/schemas/NfeParaCteItem"
+                }
+            }
+        },
+        "filters": {
+            "fields": {
+                "sinal": {
+                    "type": "enum",
+                    "label": "Sinal",
+                    "values": [
+                        "entrada",
+                        "saida"
+                    ]
+                },
+                "situacao": {
+                    "type": "enum",
+                    "label": "Situação",
+                    "values": [
+                        "aberto",
+                        "cancelado",
+                        "emitido",
+                        "processado",
+                        "rejeitado"
+                    ]
+                }
+            }
+        },
+        "components": {
+            "schemas": {
+                "NfeParaCteItem": {
+                    "$schema": "http://json-schema.org/draft-07/schema#",
+                    "$id": "cte/NfeParaCteItem",
+                    "title": "Item",
+                    "type": "object",
+                    "required": [
+                        "id",
+                        "unitario",
+                        "quantidade"
+                    ],
+                    "properties": {
+                        "id": { "type": "string", "format": "uuid", "pk": true },
+                        "id_docfis": { "type": "string", "format": "uuid" },
+                        "unitario": { "type": "string", "format": "currency" },
+                        "quantidade": { "type": "number" },
+                        "frete": { "type": "string", "format": "currency" },
+                        "seguro": { "type": "string", "format": "currency" },
+                        "despesas": { "type": "string", "format": "currency" },
+                        "desconto": { "type": "string", "format": "currency" },
+                        "unidade": {
+                            "id": { "type": "string", "format": "uuid", "pk": true },
+                            "codigo": { "type": "string" },
+                            "descricao": { "type": "string" }
+                        }
+                    }
+                },
+                "NfeParaCteParticipante": {
+                    "$schema": "http://json-schema.org/draft-07/schema#",
+                    "$id": "cte/NfeParaCteParticipante",
+                    "title": "Participante",
+                    "type": "object",
+                    "required": [
+                        "id",
+                        "unitario",
+                        "quantidade"
+                    ],
+                    "properties": {
+                        "id": { "type": "string", "format": "uuid", "pk": true },
+                        "nome": { "type": "string" },
+                        "cnpj": { "type": "string" },
+                        "endereco": {
+                            "type": "object",
+                            "properties": {
+                                "tipologradouro": { "type": "string" },
+                                "logradouro": { "type": "string" },
+                                "numero": { "type": "string" },
+                                "complemento": { "type": "string" },
+                                "cep": { "type": "string" },
+                                "bairro": { "type": "string" },
+                                "tipoendereco": { "type": "string" },
+                                "uf": { "type": "string" },
+                                "pais": { "type": "string" },
+                                "ibge": { "type": "string" },
+                                "cidade": { "type": "string" },
+                                "referencia": { "type": "string" }
+                            }
+                        }
+                    }
+                },
+                "StandardEntity": {
+                    "$schema": "http://json-schema.org/draft-07/schema#",
+                    "$id": "cte/StandardEntity",
+                    "title": "Standard",
+                    "type": "object",
+                    "required": [
+                        "id",
+                        "codigo",
+                        "descricao"
+                    ],
+                    "properties": {
+                        "id": { "type": "string", "format": "uuid", "pk": true },
+                        "codigo": { "type": "string" },
+                        "descricao": { "type": "string" }
+                    }
+                }
+            }
+        }
+    }
+}

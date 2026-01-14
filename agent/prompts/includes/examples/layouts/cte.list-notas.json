@@ -1,0 +1,118 @@
+{
+    "escopo": "cte",
+    "codigo": "list-notas",
+    "descricao": "Layout de listagem de notas fiscais para o escopo cte",
+    "tenant": 0,
+    "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+    "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+    "created_by": "versionamento@nasajon.com.br",
+    "updated_by": "versionamento@nasajon.com.br",
+    "json_schema": {
+        "id": "cte_list-notas",
+        "type": "div",
+        "transaction": {
+            "name": "list-nfes",
+            "entities": [
+                {
+                    "name": "nfes",
+                    "schema": "cte/Nfe",
+                    "load": true,
+                    "loadingMessage": "Carregando notas fiscais",
+                    "cardinality": "many"
+                }
+            ]
+        },
+        "children": [
+            {
+                "type": "div",
+                "children": [
+                    {
+                        "type": "GenericGrid",
+                        "props": {
+                            "dataRef": "nfes",
+                            "style": {
+                                "maxHeight": "300px"
+                            },
+                            "resizable": true
+                        },
+                        "children": [
+                            {
+                                "type": "GridColumn",
+                                "props": {
+                                    "field": "serie",
+                                    "title": "Série"
+                                }
+                            },
+                            {
+                                "type": "GridColumn",
+                                "props": {
+                                    "field": "numero",
+                                    "title": "Número",
+                                    "width": "80px"
+                                }
+                            },
+                            {
+                                "type": "GridColumn",
+                                "props": {
+                                    "field": "modelo",
+                                    "title": "Modelo"
+                                }
+                            },
+                            {
+                                "type": "GridColumn",
+                                "props": {
+                                    "field": "emissao",
+                                    "title": "Data de emissão"
+                                }
+                            },
+                            {
+                                "type": "GridColumn",
+                                "props": {
+                                    "field": "sinal",
+                                    "title": "Sinal",
+                                    "cell": "ChipCell"
+                                }
+                            },
+                            {
+                                "type": "GridColumn",
+                                "props": {
+                                    "field": "emitente_dados.nomefantasia",
+                                    "title": "Emitente"
+                                }
+                            },
+                            {
+                                "type": "GridColumn",
+                                "props": {
+                                    "field": "cliente_fornecedor_dados.nome",
+                                    "title": "Participante"
+                                }
+                            },
+                            {
+                                "type": "GridColumn",
+                                "props": {
+                                    "field": "valor",
+                                    "title": "Valor Total"
+                                }
+                            },
+                            {
+                                "type": "GridColumn",
+                                "props": {
+                                    "field": "frete",
+                                    "title": "Frete"
+                                }
+                            },
+                            {
+                                "type": "GridColumn",
+                                "props": {
+                                    "field": "situacao",
+                                    "title": "Situação",
+                                    "cell": "ChipCell"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

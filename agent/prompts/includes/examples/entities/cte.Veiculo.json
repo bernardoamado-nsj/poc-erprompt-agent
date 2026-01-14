@@ -1,0 +1,54 @@
+{
+    "escopo": "cte",
+    "codigo": "Veiculo",
+    "descricao": "Entidade Veiculo do escopo cte",
+    "tenant": 0,
+    "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+    "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+    "created_by": "versionamento@nasajon.com.br",
+    "updated_by": "versionamento@nasajon.com.br",
+    "json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$id": "cte/Veiculo",
+        "type": "object",
+        "required": [
+            "id",
+            "codigo",
+            "rntc"
+        ],
+        "properties": {
+            "id": {
+                "type": "string",
+                "format": "uuid",
+                "pk": true
+            },
+            "codigo": {
+                "type": "string"
+            },
+            "rntc": {
+                "type": "string"
+            },
+            "placa": {
+                "type": "string"
+            },
+            "renavam": {
+                "type": "string"
+            },
+            "tipoveiculo": {
+                "type": "number"
+            },
+            "ano": {
+                "type": "number"
+            },
+            "modelo": {
+                "type": "string"
+            },
+            "tipo": {
+                "type": "number"
+            },
+            "uflicenciamento": {
+                "type": "string"
+            }
+        }
+    }
+}

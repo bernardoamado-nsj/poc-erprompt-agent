@@ -1,0 +1,677 @@
+{
+    "escopo": "cte",
+    "codigo": "Cte",
+    "descricao": "Entidade Cte do escopo cte",
+    "tenant": 0,
+    "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+    "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+    "created_by": "versionamento@nasajon.com.br",
+    "updated_by": "versionamento@nasajon.com.br",
+    "json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$id": "cte/Cte",
+        "title": "Nota de conhecimento de transporte",
+        "type": "object",
+        "required": [
+            "carga_valor_total",
+            "cargas",
+            "crt",
+            "remetente",
+            "destinatario",
+            "emissao",
+            "emitente",
+            "estabelecimento",
+            "icms_aliquota",
+            "icms_base_calculo",
+            "icms_valor",
+            "nfes",
+            "numero",
+            "sinal",
+            "serie",
+            "situacao",
+            "valor"
+        ],
+        "properties": {
+            "id": {
+                "type": "string",
+                "format": "uuid",
+                "pk": true
+            },
+            "numero": {
+                "type": "string",
+                "label": "Número"
+            },
+            "numero_externo": {
+                "type": "string",
+                "label": "Número Externo"
+            },
+            "emissao": {
+                "type": "string",
+                "format": "date",
+                "label": "Data de emissão"
+            },
+            "estabelecimento": {
+                "type": "string",
+                "format": "uuid"
+            },
+            "emitente": {
+                "type": "string",
+                "format": "uuid"
+            },
+            "destinatario": {
+                "type": "string",
+                "format": "uuid"
+            },
+            "remetente": {
+                "type": "string",
+                "format": "uuid"
+            },
+            "serie": {
+                "type": "string"
+            },
+            "cfop": {
+                "type": "string",
+                "label": "CFOP",
+                "defaultValue": "5353"
+            },
+            "sinal": {
+                "type": "string",
+                "label": "Sinal"
+            },
+            "valor": {
+                "type": "number",
+                "format": "currency",
+                "label": "Valor"
+            },
+            "municipio_inicio_ibge": {
+                "type": "string"
+            },
+            "municipio_fim_ibge": {
+                "type": "string"
+            },
+            "registro_veiculo": {
+                "type": "string",
+                "format": "domain",
+                "domainConfig": {
+                    "type": "dynamic",
+                    "valueField": "rntc",
+                    "labelFields": ["codigo", "placa", "rntc"],
+                    "schemaId": "cte/Veiculo"
+                }
+            },
+            "forma_pagamento": {
+                "type": "string",
+                "format": "domain",
+                "domainConfig": {
+                    "type": "dynamic",
+                    "valueField": "id",
+                    "labelFields": ["codigo", "descricao"],
+                    "schemaId": "cte/FormaPagamento"
+                }
+            },
+            "icms_modalidade": {
+                "type": "string",
+                "defaultValue": "tributada"
+            },
+            "situacao": {
+                "type": "string",
+                "label": "Situação"
+            },
+            "crt": {
+                "type": "string",
+                "defaultValue": "1"
+            },
+            "valor_ir": {
+                "type": "number",
+                "format": "currency",
+                "defaultValue": 0
+            },
+            "valor_inss": {
+                "type": "number",
+                "format": "currency",
+                "defaultValue": 0
+            },
+            "icms_base_calculo": {
+                "type": "number",
+                "format": "currency",
+                "defaultValue": 0,
+                "label": "Base de cálculo ICMS"
+            },
+            "icms_aliquota": {
+                "type": "number",
+                "defaultValue": 0,
+                "label": "Alíquota ICMS (%)"
+            },
+            "icms_valor": {
+                "type": "number",
+                "format": "currency",
+                "defaultValue": 0,
+                "label": "Valor ICMS"
+            },
+            "tipo_servico": {
+                "type": "string",
+                "defaulValue": "normal"
+            },
+            "carga_valor_total": {
+                "type": "number",
+                "defaultValue": 0
+            },
+            "carga_produto_predominante": {
+                "type": "string"
+            },
+            "cargas": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "tipo_unidade": {
+                            "type": "string",
+                            "defaultValue": "unidade"
+                        },
+                        "tipo_medida": {
+                            "type": "string",
+                            "defaultValue": "normal"
+                        },
+                        "quantidade": {
+                            "type": "number",
+                            "defaultValue": 1
+                        }
+                    }
+                },
+                "defaultValue": [
+                    {
+                        "tipo_unidade": "unidade",
+                        "tipo_medida": "normal",
+                        "quantidade": 1
+                    }
+                ]
+            },
+            "destinatario_dados": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "inscricao_estadual": {
+                        "type": "string",
+                        "label": "IE"
+                    },
+                    "cnpj": {
+                        "type": "string",
+                        "label": "CNPJ",
+                        "format": "cnpj"
+                    },
+                    "nome": {
+                        "type": "string",
+                        "label": "Nome"
+                    },
+                    "ddd_telefone_principal": {
+                        "type": "string",
+                        "label": "DDD"
+                    },
+                    "telefone_principal": {
+                        "type": "string",
+                        "label": "Telefone"
+                    },
+                    "endereco_padrao": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "format": "uuid"
+                            },
+                            "tipo_logradouro": {
+                                "type": "string",
+                                "label": "Tipo de logradouro",
+                                "format": "domain",
+                                "domainConfig": {
+                                    "type": "fixed",
+                                    "itens": [
+                                        { "label": "Rua", "value": "R" },
+                                        { "label": "Alameda", "value": "AL" },
+                                        { "label": "Travessa", "value": "TV" },
+                                        { "label": "Avenida", "value": "AV" }
+                                    ],
+                                    "valueField": "value",
+                                    "labelFields": ["label"]
+                                }
+                            },
+                            "logradouro": {
+                                "type": "string",
+                                "label": "Logradouro"
+                            },
+                            "numero": {
+                                "type": "string",
+                                "label": "Número"
+                            },
+                            "complemento": {
+                                "type": "string",
+                                "label": "Complemento"
+                            },
+                            "cep": {
+                                "type": "string",
+                                "label": "CEP",
+                                "format": "cep"
+                            },
+                            "bairro": {
+                                "type": "string",
+                                "label": "Bairro"
+                            },
+                            "tipo": {
+                                "type": "string",
+                                "label": "Tipo"
+                            },
+                            "uf": {
+                                "type": "string",
+                                "label": "UF",
+                                "format": "domain",
+                                "domainConfig": {
+                                    "type": "fixed",
+                                    "itens": [
+                                        { "label": "AC", "value": "AC" },
+                                        { "label": "AL", "value": "AL" },
+                                        { "label": "AP", "value": "AP" },
+                                        { "label": "AM", "value": "AM" },
+                                        { "label": "BA", "value": "BA" },
+                                        { "label": "CE", "value": "CE" },
+                                        { "label": "DF", "value": "DF" },
+                                        { "label": "ES", "value": "ES" },
+                                        { "label": "GO", "value": "GO" },
+                                        { "label": "MA", "value": "MA" },
+                                        { "label": "MT", "value": "MT" },
+                                        { "label": "MS", "value": "MS" },
+                                        { "label": "MG", "value": "MG" },
+                                        { "label": "PA", "value": "PA" },
+                                        { "label": "PB", "value": "PB" },
+                                        { "label": "PR", "value": "PR" },
+                                        { "label": "PE", "value": "PE" },
+                                        { "label": "PI", "value": "PI" },
+                                        { "label": "RJ", "value": "RJ" },
+                                        { "label": "RN", "value": "RN" },
+                                        { "label": "RS", "value": "RS" },
+                                        { "label": "RO", "value": "RO" },
+                                        { "label": "RR", "value": "RR" },
+                                        { "label": "SC", "value": "SC" },
+                                        { "label": "SP", "value": "SP" },
+                                        { "label": "SE", "value": "SE" },
+                                        { "label": "TO", "value": "TO" }
+                                    ],
+                                    "valueField": "value",
+                                    "labelFields": ["label"]
+                                }
+                            },
+                            "ibge": {
+                                "type": "string",
+                                "label": "IBGE"
+                            },
+                            "cidade": {
+                                "type": "string",
+                                "label": "Cidade"
+                            },
+                            "atualizado_em": {
+                                "type": "string",
+                                "format": "date"
+                            }
+                        }
+                    }
+                }
+            },
+            "estabelecimento_dados": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "cnpj": {
+                        "type": "string",
+                        "label": "CNPJ",
+                        "format": "cnpj"
+                    },
+                    "nome": {
+                        "type": "string",
+                        "label": "Nome"
+                    },
+                    "inscricao_estadual": {
+                        "type": "string",
+                        "label": "IE"
+                    },
+                    "tipo_logradouro": {
+                        "type": "string"
+                    },
+                    "logradouro": {
+                        "type": "string",
+                        "label": "Endereço"
+                    },
+                    "numero": {
+                        "type": "string"
+                    },
+                    "complemento": {
+                        "type": "string"
+                    },
+                    "cidade": {
+                        "type": "string",
+                        "Cidade": "IE"
+                    },
+                    "bairro": {
+                        "type": "string"
+                    },
+                    "ibge": {
+                        "type": "string"
+                    },
+                    "cep": {
+                        "type": "string",
+                        "label": "CEP",
+                        "format": "cep"
+                    },
+                    "ddd_telefone": {
+                        "type": "string"
+                    },
+                    "telefone": {
+                        "type": "string",
+                        "label": "Telefone"
+                    },
+                    "uf": {
+                        "type": "string",
+                        "label": "UF"
+                    }
+                }
+            },
+            "nfes": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/ChaveNfe"
+                }
+            },
+            "observacao": {
+                "type": "string",
+                "label": " "
+            }
+        },
+        "filters": {
+            "fields": {
+                "situacao": {
+                    "type": "enum",
+                    "label": "Situação",
+                    "values": [
+                        "aberto",
+                        "cancelado",
+                        "emitido",
+                        "processado",
+                        "rejeitado"
+                    ]
+                }
+            }
+        },
+        "components": {
+            "schemas": {
+                "ChaveNfe": {
+                    "$schema": "http://json-schema.org/draft-07/schema#",
+                    "$id": "cte/ChaveNfe",
+                    "title": "Chave da NFe",
+                    "type": "object",
+                    "required": [
+                        "chave"
+                    ],
+                    "properties": {
+                        "chave": { "type": "string" }
+                    }
+                },
+                "Cobranca": {
+                    "$schema": "http://json-schema.org/draft-07/schema#",
+                    "$id": "cte/Cobranca",
+                    "title": "Cobrança do CT-e",
+                    "type": "object",
+                    "required": [
+                        "forma_pagamento"
+                    ],
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "forma_pagamento": {
+                            "type": "string",
+                            "format": "domain",
+                            "domainConfig": {
+                                "type": "dynamic",
+                                "valueField": "id",
+                                "labelFields": ["codigo", "descricao"],
+                                "schemaId": "cte/FormaPagamento"
+                            }
+                        },
+                        "numero_parcelas": {
+                            "type": "number",
+                            "label": "Número de parcelas"
+                        },
+                        "valor": {
+                            "type": "string",
+                            "format": "currency",
+                            "label": "Valor"
+                        },
+                        "vencimento": {
+                            "type": "string",
+                            "format": "date",
+                            "label": "Vencimento"
+                        }
+                    }
+                }
+            }
+        },
+        "workflowDefinition": {
+            "workflowFor": "cte/Cte",
+            "workflowStateField": "situacao",
+            "workflow": {
+                "initialState": "OPEN",
+                "states": {
+                    "OPEN": {
+                        "label": "Aberta",
+                        "fieldValue": "aberto",
+                        "entityMode": "readwrite",
+                        "isDeletable": true,
+                        "rules": ["calc:base-icms", "calc:valor-icms"],
+                        "transitions": [
+                            {
+                                "targetState": "EMITTED",
+                                "label": "Emitir CT-e",
+                                "transitionType": "manual",
+                                "buttonType": "primary",
+                                "transitionOnServer": true,
+                                "action": {
+                                    "type": "api",
+                                    "api": "EmiteCTE",
+                                    "serverTransition": true
+                                },
+                                "rules": []
+                            }
+                        ]
+                    },
+                    "SENT": {
+                        "label": "Enviada",
+                        "fieldValue": "enviado",
+                        "entityMode": "readonly",
+                        "isDeletable": false,
+                        "transitions": []
+                    },
+                    "EMITTED_NOT_PROCESSED": {
+                        "fieldValue": "emitido_nao_processado",
+                        "label": "Emitida sem financeiro",
+                        "entityMode": "readonly",
+                        "isDeletable": false,
+                        "transitions": [
+                            {
+                                "targetState": "PROCESSED",
+                                "label": "Gerar títulos",
+                                "transitionType": "manual",
+                                "buttonType": "secondary",
+                                "transitionOnServer": true,
+                                "action": {
+                                    "type": "api",
+                                    "api": "GeraTituloCTE",
+                                    "serverTransition": true
+                                },
+                                "rules": []
+                            }
+                        ]
+                    },
+                    "PROCESSED": {
+                        "fieldValue": "processado",
+                        "label": "Processada",
+                        "entityMode": "readonly",
+                        "isDeletable": false,
+                        "transitions": [
+                            {
+                                "targetState": "CANCELED",
+                                "label": "Cancelar CT-e",
+                                "transitionType": "manual",
+                                "buttonType": "tertiary",
+                                "transitionOnServer": true,
+                                "action": {
+                                    "type": "api",
+                                    "api": "CancelaCTE",
+                                    "serverTransition": true
+                                },
+                                "rules": []
+                            }
+                        ]
+                    },
+                    "EMITTED": {
+                        "label": "Emitida",
+                        "fieldValue": "emitido",
+                        "entityMode": "readonly",
+                        "readonlyExceptions": [
+                            "observacoes"
+                        ],
+                        "isDeletable": false,
+                        "transitions": [
+                            {
+                                "targetState": "CANCELED",
+                                "label": "Cancelar CT-e",
+                                "transitionType": "manual",
+                                "buttonType": "tertiary",
+                                "transitionOnServer": true,
+                                "action": {
+                                    "type": "api",
+                                    "api": "CancelaCTE",
+                                    "serverTransition": true
+                                },
+                                "rules": []
+                            }
+                        ]
+                    },
+                    "REJECTED": {
+                        "label": "Rejeitada pela SEFAZ",
+                        "fieldValue": "rejeitado",
+                        "isDeletable": false,
+                        "rules": ["calc:base-icms", "calc:valor-icms"],
+                        "transitions": [
+                            {
+                                "targetState": "EMITTED",
+                                "label": "Emitir CT-e",
+                                "transitionType": "manual",
+                                "buttonType": "primary",
+                                "transitionOnServer": true,
+                                "action": {
+                                    "type": "api",
+                                    "api": "EmiteCTE",
+                                    "serverTransition": true
+                                },
+                                "rules": []
+                            }
+                        ]
+                    },
+                    "CANCELED": {
+                        "label": "Cancelada",
+                        "fieldValue": "cancelado",
+                        "isDeletable": false,
+                        "entityMode": "readonly",
+                        "transitions": [],
+                        "rules": []
+                    }
+                },
+                "rules": {},
+                "externalAPI": {
+                    "GeraTituloCTE": {
+                        "method": "POST",
+                        "endpoint": "https://api.nasajon.app/locacoes/4514/gerar-titulos-cte",
+                        "security": { "scheme": "BearerToken" },
+                        "requestFields": [
+                            {
+                                "name": "id",
+                                "required": true
+                            },
+                            {
+                                "name": "tenant",
+                                "required": true
+                            }
+                        ],
+                        "timeoutMs": 30000
+                    },
+                    "EmiteCTE": {
+                        "method": "POST",
+                        "endpoint": "https://api.nasajon.app/locacoes/4514/emitir-cte",
+                        "security": { "scheme": "BearerToken" },
+                        "requestFields": [
+                            {
+                                "name": "id",
+                                "required": true
+                            },
+                            {
+                                "name": "tenant",
+                                "required": true
+                            }
+                        ],
+                        "timeoutMs": 30000
+                    },
+                    "CancelaCTE": {
+                        "method": "POST",
+                        "endpoint": "https://api.nasajon.app/locacoes/4514/cancelar-cte",
+                        "security": { "scheme": "BearerToken" },
+                        "requestFields": [
+                            {
+                                "name": "id",
+                                "required": true
+                            },
+                            {
+                                "name": "tenant",
+                                "required": true
+                            },
+                            {
+                                "name": "justificativa",
+                                "defaultValue": "cancelamento de CTE",
+                                "required": true
+                            }
+                        ],
+                        "timeoutMs": 30000
+                    }
+                }
+            },
+            "ruleset": {
+                "rules": {
+                    "calc:base-icms": {
+                        "type": "compute",
+                        "target": "icms_base_calculo",
+                        "expr": { "var": "valor" }
+                    },
+                    "calc:valor-icms": {
+                        "type": "compute",
+                        "target": "icms_valor",
+                        "expr": {
+                            "*": [
+                                { "var": "icms_base_calculo" },
+                                {
+                                    "/": [
+                                        { "var": "icms_aliquota" },
+                                        100
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,163 @@
+{
+    "escopo": "cte",
+    "codigo": "list-notas-para-cte",
+    "descricao": "Layout de listagem de notas fiscais para o escopo cte",
+    "tenant": 0,
+    "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+    "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+    "created_by": "versionamento@nasajon.com.br",
+    "updated_by": "versionamento@nasajon.com.br",
+    "json_schema": {
+        "id": "cte_list-notas-para-cte",
+        "type": "div",
+        "transaction": {
+            "name": "list-nfes-para-cte",
+            "entities": [
+                {
+                    "name": "nfes",
+                    "schema": "cte/NfeParaCte",
+                    "load": true,
+                    "loadingMessage": "Carregando notas fiscais",
+                    "cardinality": "many"
+                }
+            ]
+        },
+        "app_bar": {
+            "pageTitle": "Notas fiscais disponíveis para criar uma CT-e"
+        },
+        "children": [
+            {
+                "type": "div",
+                "children": [
+                    {
+                        "type": "Row",
+                        "props": {
+                            "horizontalAlignment": "space-between",
+                            "verticalAlignment": "center"
+                        },
+                        "children": [
+                            {
+                                "type": "FilterPanel",
+                                "props": {
+                                    "dataRef": "nfes"
+                                }
+                            },
+                            {
+                                "type": "Button",
+                                "props": {
+                                    "buttonType": "primary",
+                                    "onClick": {
+                                        "type": "Navigate",
+                                        "props": {
+                                            "navigateTo": "/new?nfes=nfes.selected"
+                                        }
+                                    }
+                                },
+                                "children": [
+                                    "Selecionar"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "div",
+                        "props": {
+                            "style": {
+                                "height": "2rem"
+                            }
+                        }
+                    },
+                    {
+                        "type": "Row",
+                        "horizontalAlignment": "center",
+                        "props": {
+                            "liClassName": "max-width "
+                        },
+                        "children": [
+                            {
+                                "type": "GenericGrid",
+                                "props": {
+                                    "dataRef": "nfes",
+                                    "style": {
+                                        "maxHeight": "400px"
+                                    },
+                                    "enableColumnSelector": true,
+                                    "resizable": true
+                                },
+                                "children": [
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "sinal",
+                                            "title": "Sinal",
+                                            "cell": "ChipCell"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "emissao",
+                                            "title": "Data de emissão"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "numero",
+                                            "title": "Número"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "serie",
+                                            "title": "Série"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "modelo",
+                                            "title": "Modelo"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "estabelecimento.nomefantasia",
+                                            "title": "Estabelecimento",
+                                            "className": "overflown-column"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "participante.nome",
+                                            "title": "Participante",
+                                            "className": "overflown-column"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "valor",
+                                            "title": "Valor"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "situacao",
+                                            "title": "Situação",
+                                            "cell": "ChipCell"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

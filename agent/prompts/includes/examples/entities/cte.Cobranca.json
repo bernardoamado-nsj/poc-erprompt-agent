@@ -1,0 +1,125 @@
+{
+    "escopo": "cte",
+    "codigo": "Cobranca",
+    "descricao": "Entidade Cobranca do escopo cte",
+    "tenant": 0,
+    "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+    "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+    "created_by": "versionamento@nasajon.com.br",
+    "updated_by": "versionamento@nasajon.com.br",
+    "json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$id": "cte/Cobranca",
+        "type": "object",
+        "required": [
+            "id",
+            "forma_pagamento",
+            "numero_parcelas",
+            "valor"
+        ],
+        "properties": {
+            "id": {
+                "type": "string",
+                "format": "uuid",
+                "pk": true
+            },
+            "forma_pagamento": {
+                "type": "string",
+                "format": "domain",
+                "domainConfig": {
+                    "type": "dynamic",
+                    "valueField": "id",
+                    "labelFields": ["codigo", "descricao"],
+                    "schemaId": "cte/FormaPagamento"
+                }
+            },
+            "numero_parcelas": {
+                "type": "number",
+                "label": "Parcelas"
+            },
+            "valor": {
+                "type": "string",
+                "format": "currency",
+                "label": "Valor"
+            },
+            "parcelas": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/CobrancaParcela" }
+            },
+            "FormaPagamento": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "pk": true
+                    },
+                    "codigo": {
+                        "type": "string"
+                    },
+                    "descricao": {
+                        "type": "string",
+                        "label": "Forma de Pagamento"
+                    },
+                    "tipo": {
+                        "type": "string"
+                    }
+                }
+            },
+            "vencimento": {
+                "type": "string",
+                "label": "Vencimento",
+                "format": "date"
+            }
+        },
+        "components": {
+            "schemas": {
+                "CobrancaParcela": {
+                    "$schema": "http://json-schema.org/draft-07/schema#",
+                    "$id": "cte/CobrancaParcela",
+                    "type": "object",
+                    "required": [
+                        "id",
+                        "numero",
+                        "sequencial",
+                        "valor",
+                        "vencimento",
+                        "competencia",
+                        "percentual"
+                    ],
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pk": true
+                        },
+                        "numero": {
+                            "type": "string"
+                        },
+                        "sequencial": {
+                            "type": "number"
+                        },
+                        "valor": {
+                            "type": "string",
+                            "format": "currency"
+                        },
+                        "vencimento": {
+                            "type": "string",
+                            "format": "date"
+                        },
+                        "competencia": {
+                            "type": "string",
+                            "format": "date"
+                        },
+                        "percentual": {
+                            "type": "string"
+                        },
+                        "intervalo": {
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

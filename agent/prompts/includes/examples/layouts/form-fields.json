@@ -1,0 +1,277 @@
+{
+    "escopo": "cte",
+    "codigo": "create-cte",
+    "descricao": "Layout de criar uma CT-e do escopo cte",
+    "tenant": 0,
+    "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+    "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+    "created_by": "versionamento@nasajon.com.br",
+    "updated_by": "versionamento@nasajon.com.br",
+    "json_schema": {
+        "id": "cte_create-cte",
+        "type": "div",
+        "props": {
+            "style": {
+                "maxWidth": "70rem",
+                "margin": "0 auto"
+            }
+        },
+        "transaction": {
+            "name": "new-cte",
+            "entities": [
+                {
+                    "name": "cte",
+                    "schema": "cte/Cte",
+                    "cardinality": "one",
+                    "load": false,
+                    "create": false
+                },
+                {
+                    "name": "nfes",
+                    "schema": "cte/NfeParaCte",
+                    "load": true,
+                    "create": false,
+                    "loadingMessage": "Carregando os dados das notas fiscais",
+                    "cardinality": "many"
+                },
+                {
+                    "name": "formaspagamentos",
+                    "schema": "cte/FormaPagamento",
+                    "load": false,
+                    "create": false,
+                    "cardinality": "many"
+                },
+                {
+                    "name": "veiculos",
+                    "schema": "cte/Veiculo",
+                    "load": false,
+                    "create": false,
+                    "cardinality": "many"
+                }
+            ]
+        },
+        "children": [
+            {
+                "type": "Row",
+                "props": {
+                    "horizontalAlignment": "space-between",
+                    "verticalAlignment": "center"
+                },
+                "children": [
+                    {
+                        "type": "Row",
+                        "props": {
+                            "horizontalAlignment": "center",
+                            "verticalAlignment": "center"
+                        },
+                        "children": [
+                            {
+                                "type": "h2",
+                                "children": [
+                                    "Nova CT-e "
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Button",
+                        "props": {
+                            "buttonType": "primary",
+                            "onClick": {
+                                "type": "Create",
+                                "props": {
+                                    "entity": "cte",
+                                    "showToast": true,
+                                    "closeOverlay": true,
+                                    "after": {
+                                        "type": "Navigate",
+                                        "props": {
+                                            "navigateTo": "/cte.selected"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "children": [
+                            "Criar CT-e"
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "div",
+                "props": {
+                    "style": {
+                        "height": "1rem"
+                    }
+                }
+            },
+            {
+                "type": "Card",
+                "props": {
+                    "style": {
+                        "height": "fit-content"
+                    }
+                },
+                "children": [
+                    {
+                        "type": "CardTitle",
+                        "props": {
+                            "style": {
+                                "padding": "1rem",
+                                "paddingBottom": "0"
+                            }
+                        },
+                        "children": [
+                            {
+                                "type": "h3",
+                                "children": [
+                                    "Dados gerais"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "CardBody",
+                        "children": [
+                            {
+                                "type": "GenericForm",
+                                "props": {
+                                    "dataRef": "cte",
+                                    "isEdit": true
+                                },
+                                "children": [
+                                    {
+                                        "type": "div",
+                                        "props": {
+                                            "style": {
+                                                "display": "flex",
+                                                "flexDirection": "row",
+                                                "gap": "1rem"
+                                            }
+                                        },
+                                        "children": [
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "numero",
+                                                    "label": "Número"
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "numero_externo",
+                                                    "label": "Número externo"
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "registro_veiculo",
+                                                    "label": "Veículo (código - placa - RNTRC)"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "div",
+                "props": {
+                    "style": {
+                        "height": "2rem"
+                    }
+                }
+            },
+            {
+                "type": "Card",
+                "props": {
+                    "style": {
+                        "height": "fit-content"
+                    }
+                },
+                "children": [
+                    {
+                        "type": "CardTitle",
+                        "props": {
+                            "style": {
+                                "padding": "1rem",
+                                "paddingBottom": "0"
+                            }
+                        },
+                        "children": [
+                            {
+                                "type": "h3",
+                                "children": [
+                                    "Financeiro"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "CardSubtitle",
+                        "props": {
+                            "style": {
+                                "padding": "1rem",
+                                "paddingBottom": "0"
+                            }
+                        },
+                        "children": [
+                            {
+                                "type": "p",
+                                "children": [
+                                    "Por enquanto o sistema trabalha apenas com 1 parcela"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "CardBody",
+                        "children": [
+                            {
+                                "type": "GenericForm",
+                                "props": {
+                                    "dataRef": "cte",
+                                    "isEdit": true
+                                },
+                                "children": [
+                                    {
+                                        "type": "div",
+                                        "props": {
+                                            "style": {
+                                                "display": "flex",
+                                                "flexDirection": "row",
+                                                "gap": "1rem"
+                                            }
+                                        },
+                                        "children": [
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "forma_pagamento",
+                                                    "label": "Forma de pagamento"
+                                                }
+                                            },
+                                            {
+                                                "type": "Field",
+                                                "props": {
+                                                    "field": "valor",
+                                                    "label": "Valor"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

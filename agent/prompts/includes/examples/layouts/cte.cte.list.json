@@ -1,0 +1,204 @@
+{
+    "escopo": "cte",
+    "codigo": "cte.list",
+    "descricao": "Layout de listagem padronizada de CT-es",
+    "tenant": 0,
+    "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+    "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+    "created_by": "versionamento@nasajon.com.br",
+    "updated_by": "versionamento@nasajon.com.br",
+    "resumo_prompt_origem": "Crie uma tela para o escopo de 'cte', com o código 'cte.list' e a descrição 'Layout de listagem padronizada de CT-es'. A tela deve exibir um título 'CT-e' no topo, alinhado à esquerda, e um botão 'Criar CT-e' alinhado à direita. Ao clicar nesse botão, deve abrir um modal com o título 'Notas fiscais eletrônicas disponíveis', subtítulo 'Escolha uma das notas disponíveis para gerar a CT-e' e um botão 'Selecionar' que navega para a tela 'list-notas'. Ao dar duplo clique em uma linha da tabela, deve navegar para a tela de visualizar e editar uma CT-e.",
+    "json_schema": {
+        "id": "cte_cte_list",
+        "type": "div",
+        "transaction": {
+            "name": "cte",
+            "entities": [
+                {
+                    "name": "cte",
+                    "schema": "cte/Cte",
+                    "load": true,
+                    "loadingMessage": "Carregando a listagem de CT-e",
+                    "cardinality": "many"
+                }
+            ]
+        },
+        "app_bar": {
+            "pageTitle": "Notas"
+        },
+        "children": [
+            {
+                "type": "div",
+                "children": [
+                    {
+                        "type": "Row",
+                        "props": {
+                            "horizontalAlignment": "space-between",
+                            "verticalAlignment": "center"
+                        },
+                        "children": [
+                            {
+                                "type": "FilterPanel",
+                                "props": {
+                                    "dataRef": "cte"
+                                }
+                            },
+                            {
+                                "type": "Button",
+                                "props": {
+                                    "buttonType": "primary",
+                                    "onClick": {
+                                        "type": "Navigate",
+                                        "props": {
+                                            "navigateTo": "/nfes-para-cte"
+                                        }
+                                    },
+                                    "style": {
+                                        "height": "32px"
+                                    }
+                                },
+                                "children": [
+                                    "Criar CT-e"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "div",
+                        "props": {
+                            "style": {
+                                "height": "32px"
+                            }
+                        }
+                    },
+                    {
+                        "type": "Row",
+                        "horizontalAlignment": "center",
+                        "props": {
+                            "liClassName": "max-width "
+                        },
+                        "children": [
+                            {
+                                "type": "Browser",
+                                "props": {
+                                    "dataRef": "cte",
+                                    "taskBoardProps": {},
+                                    "gridProps": {
+                                        "resizable": true,
+                                        "enableColumnSelector": true,
+                                        "rowActions": {
+                                            "details": {
+                                                "navigateTo": "/cte.details"
+                                            },
+                                            "edit": {
+                                                "navigateTo": "/cte.edit",
+                                                "stateProp": "situacao",
+                                                "availableStates": ["aberto", "rejeitado"] 
+                                            },
+                                            "customRowActions": [
+                                                {
+                                                    "label": "Excluir",
+                                                    "action": {
+                                                        "type": "Delete",
+                                                        "props": {
+                                                            "confirmMessage": "Tem certeza que deseja excluir este CT-e?",
+                                                            "stateProp": "situacao",
+                                                            "availableStates": ["aberto", "rejeitado"]
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                },
+                                "children": [
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "sinal",
+                                            "title": "Sinal",
+                                            "cell": "ChipCell"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "emissao",
+                                            "title": "Data de emissão"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "numero",
+                                            "title": "Número"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "serie",
+                                            "title": "Série"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "estabelecimento_dados.nome",
+                                            "title": "Estabelecimento",
+                                            "className": " overflown-column ",
+                                            "cell": "TooltipCell"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "tomador_dados.nome",
+                                            "title": "Tomador",
+                                            "className": " overflown-column ",
+                                            "cell": "TooltipCell"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "municipio_origem",
+                                            "title": "Origem",
+                                            "className": " overflown-column ",
+                                            "cell": "TooltipCell"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "municipio_destino",
+                                            "title": "Destino",
+                                            "className": " overflown-column ",
+                                            "cell": "TooltipCell"
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "valor",
+                                            "title": "Valor",
+                                            "editable": false
+                                        }
+                                    },
+                                    {
+                                        "type": "GridColumn",
+                                        "props": {
+                                            "field": "situacao",
+                                            "title": "Situação",
+                                            "cell": "ChipCell"
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

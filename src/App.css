@@ -1,0 +1,16 @@
+.overflown-column {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.k-grid.grid-custom-header {
+    min-height: 400px;
+}
+
+/*
+.k-grid-table td .action-cell-container .action-btn:first-child,
+.k-grid-table td .action-cell-container .action-btn:nth-child(2) {
+    display: none;
+}
+*/
