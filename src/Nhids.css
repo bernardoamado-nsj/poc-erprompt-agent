@@ -239,6 +239,27 @@ button {
   font-weight: normal;
 }
 
+/* ============================= */
+/* ====== Telas layout fix ===== */
+/* ============================= */
+
+/* Reduce excessive spacing between tabs and first card */
+.user-interaction .k-tabstrip-content,
+.user-interaction .k-tabstrip .k-content {
+  padding-top: 0.25rem !important;
+}
+
+/* Tighter card paddings inside the left column */
+.user-interaction .k-card-body {
+  padding-top: 0.75rem !important;
+}
+
+/* Ensure no accidental top margins create gaps */
+.user-interaction .k-card,
+.user-interaction .k-card .k-card-title {
+  margin-top: 0 !important;
+}
+
 .search-container {
   width: 100%;
   max-width: 40rem;
