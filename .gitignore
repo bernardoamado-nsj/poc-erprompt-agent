@@ -44,5 +44,4 @@ tsconfig.tsbuildinfo
 agent/out/
 agent/telas-exemplo/
 agent/prompts/jsons_gerados/
-agent/prompts/entity_compilado.txt
-agent/prompts/layout_compilado.txt
+agent/prompts/*_compilado.txt
