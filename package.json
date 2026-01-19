@@ -22,7 +22,8 @@
     "gen:json": "node ./agent/call-openai-api.mjs ./agent/prompts/prompt_compilado.txt ./agent/out/result.json",
     "gen:layout": "node ./agent/call-openai-api.mjs ./agent/prompts/layout_compilado.txt ./agent/out/layout.json",
     "gen:entity": "node ./agent/call-openai-api.mjs ./agent/prompts/entity_compilado.txt ./agent/out/entity.json",
-    "call:planner": "node ./agent/call-openai-planner.mjs ./agent/prompts/planner_compilado.txt ./agent/schemas/planner.schema.json ./agent/out/planner.json"
+    "call:planner": "node ./agent/call-openai-planner.mjs ./agent/prompts/planner_compilado.txt ./agent/schemas/planner.schema.json ./agent/out/planner.json",
+    "agent:serve": "node server/server3.cjs"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",

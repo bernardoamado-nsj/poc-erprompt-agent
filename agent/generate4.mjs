@@ -254,7 +254,7 @@ async function main() {
 
   const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "erprompt-poc-"));
 
-  const runId = makeRunId();
+  const runId = process.env.RUN_ID || makeRunId();
 
   // Pasta base: cfg.outDir (ex.: <CWD>/generated)
   // Pasta do run: <outDir>/runs/<runId>

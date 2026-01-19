@@ -9839,6 +9839,30 @@
       "escopo": "fiscal",
       "codigo": "list-notas-fiscais",
       "descricao": "Listagem de notas fiscais"
+    },
+    {
+      "id": "financeiro.list-titulos-pagamento",
+      "escopo": "financeiro",
+      "codigo": "list-titulos-pagamento",
+      "descricao": "Listagem de títulos de pagamento",
+      "runId": "run_20260119_150046_d83c73",
+      "updatedAt": "2026-01-19T15:01:51.202Z"
+    },
+    {
+      "id": "financeiro.edit-titulo-pagamento",
+      "escopo": "financeiro",
+      "codigo": "edit-titulo-pagamento",
+      "descricao": "Cadastro/Edição de título de pagamento",
+      "runId": "run_20260119_150046_d83c73",
+      "updatedAt": "2026-01-19T15:01:51.208Z"
+    },
+    {
+      "id": "financeiro.detail-titulo-pagamento",
+      "escopo": "financeiro",
+      "codigo": "detail-titulo-pagamento",
+      "descricao": "Detalhe de título de pagamento",
+      "runId": "run_20260119_150046_d83c73",
+      "updatedAt": "2026-01-19T15:01:51.211Z"
     }
   ]
 }
