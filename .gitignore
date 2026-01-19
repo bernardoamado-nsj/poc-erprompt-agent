@@ -45,3 +45,4 @@ agent/out/
 agent/telas-exemplo/
 agent/prompts/jsons_gerados/
 agent/prompts/*_compilado.txt
+generated/

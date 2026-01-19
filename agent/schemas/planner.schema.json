@@ -133,6 +133,29 @@
         }
       }
     },
+
+    "plannerOpenQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["question", "blocking", "default_assumption"],
+      "properties": {
+        "question": {
+          "type": "string",
+          "description": "Question for the user that affects modeling/layout materially.",
+          "minLength": 1
+        },
+        "blocking": {
+          "type": "boolean",
+          "description": "If true, the runner should interrupt generation and request an answer (unless it explicitly applies default_assumption)."
+        },
+        "default_assumption": {
+          "type": "string",
+          "description": "Operational fallback if the user does not answer. Use empty string only when truly non-applicable.",
+          "default": ""
+        }
+      }
+    },
+
     "plannerDecisions": {
       "type": "object",
       "additionalProperties": false,
@@ -146,8 +169,8 @@
         },
         "open_questions": {
           "type": "array",
-          "description": "Questions that remain open; should be listed even if the planner proceeds with assumptions.",
-          "items": { "type": "string", "minLength": 1 },
+          "description": "Questions that remain open; should be listed even if the planner proceeds with assumptions. Use blocking=true for questions that must be answered to proceed.",
+          "items": { "$ref": "#/definitions/plannerOpenQuestion" },
           "default": []
         }
       }
