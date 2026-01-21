@@ -608,6 +608,16 @@ async function main() {
 
       /////////////////////////////////////////
 
+      // Salvar o prompt compilado do layout (para debug/auditoria), similar ao planner_prompt_compiled.md
+      const layoutPromptCompiledPath = path.join(
+        runDir,
+        "layouts",
+        escopo,
+        `${codigo}.prompt_compiled.md`
+      );
+      await fs.mkdir(path.dirname(layoutPromptCompiledPath), { recursive: true }).catch(() => {});
+      await fs.writeFile(layoutPromptCompiledPath, layoutPrompt, "utf8");
+
       const outPath = layoutPath(runDir, escopo, codigo);
 
       const layTimed = await timed(`layout:${escopo}/${codigo}`, async () => {
