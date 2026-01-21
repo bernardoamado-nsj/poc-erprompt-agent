@@ -15,9 +15,9 @@ import ptDateFields from 'cldr-dates-full/main/pt/dateFields.json';
 import { IntlProvider, load } from '@progress/kendo-react-intl';
 import { ToastRenderer } from '@nasajon/erprompt-lib';
 import { ToastContainer } from 'react-toastify';
-//import '@nasajon/erprompt-lib/erprompt-lib.css';
-//import '@nasajon/erprompt-launcher-lib/erprompt-launcher-lib.css';
-//import '@nasajon/erprompt-login-lib/erprompt-login-lib.css';
+import '@nasajon/erprompt-lib/erprompt-lib.css';
+import '@nasajon/erprompt-launcher-lib/erprompt-launcher-lib.css';
+import '@nasajon/erprompt-login-lib/erprompt-login-lib.css';
 import './Nhids.css';
 
 load(likelySubtags, currencyData, weekData, ptLocalCurrency, ptNumbers, ptCaGregorian, ptDateFields);

@@ -37,7 +37,7 @@ export function Telas(erpromptConfig: ERPromptConfig) {
 
   const pagesDropdownData: GeneratedPageDropdownItem[] = pages.map((page) => ({
     ...page,
-    text: `${page.id} - ${page.descricao}`
+    text: page.descricao
   }));
 
   const sendPrompt = () => {

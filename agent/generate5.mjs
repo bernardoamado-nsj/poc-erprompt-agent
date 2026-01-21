@@ -301,19 +301,19 @@ async function generateMockData({runDir, mockSchema, escopo, codigo, entityJsonP
     // ignore
   }
 
+  const qtd = 10;
   const schemaId = `${escopo}/${codigo}`;
   const entityJsonText = await fs.readFile(entityJsonPath, "utf8");
 
   // prompt inline do mock generator
   const mockPrompt =
     `Você é um gerador de dados MOCK para json-server.\n` +
-    `Gere um dataset de ${20} registros para a entidade ${schemaId}.\n\n` +
+    `Gere um dataset de ${qtd} registros para a entidade ${schemaId}.\n\n` +
     `REGRAS:\n` +
     `- Saída deve ser APENAS JSON válido no formato exigido.\n` +
     `- "schema" deve ser "${schemaId}".\n` +
     `- "resource" deve ser "${resource}".\n` +
-    `- "count" deve ser ${20}.\n` +
-    `- Gere "items" com exatamente ${20} objetos.\n` +
+    `- Gere "items" com exatamente ${10} objetos.\n` +
     `- Respeite json_schema.required e tipos em json_schema.properties.\n` +
     `- Para fields com format "uuid": gere UUID v4.\n` +
     `- Para format "date": use YYYY-MM-DD.\n` +

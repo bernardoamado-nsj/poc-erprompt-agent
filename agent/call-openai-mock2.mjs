@@ -12,9 +12,9 @@ function validateMockPayload(obj) {
 
   if (!schema || typeof schema !== "string") throw new Error("Mock inválido: 'schema' ausente ou inválido.");
   if (!resource || typeof resource !== "string") throw new Error("Mock inválido: 'resource' ausente ou inválido.");
-  if (!Number.isInteger(count) || count < 1) throw new Error("Mock inválido: 'count' ausente ou inválido.");
+  //if (!Number.isInteger(count) || count < 1) throw new Error("Mock inválido: 'count' ausente ou inválido.");
   if (!Array.isArray(items)) throw new Error("Mock inválido: 'items' não é array.");
-  if (items.length !== count) throw new Error(`Mock inválido: items.length (${items.length}) != count (${count}).`);
+  //if (items.length !== count) throw new Error(`Mock inválido: items.length (${items.length}) != count (${count}).`);
 
   for (let i = 0; i < items.length; i++) {
     const it = items[i];
