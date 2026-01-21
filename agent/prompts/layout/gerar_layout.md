@@ -10,6 +10,10 @@ Crie um layout em JSON seguindo estritamente o JSON Schema abaixo.
 
 ---
 
+@include $layout_identity_envelope
+
+---
+
 Especificação funcional da tela a ser gerada:
 
 @include $spec

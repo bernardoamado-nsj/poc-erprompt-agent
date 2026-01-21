@@ -92,7 +92,11 @@ function getConfig() {
       layout_examples: resolveFromAgentDir(
         process.env.LAYOUT_EXAMPLES ||
           "prompts/includes/exemplos_canonicos_layouts.md"
-      )
+      ),
+      layout_identity_envelope: resolveFromAgentDir(
+        process.env.LAYOUT_IDENTITY_ENVELOPE ||
+          "prompts/includes/layout_identity_envelope.md"
+      ),
     },
 
     // rootDir deve apontar para o "agent/" para o seu render-template resolver includes corretamente
@@ -574,11 +578,35 @@ async function main() {
 
       const specPath = await writeTempFile(tmpDir, `spec_layout_${escopo}_${codigo}.md`, specFinal);
 
-      const layoutPrompt = compileTemplate(
-        cfg.layoutTemplate,
-        { ...cfg.layoutIncludes, spec: specPath },
-        cfg.rootDir
-      );
+      //const layoutPrompt = compileTemplate(
+      //  cfg.layoutTemplate,
+      //  { ...cfg.layoutIncludes, spec: specPath },
+      //  cfg.rootDir
+      //);
+
+
+      /////////////////////////////////////////
+
+      // sempre
+      const envelopePath = cfg.layoutIncludes.layout_identity_envelope; 
+      // ex: prompts/includes/layout_identity_envelope.md
+
+      const includes = {
+        ...cfg.layoutIncludes,
+        spec: specPath,
+        layout_identity_envelope: envelopePath
+      };
+
+      // só no pipeline (tem escopo/codigo definidos)
+      const scopePath = await writeTempFile(tmpDir, `layout_scope_${escopo}_${codigo}.txt`, escopo);
+      const codePath  = await writeTempFile(tmpDir, `layout_code_${escopo}_${codigo}.txt`, codigo);
+
+      includes.layout_scope = scopePath;
+      includes.layout_code  = codePath;
+
+      const layoutPrompt = compileTemplate(cfg.layoutTemplate, includes, cfg.rootDir);
+
+      /////////////////////////////////////////
 
       const outPath = layoutPath(runDir, escopo, codigo);
 
@@ -595,6 +623,15 @@ async function main() {
       });
 
       console.log(`Tempo layout ${escopo}/${codigo}: ${msToHuman(layTimed.ms)}`);
+
+      const layoutJson = JSON.parse(await fs.readFile(outPath, "utf8"));
+      if (layoutJson.escopo !== escopo || layoutJson.codigo !== codigo) {
+        throw new Error(
+          `Layout gerado com escopo/codigo divergentes. ` +
+          `Esperado ${escopo}/${codigo}, recebido ${layoutJson.escopo}/${layoutJson.codigo}. ` +
+          `Arquivo: ${outPath}`
+        );
+      }
 
       if (!layTimed.ok) {
         console.error("Falha ao gerar layout:", layTimed.error?.message || layTimed.error);
