@@ -13,13 +13,13 @@ export default defineConfig({
   build: {
     sourcemap: true,
   },
-  resolve: {
+  /*resolve: {
     alias: {
       '@nasajon/erprompt-lib': path.resolve(__dirname, '../../packages/erprompt-lib/src'),
       '@nasajon/erprompt-login-lib': path.resolve(__dirname, '../../packages/erprompt-login-lib/src'),
       '@nasajon/erprompt-launcher-lib': path.resolve(__dirname, '../../packages/erprompt-launcher-lib/src'),
     },
-  },
+  },*/
   server: {
     fs: {
       allow: [

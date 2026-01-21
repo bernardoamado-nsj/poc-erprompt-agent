@@ -48,7 +48,7 @@ function getConfig() {
 
   return {
     plannerTemplate: resolveFromAgentDir(
-      process.env.PLANNER_TEMPLATE || "prompts/planner/gerar_planner5.md"
+      process.env.PLANNER_TEMPLATE || "prompts/planner/gerar_planner7.md"
     ),
     entityTemplate: resolveFromAgentDir(
       process.env.ENTITY_TEMPLATE || "prompts/entity/gerar_entidade_full_agent_prompt.md"
