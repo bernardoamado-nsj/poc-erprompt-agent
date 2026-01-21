@@ -9831,6 +9831,27 @@
       "codigo": "NotaFiscal",
       "schema": "fiscal/NotaFiscal",
       "endpoint": "http://localhost:4000/notas"
+    },
+    {
+      "id": "vendas.Cliente",
+      "escopo": "vendas",
+      "codigo": "Cliente",
+      "schema": "vendas/Cliente",
+      "endpoint": "http://localhost:4000/clientes"
+    },
+    {
+      "id": "vendas.PedidoVenda",
+      "escopo": "vendas",
+      "codigo": "PedidoVenda",
+      "schema": "vendas/PedidoVenda",
+      "endpoint": "http://localhost:4000/pedido-vendas"
+    },
+    {
+      "id": "vendas.PedidoVendaItem",
+      "escopo": "vendas",
+      "codigo": "PedidoVendaItem",
+      "schema": "vendas/PedidoVendaItem",
+      "endpoint": "http://localhost:4000/pedido-venda-items"
     }
   ],
   "generated-pages": [
@@ -9863,6 +9884,840 @@
       "descricao": "Detalhe de título de pagamento",
       "runId": "run_20260119_150046_d83c73",
       "updatedAt": "2026-01-19T15:01:51.211Z"
+    },
+    {
+      "id": "vendas.list-pedidos-venda",
+      "escopo": "vendas",
+      "codigo": "list-pedidos-venda",
+      "descricao": "Listagem de pedidos de venda (sem itens).",
+      "runId": "run_20260121_103055_35fe8e",
+      "updatedAt": "2026-01-21T10:32:23.678Z"
+    },
+    {
+      "id": "vendas.edit-pedido-venda",
+      "escopo": "vendas",
+      "codigo": "edit-pedido-venda",
+      "descricao": "Cadastro/Edição de pedido de venda.",
+      "runId": "run_20260121_103055_35fe8e",
+      "updatedAt": "2026-01-21T10:32:23.682Z"
+    },
+    {
+      "id": "vendas.detail-pedido-venda",
+      "escopo": "vendas",
+      "codigo": "detail-pedido-venda",
+      "descricao": "Detalhe do pedido de venda com itens.",
+      "runId": "run_20260121_103055_35fe8e",
+      "updatedAt": "2026-01-21T10:32:23.685Z"
+    }
+  ],
+  "clientes": [
+    {
+      "id": "9c0d1b63-7b61-4b42-9db4-6e12b8dcb89a",
+      "nome": "Alfa Comércio de Alimentos Ltda."
+    },
+    {
+      "id": "1f5a8d1b-c2f6-4a8c-86a5-6b3d9d2d4d14",
+      "nome": "Beta Serviços e Consultoria S.A."
+    },
+    {
+      "id": "6d7a0f2c-4a58-4c1a-8b3d-8f7b6b3b9e2c",
+      "nome": "Gamma Transportes e Logística ME"
+    },
+    {
+      "id": "c3f0b2a8-1f09-4f0d-86a6-5c2d7e4c1b3a",
+      "nome": "Delta Indústria Têxtil Ltda."
+    },
+    {
+      "id": "a7b2c1d4-3e5f-4a6b-9c7d-1e2f3a4b5c6d",
+      "nome": "Epsilon Tecnologia e Inovação Ltda."
+    },
+    {
+      "id": "2b6f9c1d-8a2e-4f7c-9b3a-0d1e2f3a4b5c",
+      "nome": "Zeta Materiais de Construção Ltda."
+    },
+    {
+      "id": "4e1d2c3b-5a6f-4b7c-8d9e-0f1a2b3c4d5e",
+      "nome": "Eta Farmacêutica e Perfumaria Ltda."
+    },
+    {
+      "id": "7a9b1c2d-3e4f-4a5b-8c6d-1e2f3a4b5c6d",
+      "nome": "Theta Papelaria e Suprimentos Ltda."
+    },
+    {
+      "id": "0f1e2d3c-4b5a-4c6d-8e7f-9a0b1c2d3e4f",
+      "nome": "Iota Energia Renovável S.A."
+    },
+    {
+      "id": "8c7d6e5f-4a3b-4c2d-9e1f-0a9b8c7d6e5f",
+      "nome": "Kappa Agricultura e Pecuária Ltda."
+    },
+    {
+      "id": "3d2c1b0a-9f8e-4d7c-8b6a-5e4f3d2c1b0a",
+      "nome": "Lambda Comércio Varejista Ltda."
+    },
+    {
+      "id": "5b6c7d8e-1f2a-4b3c-9d0e-1a2b3c4d5e6f",
+      "nome": "Mu Importação e Exportação S.A."
+    },
+    {
+      "id": "1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d",
+      "nome": "Nuñez & Filhos Distribuidora Ltda."
+    },
+    {
+      "id": "9e8d7c6b-5a4f-4c3d-8b2a-1f0e9d8c7b6a",
+      "nome": "Ômega Equipamentos Industriais Ltda."
+    },
+    {
+      "id": "2c3d4e5f-6a7b-4c8d-9e0f-1a2b3c4d5e6a",
+      "nome": "Pi Hotelaria e Turismo Ltda."
+    },
+    {
+      "id": "6f5e4d3c-2b1a-4c0d-9e8f-7a6b5c4d3e2f",
+      "nome": "Rho Segurança e Monitoramento Ltda."
+    },
+    {
+      "id": "0a1b2c3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d",
+      "nome": "Sigma Educação e Treinamentos S.A."
+    },
+    {
+      "id": "b1c2d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e",
+      "nome": "Tau Saúde e Bem-Estar Ltda."
+    },
+    {
+      "id": "d4e5f6a7-b8c9-4d0e-8f1a-2b3c4d5e6f7a",
+      "nome": "Upsilon Telecomunicações Ltda."
+    },
+    {
+      "id": "f7a6b5c4-d3e2-4f1a-8b0c-9d8e7f6a5b4c",
+      "nome": "Phi Comunicação Visual Ltda."
+    }
+  ],
+  "pedido-vendas": [
+    {
+      "id": "d2c4c7ff-e79a-4e32-bcde-8f7e1a0a5d7b",
+      "numero": "PV-2026-0001",
+      "dataCriacao": "2026-01-02T09:15:00Z",
+      "situacao": "aberto",
+      "valorTotal": "478.50",
+      "valorDesconto": "20.00",
+      "cliente": {
+        "id": "f6cf5cdb-2b43-48b6-a7f4-9d83c8c73d31",
+        "codigo": "CLI-0001",
+        "nome": "Alpha Comércio Ltda"
+      },
+      "itens": [
+        {
+          "id": "2f7b4c2c-2b86-4a6b-9c09-3a3c5f1b6aa4",
+          "sequencial": 1,
+          "produto": {
+            "id": "f3c7c44b-4d9a-48e1-9eab-97e6a5b6ad2b",
+            "codigo": "PRD-001",
+            "descricao": "Mouse Óptico USB"
+          },
+          "quantidade": 3,
+          "valorUnitario": "79.50",
+          "valorTotalItem": "238.50"
+        },
+        {
+          "id": "6cde9f6b-6c1d-4c8e-8ab7-3e9c5d2f8c17",
+          "sequencial": 2,
+          "produto": {
+            "id": "0c6a2f52-9a7f-44a0-87cf-9f3c7a4f8c64",
+            "codigo": "PRD-002",
+            "descricao": "Teclado ABNT2"
+          },
+          "quantidade": 2,
+          "valorUnitario": "120.00",
+          "valorTotalItem": "240.00"
+        }
+      ]
+    },
+    {
+      "id": "6a8a7b2c-8ef3-4b06-9d2e-4c5e46ed9b1c",
+      "numero": "PV-2026-0002",
+      "dataCriacao": "2026-01-03T10:20:00Z",
+      "situacao": "faturado",
+      "valorTotal": "950.00",
+      "valorDesconto": "50.00",
+      "cliente": {
+        "id": "f0fdfb52-6a25-4d0b-8c39-0db7b8d4302c",
+        "codigo": "CLI-0002",
+        "nome": "Beta Serviços S.A."
+      },
+      "itens": [
+        {
+          "id": "3f7d0ac5-1f2d-4e6d-bb5b-4b1c8c3a4c92",
+          "sequencial": 1,
+          "produto": {
+            "id": "d53e0df2-ffcb-4a67-9bd2-4efc1e2c0cbe",
+            "codigo": "PRD-003",
+            "descricao": "Monitor 24\""
+          },
+          "quantidade": 1,
+          "valorUnitario": "950.00",
+          "valorTotalItem": "950.00"
+        }
+      ]
+    },
+    {
+      "id": "0d4d9c9f-6b7b-4d2b-a4a5-9b5b3b8c3b0f",
+      "numero": "PV-2026-0003",
+      "dataCriacao": "2026-01-04T11:05:00Z",
+      "situacao": "cancelado",
+      "valorTotal": "0.00",
+      "valorDesconto": "0.00",
+      "cliente": {
+        "id": "b4012b6c-95a0-4d79-8f5e-c9f4b0d5b2d1",
+        "codigo": "CLI-0003",
+        "nome": "Gamma Indústria ME"
+      },
+      "itens": [
+        {
+          "id": "a8f1eaa4-04e7-4f74-8a7a-18df6d8d0a5b",
+          "sequencial": 1,
+          "produto": {
+            "id": "2fd0e0ff-52e2-4a31-a73c-0a52f8e1b7b6",
+            "codigo": "PRD-004",
+            "descricao": "Cabo HDMI 2m"
+          },
+          "quantidade": 5,
+          "valorUnitario": "25.00",
+          "valorTotalItem": "125.00"
+        }
+      ]
+    },
+    {
+      "id": "3b1a8c72-6aaf-4b8f-9a7c-0c8b41f7d6b0",
+      "numero": "PV-2026-0004",
+      "dataCriacao": "2026-01-05T08:40:00Z",
+      "situacao": "aberto",
+      "valorTotal": "320.00",
+      "valorDesconto": "0.00",
+      "cliente": {
+        "id": "aa0c1c8f-9b5d-4b6f-b4a1-2c1b7d2e3f44",
+        "codigo": "CLI-0004",
+        "nome": "Delta Atacado Ltda"
+      },
+      "itens": [
+        {
+          "id": "b9f3a2a4-2c2a-4d7f-9d12-1a3b5c7d9e01",
+          "sequencial": 1,
+          "produto": {
+            "id": "8d88d6a6-5a52-43c8-9a2b-6d9d7b6a9c2a",
+            "codigo": "PRD-005",
+            "descricao": "Headset"
+          },
+          "quantidade": 4,
+          "valorUnitario": "80.00",
+          "valorTotalItem": "320.00"
+        }
+      ]
+    },
+    {
+      "id": "9a2a1e52-0fbb-4d65-a19a-4a9b6f6f6f7c",
+      "numero": "PV-2026-0005",
+      "dataCriacao": "2026-01-06T14:10:00Z",
+      "situacao": "faturado",
+      "valorTotal": "1249.90",
+      "valorDesconto": "100.00",
+      "cliente": {
+        "id": "0e0f2c4a-3a73-4d8f-8a4f-0f5d2c9b8c5e",
+        "codigo": "CLI-0005",
+        "nome": "Epsilon Tecnologia Ltda"
+      },
+      "itens": [
+        {
+          "id": "c2e7e1b3-5b62-47c0-bc3a-3fb2d2f2f9cf",
+          "sequencial": 1,
+          "produto": {
+            "id": "c5a2a9d9-1df1-4c3f-ae64-8f2d1b4c7e90",
+            "codigo": "PRD-006",
+            "descricao": "SSD 1TB"
+          },
+          "quantidade": 1,
+          "valorUnitario": "549.90",
+          "valorTotalItem": "549.90"
+        },
+        {
+          "id": "f0c7c20a-2d58-4b83-a9d4-8c0c7f9b3d10",
+          "sequencial": 2,
+          "produto": {
+            "id": "f8f3b6de-7f4c-4a9c-9f4b-8b5c3a2d1e0f",
+            "codigo": "PRD-007",
+            "descricao": "Memória RAM 16GB"
+          },
+          "quantidade": 2,
+          "valorUnitario": "350.00",
+          "valorTotalItem": "700.00"
+        }
+      ]
+    },
+    {
+      "id": "1f0a3b2c-7e1c-4d36-9c2d-1e4f5a6b7c8d",
+      "numero": "PV-2026-0006",
+      "dataCriacao": "2026-01-07T16:30:00Z",
+      "situacao": "aberto",
+      "valorTotal": "180.00",
+      "valorDesconto": "10.00",
+      "cliente": {
+        "id": "c4b0f8c6-2d1b-4a9e-9c0b-5e3f1a2b4c6d",
+        "codigo": "CLI-0006",
+        "nome": "Zeta Consultoria"
+      },
+      "itens": [
+        {
+          "id": "e1a2b3c4-5d6e-4f70-8a9b-0c1d2e3f4a5b",
+          "sequencial": 1,
+          "produto": {
+            "id": "1a2b3c4d-5e6f-47a8-9b0c-1d2e3f4a5b6c",
+            "codigo": "PRD-008",
+            "descricao": "Webcam Full HD"
+          },
+          "quantidade": 2,
+          "valorUnitario": "90.00",
+          "valorTotalItem": "180.00"
+        }
+      ]
+    },
+    {
+      "id": "7b6c5d4e-3f2a-4b1c-9d8e-7f6a5b4c3d2e",
+      "numero": "PV-2026-0007",
+      "dataCriacao": "2026-01-08T09:00:00Z",
+      "situacao": "faturado",
+      "valorTotal": "610.00",
+      "valorDesconto": "0.00",
+      "cliente": {
+        "id": "d1c2b3a4-5e6f-4a7b-8c9d-0e1f2a3b4c5d",
+        "codigo": "CLI-0007",
+        "nome": "Eta Logística S.A."
+      },
+      "itens": [
+        {
+          "id": "0a1b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c5e",
+          "sequencial": 1,
+          "produto": {
+            "id": "9f8e7d6c-5b4a-49c3-8d2e-1f0a9b8c7d6e",
+            "codigo": "PRD-009",
+            "descricao": "Impressora Térmica"
+          },
+          "quantidade": 1,
+          "valorUnitario": "610.00",
+          "valorTotalItem": "610.00"
+        }
+      ]
+    },
+    {
+      "id": "2c3d4e5f-6071-4a82-93a4-b5c6d7e8f9a0",
+      "numero": "PV-2026-0008",
+      "dataCriacao": "2026-01-09T13:45:00Z",
+      "situacao": "aberto",
+      "valorTotal": "75.00",
+      "valorDesconto": "5.00",
+      "cliente": {
+        "id": "3a4b5c6d-7e8f-4a90-b1c2-d3e4f5a6b7c8",
+        "codigo": "CLI-0008",
+        "nome": "Theta Papelaria"
+      },
+      "itens": [
+        {
+          "id": "4b5c6d7e-8f90-4a12-b3c4-d5e6f7a8b9c0",
+          "sequencial": 1,
+          "produto": {
+            "id": "5c6d7e8f-9012-4a34-b5c6-d7e8f9a0b1c2",
+            "codigo": "PRD-010",
+            "descricao": "Pen Drive 64GB"
+          },
+          "quantidade": 1,
+          "valorUnitario": "75.00",
+          "valorTotalItem": "75.00"
+        }
+      ]
+    },
+    {
+      "id": "8c7d6e5f-4a3b-4c2d-9e0f-1a2b3c4d5e6f",
+      "numero": "PV-2026-0009",
+      "dataCriacao": "2026-01-10T17:10:00Z",
+      "situacao": "cancelado",
+      "valorTotal": "0.00",
+      "valorDesconto": "0.00",
+      "cliente": {
+        "id": "6d7e8f90-1234-4a56-b7c8-d9e0f1a2b3c4",
+        "codigo": "CLI-0009",
+        "nome": "Iota Construções"
+      },
+      "itens": [
+        {
+          "id": "7e8f9012-3456-4a78-b9c0-d1e2f3a4b5c6",
+          "sequencial": 1,
+          "produto": {
+            "id": "8f901234-5678-4a90-b1c2-d3e4f5a6b7c9",
+            "codigo": "PRD-011",
+            "descricao": "Roteador Wi-Fi 6"
+          },
+          "quantidade": 1,
+          "valorUnitario": "399.00",
+          "valorTotalItem": "399.00"
+        }
+      ]
+    },
+    {
+      "id": "5a1c2d3e-4f50-4a61-8b72-9c83ad94be05",
+      "numero": "PV-2026-0010",
+      "dataCriacao": "2026-01-11T09:35:00Z",
+      "situacao": "faturado",
+      "valorTotal": "149.90",
+      "valorDesconto": "0.00",
+      "cliente": {
+        "id": "9a0b1c2d-3e4f-4a50-b6c7-d8e9f0a1b2c3",
+        "codigo": "CLI-0010",
+        "nome": "Kappa Restaurante"
+      },
+      "itens": [
+        {
+          "id": "a1b2c3d4-e5f6-4a07-b8c9-d0e1f2a3b4c5",
+          "sequencial": 1,
+          "produto": {
+            "id": "b2c3d4e5-f6a7-4b18-c9d0-e1f2a3b4c5d6",
+            "codigo": "PRD-012",
+            "descricao": "Leitor de Código de Barras"
+          },
+          "quantidade": 1,
+          "valorUnitario": "149.90",
+          "valorTotalItem": "149.90"
+        }
+      ]
+    },
+    {
+      "id": "0b9a8c7d-6e5f-4a3b-9c2d-1e0f9a8b7c6d",
+      "numero": "PV-2026-0011",
+      "dataCriacao": "2026-01-12T12:00:00Z",
+      "situacao": "aberto",
+      "valorTotal": "860.00",
+      "valorDesconto": "60.00",
+      "cliente": {
+        "id": "c3d4e5f6-a7b8-4c29-d0e1-f2a3b4c5d6e7",
+        "codigo": "CLI-0011",
+        "nome": "Lambda Educação"
+      },
+      "itens": [
+        {
+          "id": "d4e5f6a7-b8c9-4d3a-e1f2-a3b4c5d6e7f8",
+          "sequencial": 1,
+          "produto": {
+            "id": "e5f6a7b8-c9d0-4e4b-f2a3-b4c5d6e7f809",
+            "codigo": "PRD-013",
+            "descricao": "Tablet 10\""
+          },
+          "quantidade": 2,
+          "valorUnitario": "430.00",
+          "valorTotalItem": "860.00"
+        }
+      ]
+    },
+    {
+      "id": "c1a2b3c4-d5e6-4f70-9a1b-2c3d4e5f6071",
+      "numero": "PV-2026-0012",
+      "dataCriacao": "2026-01-13T15:25:00Z",
+      "situacao": "faturado",
+      "valorTotal": "2100.00",
+      "valorDesconto": "0.00",
+      "cliente": {
+        "id": "f6a7b8c9-d0e1-4f2a-b3c4-d5e6f708192a",
+        "codigo": "CLI-0012",
+        "nome": "Mu Hospitalar Ltda"
+      },
+      "itens": [
+        {
+          "id": "a7b8c9d0-e1f2-4a3b-b4c5-d6e7f8091a2b",
+          "sequencial": 1,
+          "produto": {
+            "id": "b8c9d0e1-f2a3-4b4c-c5d6-e7f8091a2b3c",
+            "codigo": "PRD-014",
+            "descricao": "Notebook i5"
+          },
+          "quantidade": 1,
+          "valorUnitario": "2100.00",
+          "valorTotalItem": "2100.00"
+        }
+      ]
+    },
+    {
+      "id": "4e5f6071-7283-4a94-b5c6-d7e8f9a0b1c2",
+      "numero": "PV-2026-0013",
+      "dataCriacao": "2026-01-14T10:05:00Z",
+      "situacao": "aberto",
+      "valorTotal": "540.00",
+      "valorDesconto": "40.00",
+      "cliente": {
+        "id": "c9d0e1f2-a3b4-4c5d-d6e7-f8091a2b3c4d",
+        "codigo": "CLI-0013",
+        "nome": "Nu Moda & Cia"
+      },
+      "itens": [
+        {
+          "id": "d0e1f2a3-b4c5-4d6e-e7f8-091a2b3c4d5e",
+          "sequencial": 1,
+          "produto": {
+            "id": "e1f2a3b4-c5d6-4e7f-f809-1a2b3c4d5e6f",
+            "codigo": "PRD-015",
+            "descricao": "Switch 8 Portas"
+          },
+          "quantidade": 3,
+          "valorUnitario": "180.00",
+          "valorTotalItem": "540.00"
+        }
+      ]
+    },
+    {
+      "id": "9d8c7b6a-5f4e-4d3c-b2a1-0f9e8d7c6b5a",
+      "numero": "PV-2026-0014",
+      "dataCriacao": "2026-01-15T18:40:00Z",
+      "situacao": "cancelado",
+      "valorTotal": "0.00",
+      "valorDesconto": "0.00",
+      "cliente": {
+        "id": "f2a3b4c5-d6e7-4f80-91a2-b3c4d5e6f708",
+        "codigo": "CLI-0014",
+        "nome": "Xi Transportes"
+      },
+      "itens": [
+        {
+          "id": "a3b4c5d6-e7f8-4091-a2b3-c4d5e6f70819",
+          "sequencial": 1,
+          "produto": {
+            "id": "b4c5d6e7-f809-41a2-b3c4-d5e6f708192a",
+            "codigo": "PRD-016",
+            "descricao": "Fonte ATX 600W"
+          },
+          "quantidade": 2,
+          "valorUnitario": "230.00",
+          "valorTotalItem": "460.00"
+        }
+      ]
+    },
+    {
+      "id": "1a2b3c4d-5e6f-4a70-8b9c-0d1e2f3a4b5c",
+      "numero": "PV-2026-0015",
+      "dataCriacao": "2026-01-16T09:50:00Z",
+      "situacao": "faturado",
+      "valorTotal": "399.00",
+      "valorDesconto": "0.00",
+      "cliente": {
+        "id": "c5d6e7f8-091a-4b2c-b3c4-d5e6f708192b",
+        "codigo": "CLI-0015",
+        "nome": "Omicron Gráfica"
+      },
+      "itens": [
+        {
+          "id": "d6e7f809-1a2b-4c3d-b4c5-d6e7f8091a2c",
+          "sequencial": 1,
+          "produto": {
+            "id": "e7f8091a-2b3c-4d4e-c5d6-e7f8091a2b3d",
+            "codigo": "PRD-011",
+            "descricao": "Roteador Wi-Fi 6"
+          },
+          "quantidade": 1,
+          "valorUnitario": "399.00",
+          "valorTotalItem": "399.00"
+        }
+      ]
+    },
+    {
+      "id": "6f5e4d3c-2b1a-4c0d-9e8f-7a6b5c4d3e2f",
+      "numero": "PV-2026-0016",
+      "dataCriacao": "2026-01-17T11:30:00Z",
+      "situacao": "aberto",
+      "valorTotal": "1120.00",
+      "valorDesconto": "120.00",
+      "cliente": {
+        "id": "f8091a2b-3c4d-4e5f-b6c7-d8e9f0a1b2c4",
+        "codigo": "CLI-0016",
+        "nome": "Pi Engenharia"
+      },
+      "itens": [
+        {
+          "id": "091a2b3c-4d5e-4f60-b7c8-d9e0f1a2b3c5",
+          "sequencial": 1,
+          "produto": {
+            "id": "1a2b3c4d-5e6f-4a71-8b9c-0d1e2f3a4b5d",
+            "codigo": "PRD-017",
+            "descricao": "Cadeira Gamer"
+          },
+          "quantidade": 2,
+          "valorUnitario": "560.00",
+          "valorTotalItem": "1120.00"
+        }
+      ]
+    },
+    {
+      "id": "7a8b9c0d-1e2f-4a3b-8c9d-0e1f2a3b4c5f",
+      "numero": "PV-2026-0017",
+      "dataCriacao": "2026-01-18T14:55:00Z",
+      "situacao": "faturado",
+      "valorTotal": "265.00",
+      "valorDesconto": "15.00",
+      "cliente": {
+        "id": "2b3c4d5e-6f70-4a81-9b0c-1d2e3f4a5b6d",
+        "codigo": "CLI-0017",
+        "nome": "Rho Agro"
+      },
+      "itens": [
+        {
+          "id": "3c4d5e6f-7081-4a92-9c0d-1e2f3a4b5c6e",
+          "sequencial": 1,
+          "produto": {
+            "id": "4d5e6f70-8192-4aa3-8b0c-1d2e3f4a5b6e",
+            "codigo": "PRD-018",
+            "descricao": "Filtro de Linha 6 Tomadas"
+          },
+          "quantidade": 5,
+          "valorUnitario": "53.00",
+          "valorTotalItem": "265.00"
+        }
+      ]
+    },
+    {
+      "id": "8b9c0d1e-2f3a-4b5c-9d0e-1f2a3b4c5d6e",
+      "numero": "PV-2026-0018",
+      "dataCriacao": "2026-01-19T09:10:00Z",
+      "situacao": "aberto",
+      "valorTotal": "720.00",
+      "valorDesconto": "0.00",
+      "cliente": {
+        "id": "5e6f7081-92a3-4bb4-9c0d-1e2f3a4b5c6f",
+        "codigo": "CLI-0018",
+        "nome": "Sigma Eventos"
+      },
+      "itens": [
+        {
+          "id": "6f708192-a3b4-4cc5-8d0e-1f2a3b4c5d70",
+          "sequencial": 1,
+          "produto": {
+            "id": "708192a3-b4c5-4dd6-9e0f-1a2b3c4d5e70",
+            "codigo": "PRD-019",
+            "descricao": "Projetor 3000 lumens"
+          },
+          "quantidade": 1,
+          "valorUnitario": "720.00",
+          "valorTotalItem": "720.00"
+        }
+      ]
+    },
+    {
+      "id": "9c0d1e2f-3a4b-4c5d-8e9f-0a1b2c3d4e5f",
+      "numero": "PV-2026-0019",
+      "dataCriacao": "2026-01-20T16:05:00Z",
+      "situacao": "faturado",
+      "valorTotal": "1350.00",
+      "valorDesconto": "150.00",
+      "cliente": {
+        "id": "8192a3b4-c5d6-4ee7-8f90-1a2b3c4d5e71",
+        "codigo": "CLI-0019",
+        "nome": "Tau Importadora"
+      },
+      "itens": [
+        {
+          "id": "92a3b4c5-d6e7-4ff8-9a01-2b3c4d5e6f72",
+          "sequencial": 1,
+          "produto": {
+            "id": "a3b4c5d6-e7f8-4009-b1c2-d3e4f5a6b7c1",
+            "codigo": "PRD-020",
+            "descricao": "Smartphone 128GB"
+          },
+          "quantidade": 1,
+          "valorUnitario": "1350.00",
+          "valorTotalItem": "1350.00"
+        }
+      ]
+    },
+    {
+      "id": "0e1f2a3b-4c5d-4e6f-9a0b-1c2d3e4f5061",
+      "numero": "PV-2026-0020",
+      "dataCriacao": "2026-01-21T10:30:00Z",
+      "situacao": "aberto",
+      "valorTotal": "980.00",
+      "valorDesconto": "80.00",
+      "cliente": {
+        "id": "b4c5d6e7-f809-412a-c3d4-e5f60718293a",
+        "codigo": "CLI-0020",
+        "nome": "Upsilon Autopeças"
+      },
+      "itens": [
+        {
+          "id": "c5d6e7f8-091a-423b-d4e5-f60718293a4b",
+          "sequencial": 1,
+          "produto": {
+            "id": "d6e7f809-1a2b-434c-e5f6-0718293a4b5c",
+            "codigo": "PRD-021",
+            "descricao": "Nobreak 1200VA"
+          },
+          "quantidade": 1,
+          "valorUnitario": "980.00",
+          "valorTotalItem": "980.00"
+        }
+      ]
+    }
+  ],
+  "pedido-venda-items": [
+    {
+      "id": "a3c9eaf1-bbbb-4509-a88c-5c1f1a6c9c07",
+      "pedidoVenda": "5df0ad86-7b1a-44dc-a6d2-2c9d9d2fbe55",
+      "produto": "Produto A",
+      "quantidade": 2,
+      "valorUnitario": "49.90",
+      "valorTotalItem": "99.80"
+    },
+    {
+      "id": "2bca8d6e-43a4-4cda-9c3a-8df13d4e34b7",
+      "pedidoVenda": "5df0ad86-7b1a-44dc-a6d2-2c9d9d2fbe55",
+      "produto": "Serviço B",
+      "quantidade": 1,
+      "valorUnitario": "150.00",
+      "valorTotalItem": "150.00"
+    },
+    {
+      "id": "6a6c4e7a-7b84-4f10-912a-f1bb5d1c2a30",
+      "pedidoVenda": "5df0ad86-7b1a-44dc-a6d2-2c9d9d2fbe55",
+      "produto": "Produto C",
+      "quantidade": 5,
+      "valorUnitario": "19.99",
+      "valorTotalItem": "99.95"
+    },
+    {
+      "id": "a8a0b8aa-1c64-45d6-9c39-4d4b874e1d2b",
+      "pedidoVenda": "7c3a6c2d-1b6a-4b23-93a5-f6e0e16f3b61",
+      "produto": "Produto D",
+      "quantidade": 3,
+      "valorUnitario": "35.50",
+      "valorTotalItem": "106.50"
+    },
+    {
+      "id": "dbf2ce56-0d9f-49e7-bc29-7c1a6db3c167",
+      "pedidoVenda": "7c3a6c2d-1b6a-4b23-93a5-f6e0e16f3b61",
+      "produto": "Serviço E",
+      "quantidade": 2,
+      "valorUnitario": "89.00",
+      "valorTotalItem": "178.00"
+    },
+    {
+      "id": "2f0e1f8d-0f1d-4c6d-8a6b-2cbe2c8a0f77",
+      "pedidoVenda": "7c3a6c2d-1b6a-4b23-93a5-f6e0e16f3b61",
+      "produto": "Produto F",
+      "quantidade": 10,
+      "valorUnitario": "7.25",
+      "valorTotalItem": "72.50"
+    },
+    {
+      "id": "9acb0e9c-0aa9-4fe1-8a35-606a5b1f3c2c",
+      "pedidoVenda": "2a7f4e37-0e51-4c8b-a5d9-0f3b49e0d21f",
+      "produto": "Produto G",
+      "quantidade": 4,
+      "valorUnitario": "12.50",
+      "valorTotalItem": "50.00"
+    },
+    {
+      "id": "0e36f4f6-3107-4f1a-b1a7-7ff4c0c8b2c1",
+      "pedidoVenda": "2a7f4e37-0e51-4c8b-a5d9-0f3b49e0d21f",
+      "produto": "Serviço H",
+      "quantidade": 1,
+      "valorUnitario": "299.90",
+      "valorTotalItem": "299.90"
+    },
+    {
+      "id": "2fcd9406-39a5-4a5d-8b30-9b2c0e1c6c8c",
+      "pedidoVenda": "2a7f4e37-0e51-4c8b-a5d9-0f3b49e0d21f",
+      "produto": "Produto I",
+      "quantidade": 6,
+      "valorUnitario": "22.10",
+      "valorTotalItem": "132.60"
+    },
+    {
+      "id": "e0a3c73d-4d1b-4f1d-9e2f-5a7b8c9d0e1f",
+      "pedidoVenda": "e6c2d0b2-8c9a-4f2a-bc43-5fd9b7b8d1a2",
+      "produto": "Produto J",
+      "quantidade": 2,
+      "valorUnitario": "75.00",
+      "valorTotalItem": "150.00"
+    },
+    {
+      "id": "cc7f1bb8-8f2f-4e7c-8c1d-2b3a4c5d6e7f",
+      "pedidoVenda": "e6c2d0b2-8c9a-4f2a-bc43-5fd9b7b8d1a2",
+      "produto": "Serviço K",
+      "quantidade": 3,
+      "valorUnitario": "120.00",
+      "valorTotalItem": "360.00"
+    },
+    {
+      "id": "7d4b9b2e-6a1e-4f0a-9c8d-1e2f3a4b5c6d",
+      "pedidoVenda": "e6c2d0b2-8c9a-4f2a-bc43-5fd9b7b8d1a2",
+      "produto": "Produto L",
+      "quantidade": 8,
+      "valorUnitario": "9.99",
+      "valorTotalItem": "79.92"
+    },
+    {
+      "id": "b6f2a1c4-9e3d-4b6a-8c2f-0d1e2f3a4b5c",
+      "pedidoVenda": "3a9e1d5c-2b1a-4f6e-9c3d-8a7b6c5d4e3f",
+      "produto": "Produto M",
+      "quantidade": 7,
+      "valorUnitario": "14.30",
+      "valorTotalItem": "100.10"
+    },
+    {
+      "id": "1f2e3d4c-5b6a-4c3d-8e9f-0a1b2c3d4e5f",
+      "pedidoVenda": "3a9e1d5c-2b1a-4f6e-9c3d-8a7b6c5d4e3f",
+      "produto": "Serviço N",
+      "quantidade": 2,
+      "valorUnitario": "45.75",
+      "valorTotalItem": "91.50"
+    },
+    {
+      "id": "8a9b0c1d-2e3f-4a5b-8c9d-0e1f2a3b4c5d",
+      "pedidoVenda": "3a9e1d5c-2b1a-4f6e-9c3d-8a7b6c5d4e3f",
+      "produto": "Produto O",
+      "quantidade": 12,
+      "valorUnitario": "5.00",
+      "valorTotalItem": "60.00"
+    },
+    {
+      "id": "4c5d6e7f-8a9b-4c0d-9e1f-2a3b4c5d6e7f",
+      "pedidoVenda": "1b2c3d4e-5f60-4a7b-8c9d-0e1f2a3b4c5d",
+      "produto": "Produto P",
+      "quantidade": 1,
+      "valorUnitario": "999.00",
+      "valorTotalItem": "999.00"
+    },
+    {
+      "id": "0a1b2c3d-4e5f-4a6b-8c9d-1e2f3a4b5c6d",
+      "pedidoVenda": "1b2c3d4e-5f60-4a7b-8c9d-0e1f2a3b4c5d",
+      "produto": "Serviço Q",
+      "quantidade": 4,
+      "valorUnitario": "60.00",
+      "valorTotalItem": "240.00"
+    },
+    {
+      "id": "9e8d7c6b-5a4f-4b3c-8d7e-6c5b4a3f2e1d",
+      "pedidoVenda": "1b2c3d4e-5f60-4a7b-8c9d-0e1f2a3b4c5d",
+      "produto": "Produto R",
+      "quantidade": 9,
+      "valorUnitario": "11.10",
+      "valorTotalItem": "99.90"
+    },
+    {
+      "id": "3e2d1c0b-4a5f-4c6d-8e9f-1a2b3c4d5e6f",
+      "pedidoVenda": "c4d3e2f1-0a9b-4c8d-8e7f-6a5b4c3d2e1f",
+      "produto": "Produto S",
+      "quantidade": 15,
+      "valorUnitario": "3.33",
+      "valorTotalItem": "49.95"
+    },
+    {
+      "id": "f1e2d3c4-b5a6-4c7d-8e9f-0a1b2c3d4e5f",
+      "pedidoVenda": "c4d3e2f1-0a9b-4c8d-8e7f-6a5b4c3d2e1f",
+      "produto": "Serviço T",
+      "quantidade": 2,
+      "valorUnitario": "210.00",
+      "valorTotalItem": "420.00"
     }
   ]
 }
