@@ -7,8 +7,8 @@ export const AppRouter = (appConfig: ERPromptConfig) => {
     <Routes>
       <Route path="/telas" element={<Telas {...appConfig}/>} />
 
-      <Route path="/ud/:layoutId" element={<DynamicPageRoute {...appConfig} />} />
-      <Route path="/ud/:layoutId/:id" element={<DynamicPageRoute {...appConfig} />} />
+      <Route path="/ud/:id" element={<DynamicPageRoute {...appConfig} />} />
+      <Route path="/ud/:id/:entityId" element={<DynamicPageRoute {...appConfig} />} />
       <Route path="*" element={<Navigate to="/telas" /> } />
     </Routes>
   );

@@ -6,10 +6,16 @@ const fs = require("fs");
 const path = require("path");
 
 /**
- * Matches a full line containing "@include <something>"
- * (same behavior as Python: MULTILINE, entire line, trim around target)
+ * Matches an "@include <target>" directive anywhere in the text.
+ * We decide in the replace callback whether it's a full-line include or inline include.
+ *
+ * Target rules (same as before):
+ * - "$token" resolves via opts.includes[token]
+ * - otherwise it's treated as a path (relative/absolute rules in resolvePath)
+ *
+ * Note: paths with spaces are not supported (consistent with existing usage).
  */
-const INCLUDE_RE = /^@include\s+(.+?)\s*$/gm;
+const INCLUDE_RE = /@include\s+(?<target>\$[A-Za-z_][A-Za-z0-9_]*|[^\s]+)/g;
 /** Matches "$token" */
 const TOKEN_RE = /^\$(?<name>[A-Za-z_][A-Za-z0-9_]*)$/;
 
@@ -149,10 +155,28 @@ function renderFile({
   const baseDir = path.dirname(filePath);
   const lineStarts = computeLineStarts(content);
 
+  function getLineBounds(text, pos) {
+    const lineStart = text.lastIndexOf("\n", pos - 1) + 1; // -1 => 0
+    const lineEndIdx = text.indexOf("\n", pos);
+    const lineEnd = lineEndIdx === -1 ? text.length : lineEndIdx;
+    return { lineStart, lineEnd };
+  }
+
+  function flattenInline(text) {
+    // Inline includes are commonly used for tokens like scope/code.
+    // Flatten any multi-line includes to a single line to avoid breaking surrounding text.
+    return String(text ?? "").replace(/\r?\n/g, " ").trim();
+  }
+
   // We need match positions for line numbers, so we use replace callback with offset.
-  const rendered = content.replace(INCLUDE_RE, (fullMatch, group1, offset) => {
-    const rawTarget = String(group1 ?? "").trim();
+  const rendered = content.replace(INCLUDE_RE, (fullMatch, _unused, offset, _whole, groups) => {
+    const rawTarget = String(groups?.target ?? "").trim();
     const includeLine = lineNumberFromPos(lineStarts, offset);
+
+    //const { lineStart, lineEnd } = getLineBounds(content, offset);
+    //const before = content.slice(lineStart, offset);
+    //const after = content.slice(offset + fullMatch.length, lineEnd);
+    //const isFullLineInclude = before.trim() === "" && after.trim() === "";
 
     try {
       const targetPath = resolveTarget(rawTarget, baseDir, rootDir, includes);
@@ -168,6 +192,7 @@ function renderFile({
         return fullMatch; // keep original
       }
 
+      // included = renderFile({...
       return renderFile({
         filePath: targetPath,
         includes,
@@ -178,6 +203,8 @@ function renderFile({
         encoding,
         rootDir,
       });
+
+      //return isFullLineInclude ? included : flattenInline(included);
     } catch (e) {
       if (strict) {
         const msg =

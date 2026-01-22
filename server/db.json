@@ -220,7 +220,7 @@
       "escopo": "vendas",
       "codigo": "PedidoVenda",
       "schema": "vendas/PedidoVenda",
-      "descricao": "Representa um pedido de venda",
+      "descricao": "Representa um pedido de venda, contendo dados do cabeçalho e a coleção de itens como composição.",
       "entity_json": {
         "escopo": "vendas",
         "codigo": "PedidoVenda",
@@ -327,7 +327,14 @@
         "$id": "vendas/PedidoVenda",
         "title": "Pedido de Venda",
         "type": "object",
-        "required": [],
+        "required": [
+          "id",
+          "numero",
+          "dataCriacao",
+          "situacao",
+          "valorTotal",
+          "itens"
+        ],
         "properties": {
           "id": {
             "type": "string",
@@ -339,7 +346,7 @@
           },
           "dataCriacao": {
             "type": "string",
-            "format": "datetime"
+            "format": "date-time"
           },
           "situacao": {
             "type": "string"
@@ -792,7 +799,7 @@
       "id": "vendas.list-pedidos-venda",
       "escopo": "vendas",
       "codigo": "list-pedidos-venda",
-      "descricao": "Tela de listagem de pedidos de venda",
+      "descricao": "Layout de listagem de pedidos de venda",
       "tenant": 0,
       "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
       "grupo_acesso": "00000000-0000-0000-0000-000000000000",
@@ -814,56 +821,6 @@
             }
           ]
         },
-        "app_bar": {
-          "pageTitle": "Pedidos de Venda",
-          "actions": [
-            {
-              "type": "Button",
-              "props": {
-                "buttonType": "primary",
-                "onClick": {
-                  "type": "Navigate",
-                  "props": {
-                    "navigateTo": "/vendas/pedidos-venda/new"
-                  }
-                }
-              },
-              "children": [
-                "Novo pedido"
-              ]
-            },
-            {
-              "type": "Button",
-              "props": {
-                "buttonType": "default",
-                "onClick": {
-                  "type": "Navigate",
-                  "props": {
-                    "navigateTo": "/vendas/pedidos-venda/edit?id=pedidos.selected.id"
-                  }
-                }
-              },
-              "children": [
-                "Editar"
-              ]
-            },
-            {
-              "type": "Button",
-              "props": {
-                "buttonType": "default",
-                "onClick": {
-                  "type": "Navigate",
-                  "props": {
-                    "navigateTo": "/vendas/pedidos-venda/detail?id=pedidos.selected.id"
-                  }
-                }
-              },
-              "children": [
-                "Detalhar"
-              ]
-            }
-          ]
-        },
         "children": [
           {
             "type": "div",
@@ -873,9 +830,10 @@
                 "props": {
                   "dataRef": "pedidos",
                   "style": {
-                    "maxHeight": "420px"
+                    "maxHeight": "400px"
                   },
-                  "resizable": true
+                  "resizable": true,
+                  "selectable": true
                 },
                 "children": [
                   {
@@ -890,8 +848,7 @@
                     "type": "GridColumn",
                     "props": {
                       "field": "dataCriacao",
-                      "title": "Data de criação",
-                      "width": "180px"
+                      "title": "Data de criação"
                     }
                   },
                   {
@@ -900,14 +857,14 @@
                       "field": "situacao",
                       "title": "Situação",
                       "cell": "ChipCell",
-                      "width": "160px"
+                      "width": "140px"
                     }
                   },
                   {
                     "type": "GridColumn",
                     "props": {
                       "field": "valorTotal",
-                      "title": "Valor total",
+                      "title": "Valor Total",
                       "width": "140px"
                     }
                   },
@@ -916,7 +873,7 @@
                     "props": {
                       "field": "valorDesconto",
                       "title": "Desconto",
-                      "width": "120px"
+                      "width": "140px"
                     }
                   },
                   {
@@ -925,6 +882,307 @@
                       "field": "cliente",
                       "title": "Cliente"
                     }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "vendas.detail-pedido-venda",
+      "escopo": "vendas",
+      "codigo": "detail-pedido-venda",
+      "descricao": "Tela de detalhe do pedido de venda com cabeçalho e itens (composição).",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "json_schema": {
+        "id": "vendas_detail-pedido-venda",
+        "type": "div",
+        "transaction": {
+          "name": "detail-pedido-venda",
+          "entities": [
+            {
+              "name": "pedido",
+              "schema": "vendas/PedidoVenda",
+              "cardinality": "one",
+              "load": true,
+              "main": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "div",
+            "children": [
+              {
+                "type": "Card",
+                "children": [
+                  {
+                    "type": "CardTitle",
+                    "children": [
+                      "Pedido de venda"
+                    ]
+                  },
+                  {
+                    "type": "CardBody",
+                    "children": [
+                      {
+                        "type": "ItensList",
+                        "props": {
+                          "dataRef": "pedido.selected",
+                          "includeItems": [
+                            "numero",
+                            "dataCriacao",
+                            "situacao",
+                            "valorTotal",
+                            "valorDesconto",
+                            "cliente"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "div",
+                "props": {
+                  "style": {
+                    "height": "1rem"
+                  }
+                },
+                "children": []
+              },
+              {
+                "type": "Card",
+                "children": [
+                  {
+                    "type": "CardTitle",
+                    "children": [
+                      "Itens do pedido"
+                    ]
+                  },
+                  {
+                    "type": "CardBody",
+                    "children": [
+                      {
+                        "type": "GenericGrid",
+                        "props": {
+                          "dataRef": "pedido.selected/itens",
+                          "resizable": true,
+                          "style": {
+                            "maxHeight": "400px"
+                          }
+                        },
+                        "children": [
+                          {
+                            "type": "GridColumn",
+                            "props": {
+                              "field": "produto",
+                              "title": "Produto"
+                            }
+                          },
+                          {
+                            "type": "GridColumn",
+                            "props": {
+                              "field": "quantidade",
+                              "title": "Quantidade",
+                              "width": "120px"
+                            }
+                          },
+                          {
+                            "type": "GridColumn",
+                            "props": {
+                              "field": "valorUnitario",
+                              "title": "Valor unitário",
+                              "width": "140px"
+                            }
+                          },
+                          {
+                            "type": "GridColumn",
+                            "props": {
+                              "field": "valorTotal",
+                              "title": "Valor total",
+                              "width": "140px"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "vendas.edit-pedido-venda",
+      "escopo": "vendas",
+      "codigo": "edit-pedido-venda",
+      "descricao": "Layout de cadastro/edição de pedido de venda com cabeçalho e itens (composição)",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "resumo_prompt_origem": "Tela de cadastro/edição de Pedido de Venda com GenericForm para cabeçalho (numero, dataCriacao, situacao, valorTotal, valorDesconto, cliente) e grid de itens via composição (dataRef: pedido.selected/itens). Entidade principal alias pedido (one) carregada do contexto.",
+      "json_schema": {
+        "id": "vendas_edit-pedido-venda",
+        "type": "div",
+        "transaction": {
+          "name": "edit-pedido-venda",
+          "entities": [
+            {
+              "name": "pedido",
+              "schema": "vendas/PedidoVenda",
+              "cardinality": "one",
+              "load": true,
+              "main": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "div",
+            "children": [
+              {
+                "type": "Card",
+                "children": [
+                  {
+                    "type": "CardTitle",
+                    "children": [
+                      "Cabeçalho do pedido"
+                    ]
+                  },
+                  {
+                    "type": "CardBody",
+                    "children": [
+                      {
+                        "type": "GenericForm",
+                        "props": {
+                          "dataRef": "pedido"
+                        },
+                        "children": [
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "numero",
+                              "label": "Número"
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "dataCriacao",
+                              "label": "Data de criação"
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "situacao",
+                              "label": "Situação"
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "valorTotal",
+                              "label": "Valor total"
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "valorDesconto",
+                              "label": "Valor desconto"
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "cliente",
+                              "label": "Cliente"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "div",
+                "props": {
+                  "style": {
+                    "height": "1rem"
+                  }
+                },
+                "children": []
+              },
+              {
+                "type": "Card",
+                "children": [
+                  {
+                    "type": "CardTitle",
+                    "children": [
+                      "Itens do pedido"
+                    ]
+                  },
+                  {
+                    "type": "CardBody",
+                    "children": [
+                      {
+                        "type": "GenericGrid",
+                        "props": {
+                          "dataRef": "pedido.selected/itens",
+                          "style": {
+                            "maxHeight": "320px"
+                          },
+                          "resizable": true
+                        },
+                        "children": [
+                          {
+                            "type": "GridColumn",
+                            "props": {
+                              "field": "produto",
+                              "title": "Produto"
+                            }
+                          },
+                          {
+                            "type": "GridColumn",
+                            "props": {
+                              "field": "quantidade",
+                              "title": "Quantidade",
+                              "width": "120px"
+                            }
+                          },
+                          {
+                            "type": "GridColumn",
+                            "props": {
+                              "field": "valorUnitario",
+                              "title": "Valor unitário",
+                              "width": "140px"
+                            }
+                          },
+                          {
+                            "type": "GridColumn",
+                            "props": {
+                              "field": "valorTotal",
+                              "title": "Valor total",
+                              "width": "140px"
+                            }
+                          }
+                        ]
+                      }
+                    ]
                   }
                 ]
               }
@@ -1053,218 +1311,224 @@
       "escopo": "vendas",
       "codigo": "list-pedidos-venda",
       "descricao": "Listagem de pedidos de venda (sem exibir itens).",
-      "runId": "run_20260121_134320_6c0c7e",
-      "updatedAt": "2026-01-21T13:44:04.199Z"
+      "runId": "run_20260121_211804_6d5f77",
+      "updatedAt": "2026-01-21T21:18:51.521Z"
     },
     {
       "id": "vendas.edit-pedido-venda",
       "escopo": "vendas",
       "codigo": "edit-pedido-venda",
       "descricao": "Cadastro/edição de pedido de venda.",
-      "runId": "run_20260121_134320_6c0c7e",
-      "updatedAt": "2026-01-21T13:44:04.201Z"
+      "runId": "run_20260121_211804_6d5f77",
+      "updatedAt": "2026-01-21T21:18:51.523Z"
     },
     {
       "id": "vendas.detail-pedido-venda",
       "escopo": "vendas",
       "codigo": "detail-pedido-venda",
-      "descricao": "Detalhe de pedido de venda com itens (composição).",
-      "runId": "run_20260121_134320_6c0c7e",
-      "updatedAt": "2026-01-21T13:44:04.203Z"
+      "descricao": "Detalhe de pedido de venda com itens.",
+      "runId": "run_20260121_211804_6d5f77",
+      "updatedAt": "2026-01-21T21:18:51.525Z"
     }
   ],
   "pedido-vendas": [
     {
-      "id": "6e4bd8b7-5b7a-4c23-a6fd-0d4a6e3e7f2c",
+      "id": "a5b9f7f2-3f4a-4a5e-b3bd-7b8c9d5d6b1a",
       "numero": "PV-2026-0001",
       "dataCriacao": "2026-01-03T10:15:22Z",
       "situacao": "Aberto",
-      "valorTotal": 1250.5,
-      "valorDesconto": 50,
-      "cliente": "Cliente Alfa Ltda",
+      "valorTotal": 549.7,
+      "valorDesconto": 20,
+      "cliente": "Cliente Alpha Ltda",
       "itens": [
         {
-          "produto": "Produto A",
-          "quantidade": 5,
-          "valorUnitario": 120.1,
-          "valorTotal": 600.5
+          "produto": "Notebook 14\"",
+          "quantidade": 1,
+          "valorUnitario": 499.9,
+          "valorTotal": 499.9
         },
         {
-          "produto": "Produto B",
-          "quantidade": 2,
-          "valorUnitario": 350,
-          "valorTotal": 700
+          "produto": "Mouse Sem Fio",
+          "quantidade": 1,
+          "valorUnitario": 49.8,
+          "valorTotal": 49.8
         }
       ]
     },
     {
-      "id": "c4c56a8b-9b2e-4d5e-9f1e-c7a9c1e4f0c8",
+      "id": "2d4f5d1e-8d3a-4b5a-9c6b-7f2a9b1c3d4e",
       "numero": "PV-2026-0002",
-      "dataCriacao": "2026-01-04T14:02:10Z",
+      "dataCriacao": "2026-01-04T14:03:10Z",
       "situacao": "Faturado",
-      "valorTotal": 980,
+      "valorTotal": 318.5,
       "valorDesconto": 0,
-      "cliente": "Comercial Beta S.A.",
+      "cliente": "Comercial Beta S/A",
       "itens": [
         {
-          "produto": "Produto C",
-          "quantidade": 4,
-          "valorUnitario": 245,
-          "valorTotal": 980
+          "produto": "Teclado Mecânico",
+          "quantidade": 1,
+          "valorUnitario": 189.9,
+          "valorTotal": 189.9
+        },
+        {
+          "produto": "Headset",
+          "quantidade": 1,
+          "valorUnitario": 128.6,
+          "valorTotal": 128.6
         }
       ]
     },
     {
-      "id": "1a6b8d2a-0c2a-4cc9-b5a8-0e2f9c9bd7ad",
+      "id": "7c1a2b3c-4d5e-4f60-8a9b-0c1d2e3f4a5b",
       "numero": "PV-2026-0003",
       "dataCriacao": "2026-01-05T09:40:00Z",
       "situacao": "Cancelado",
-      "valorTotal": 300,
-      "valorDesconto": 30,
-      "cliente": "Cliente Gama ME",
+      "valorTotal": 120,
+      "valorDesconto": 10,
+      "cliente": "Gamma Serviços",
       "itens": [
         {
-          "produto": "Produto D",
+          "produto": "Cabo HDMI 2m",
           "quantidade": 3,
-          "valorUnitario": 100,
-          "valorTotal": 300
+          "valorUnitario": 30,
+          "valorTotal": 90
+        },
+        {
+          "produto": "Adaptador USB-C",
+          "quantidade": 1,
+          "valorUnitario": 30,
+          "valorTotal": 30
         }
       ]
     },
     {
-      "id": "f2c7f6c1-0b57-4b12-9c77-7c0a6a53b5c6",
+      "id": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
       "numero": "PV-2026-0004",
       "dataCriacao": "2026-01-06T16:25:45Z",
       "situacao": "Aberto",
-      "valorTotal": 2149.9,
-      "valorDesconto": 150,
-      "cliente": "Distribuidora Delta",
+      "valorTotal": 950,
+      "valorDesconto": 50,
+      "cliente": "Delta Distribuição",
       "itens": [
         {
-          "produto": "Produto E",
-          "quantidade": 1,
-          "valorUnitario": 1299.9,
-          "valorTotal": 1299.9
-        },
-        {
-          "produto": "Produto F",
-          "quantidade": 5,
-          "valorUnitario": 170,
-          "valorTotal": 850
-        }
-      ]
-    },
-    {
-      "id": "7c4c34b9-8a8f-4f07-9a3f-1d6fce5a1f0f",
-      "numero": "PV-2026-0005",
-      "dataCriacao": "2026-01-07T11:05:12Z",
-      "situacao": "Faturado",
-      "valorTotal": 560.75,
-      "valorDesconto": 10.75,
-      "cliente": "Epsilon Serviços",
-      "itens": [
-        {
-          "produto": "Produto G",
-          "quantidade": 7,
-          "valorUnitario": 80.1071428571,
-          "valorTotal": 560.75
-        }
-      ]
-    },
-    {
-      "id": "9f6b0d1a-2f2a-4f03-8b2d-53d38b7e3d9f",
-      "numero": "PV-2026-0006",
-      "dataCriacao": "2026-01-08T08:12:33Z",
-      "situacao": "Em separacao",
-      "valorTotal": 1750,
-      "valorDesconto": 0,
-      "cliente": "Cliente Zeta",
-      "itens": [
-        {
-          "produto": "Produto H",
-          "quantidade": 10,
-          "valorUnitario": 175,
-          "valorTotal": 1750
-        }
-      ]
-    },
-    {
-      "id": "3c5d7e2b-1d2f-4b76-8f2e-5d2c1f9a7b3a",
-      "numero": "PV-2026-0007",
-      "dataCriacao": "2026-01-09T13:55:01Z",
-      "situacao": "Aberto",
-      "valorTotal": 342.3,
-      "valorDesconto": 12.3,
-      "cliente": "Loja Eta",
-      "itens": [
-        {
-          "produto": "Produto I",
-          "quantidade": 3,
-          "valorUnitario": 114.1,
-          "valorTotal": 342.3
-        }
-      ]
-    },
-    {
-      "id": "b7a3f1d9-6f8b-4a0b-8a44-2b6a3c1d9e5f",
-      "numero": "PV-2026-0008",
-      "dataCriacao": "2026-01-10T17:20:19Z",
-      "situacao": "Faturado",
-      "valorTotal": 4100,
-      "valorDesconto": 100,
-      "cliente": "Indústria Theta",
-      "itens": [
-        {
-          "produto": "Produto J",
+          "produto": "Monitor 27\"",
           "quantidade": 2,
-          "valorUnitario": 2000,
-          "valorTotal": 4000
-        },
-        {
-          "produto": "Produto K",
-          "quantidade": 1,
-          "valorUnitario": 100,
-          "valorTotal": 100
+          "valorUnitario": 500,
+          "valorTotal": 1000
         }
       ]
     },
     {
-      "id": "d1d2c3b4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
-      "numero": "PV-2026-0009",
-      "dataCriacao": "2026-01-11T10:00:00Z",
+      "id": "c9d8e7f6-a5b4-4c3d-8e2f-1a0b9c8d7e6f",
+      "numero": "PV-2026-0005",
+      "dataCriacao": "2026-01-07T11:12:33Z",
       "situacao": "Entregue",
-      "valorTotal": 899.99,
-      "valorDesconto": 0,
-      "cliente": "Cliente Iota",
+      "valorTotal": 210.75,
+      "valorDesconto": 5.25,
+      "cliente": "Epsilon Varejo",
       "itens": [
         {
-          "produto": "Produto L",
+          "produto": "SSD 1TB",
           "quantidade": 1,
-          "valorUnitario": 899.99,
-          "valorTotal": 899.99
+          "valorUnitario": 210.75,
+          "valorTotal": 210.75
         }
       ]
     },
     {
-      "id": "5a2c9e77-0c59-4f2d-9d3a-6f4b1c2a8d10",
-      "numero": "PV-2026-0010",
-      "dataCriacao": "2026-01-12T15:48:27Z",
-      "situacao": "Aberto",
-      "valorTotal": 1525,
-      "valorDesconto": 25,
-      "cliente": "Cliente Kappa",
+      "id": "0f1e2d3c-4b5a-4c6d-8e7f-9a0b1c2d3e4f",
+      "numero": "PV-2026-0006",
+      "dataCriacao": "2026-01-08T08:05:19Z",
+      "situacao": "Faturado",
+      "valorTotal": 780.3,
+      "valorDesconto": 0,
+      "cliente": "Zeta Tecnologia",
       "itens": [
         {
-          "produto": "Produto M",
-          "quantidade": 5,
-          "valorUnitario": 250,
-          "valorTotal": 1250
+          "produto": "Impressora Laser",
+          "quantidade": 1,
+          "valorUnitario": 650.3,
+          "valorTotal": 650.3
         },
         {
-          "produto": "Produto N",
-          "quantidade": 3,
-          "valorUnitario": 91.6666666667,
-          "valorTotal": 275
+          "produto": "Toner Preto",
+          "quantidade": 1,
+          "valorUnitario": 130,
+          "valorTotal": 130
+        }
+      ]
+    },
+    {
+      "id": "3a4b5c6d-7e8f-4a9b-0c1d-2e3f4a5b6c7d",
+      "numero": "PV-2026-0007",
+      "dataCriacao": "2026-01-09T13:55:00Z",
+      "situacao": "Aberto",
+      "valorTotal": 159.9,
+      "valorDesconto": 0,
+      "cliente": "Eta Consultoria",
+      "itens": [
+        {
+          "produto": "Webcam Full HD",
+          "quantidade": 1,
+          "valorUnitario": 159.9,
+          "valorTotal": 159.9
+        }
+      ]
+    },
+    {
+      "id": "6e5d4c3b-2a1f-4b0c-9d8e-7f6a5b4c3d2e",
+      "numero": "PV-2026-0008",
+      "dataCriacao": "2026-01-10T17:20:11Z",
+      "situacao": "Entregue",
+      "valorTotal": 432.2,
+      "valorDesconto": 12.8,
+      "cliente": "Theta Indústria",
+      "itens": [
+        {
+          "produto": "Roteador Wi-Fi 6",
+          "quantidade": 2,
+          "valorUnitario": 199.5,
+          "valorTotal": 399
+        },
+        {
+          "produto": "Cabo de Rede 10m",
+          "quantidade": 2,
+          "valorUnitario": 16.6,
+          "valorTotal": 33.2
+        }
+      ]
+    },
+    {
+      "id": "9b0c1d2e-3f4a-4b5c-8d6e-7f8a9b0c1d2e",
+      "numero": "PV-2026-0009",
+      "dataCriacao": "2026-01-12T12:00:00Z",
+      "situacao": "Aberto",
+      "valorTotal": 75.5,
+      "valorDesconto": 0,
+      "cliente": "Iota Papelaria",
+      "itens": [
+        {
+          "produto": "Pen Drive 64GB",
+          "quantidade": 1,
+          "valorUnitario": 75.5,
+          "valorTotal": 75.5
+        }
+      ]
+    },
+    {
+      "id": "d1c2b3a4-5e6f-4a7b-8c9d-0e1f2a3b4c5d",
+      "numero": "PV-2026-0010",
+      "dataCriacao": "2026-01-15T15:45:30Z",
+      "situacao": "Faturado",
+      "valorTotal": 1249.99,
+      "valorDesconto": 100,
+      "cliente": "Kappa Engenharia",
+      "itens": [
+        {
+          "produto": "Smartphone",
+          "quantidade": 1,
+          "valorUnitario": 1249.99,
+          "valorTotal": 1249.99
         }
       ]
     }
