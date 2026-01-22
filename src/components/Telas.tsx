@@ -1,10 +1,11 @@
-import { DynamicPage, ERPromptConfig } from "@nasajon/erprompt-lib";
+import { ERPromptConfig } from "@nasajon/erprompt-lib";
 import { useEffect, useState } from "react";
 import { DropDownList } from "@progress/kendo-react-dropdowns";
 import { Card, CardBody, CardTitle, TabStrip, TabStripTab } from "@progress/kendo-react-layout";
 import { Label } from "@progress/kendo-react-labels";
 import { TextArea } from "@progress/kendo-react-inputs";
 import { Button } from "@progress/kendo-react-buttons";
+import { DynamicPageContainer } from "./DynamicPageContainer";
 
 type GeneratedPage = {
   id: string;
@@ -253,7 +254,9 @@ export function Telas(erpromptConfig: ERPromptConfig) {
         <Card>
           <CardBody>
             <CardTitle>Pré-visualização</CardTitle>
-            {selectedPage?.id ? <DynamicPage layoutId={selectedPage.id} {...erpromptConfig} /> : null}
+            {selectedPage?.id ? (
+              <DynamicPageContainer layoutId={selectedPage.id} erpromptConfig={erpromptConfig} />
+            ) : null}
           </CardBody>
         </Card>
       </article>
