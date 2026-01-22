@@ -8,8 +8,8 @@ Este documento descreve o fluxo ponta-a-ponta do POC **ERPrompt Agent**, cobrind
 
 Referências principais:
 
-- Backend: `server/server3.cjs`, `server/ai-runs4.cjs`, `server/db.json`
-- Agent: `agent/generate5.mjs`
+- Backend: `server/server.cjs`, `server/ai-runs.cjs`, `server/db.json`
+- Agent: `agent/generate.mjs`
 - Frontend: `src/App.tsx`, `src/components/Telas.tsx`
 
 ## Resumo do fluxo
@@ -20,14 +20,14 @@ Referências principais:
    - Lista de telas: `GET /generated-pages` (para o dropdown em “Telas”)
 2. Ao selecionar uma tela, o frontend renderiza `DynamicPage` com `layoutId` no formato `escopo.codigo` (ex.: `fiscal.list-notas-fiscais`).
 3. O `erprompt-lib` busca o layout (via `erpromptApiUrl`) e, ao processar o `transaction.entities[].schema` dentro do layout, usa o `EntityApi` previamente registrado para carregar dados dos endpoints (datasets do `json-server`).
-4. Para gerar novas telas/dados, o backend expõe `POST /ai/runs` que dispara o `agent/generate5.mjs`, grava outputs em `generated/runs/<runId>/...` e faz “commit” no `server/db.json` (coleções `generated-pages`, `layouts-schemas`, `entities-schemas`, `endpoints` e datasets).
+4. Para gerar novas telas/dados, o backend expõe `POST /ai/runs` que dispara o `agent/generate.mjs`, grava outputs em `generated/runs/<runId>/...` e faz “commit” no `server/db.json` (coleções `generated-pages`, `layouts-schemas`, `entities-schemas`, `endpoints` e datasets).
 
 ## Rotas e coleções (server)
 
-Servidor do POC: `npm run agent:serve` → `server/server3.cjs` (porta 4000).
+Servidor do POC: `npm run agent:serve` → `server/server.cjs` (porta 4000).
 
 - Rotas do `json-server` (baseadas em `server/db.json`)
-  - `GET /launcher-itens` (resposta embrulhada em `{ result: ... }` por `server/server3.cjs`)
+  - `GET /launcher-itens` (resposta embrulhada em `{ result: ... }` por `server/server.cjs`)
   - `GET /generated-pages`
   - `GET /layouts-schemas` e `GET /layouts-schemas/:id`
   - `GET /entities-schemas` e `GET /entities-schemas/:id`
@@ -40,7 +40,7 @@ Servidor do POC: `npm run agent:serve` → `server/server3.cjs` (porta 4000).
 
 ## Saídas do agent (generated/)
 
-O `agent/generate5.mjs` grava em `generated/runs/<runId>/`:
+O `agent/generate.mjs` grava em `generated/runs/<runId>/`:
 
 - `planner.json` + `planner_prompt_compiled.md`
 - `entities/<escopo>/<Codigo>.json`
@@ -48,7 +48,7 @@ O `agent/generate5.mjs` grava em `generated/runs/<runId>/`:
 - `mocks/<escopo>/<Codigo>.mock.json`
 - `metrics.json`
 
-Ao final, o backend (`server/ai-runs4.cjs`) faz “commit” no `server/db.json`:
+Ao final, o backend (`server/ai-runs.cjs`) faz “commit” no `server/db.json`:
 
 - `generated-pages`: lista de telas derivada do `planner.json`
 - `layouts-schemas`: layouts completos (upsert por `id = escopo.codigo`)
@@ -78,13 +78,13 @@ flowchart LR
   end
 
   subgraph BE[Backend (json-server + rotas AI)]
-    Srv[server/server3.cjs\n:4000]
-    AIR[server/ai-runs4.cjs\nPOST /ai/runs]
+    Srv[server/server.cjs\n:4000]
+    AIR[server/ai-runs.cjs\nPOST /ai/runs]
     DB[(server/db.json\ncoleções + datasets)]
   end
 
   subgraph AG[Agent (geradores)]
-    Gen[agent/generate5.mjs]
+    Gen[agent/generate.mjs]
     Out[(generated/runs/<runId>/...)]
   end
 
@@ -96,7 +96,7 @@ flowchart LR
   ERL -->|GET /layouts-schemas/:id\n(via erpromptApiUrl)| Srv --> DB
   ERL -->|fetch entity data\n(schema → EntityApi)| Srv --> DB
 
-  AIR -->|spawn node .../generate5.mjs\nRUN_ID + GENERATED_DIR| Gen --> Out
+  AIR -->|spawn node .../generate.mjs\nRUN_ID + GENERATED_DIR| Gen --> Out
   Out -->|commit (generated-pages,\nlayouts-schemas, entities-schemas,\nendpoints + datasets)| DB
 ```
 
@@ -107,7 +107,7 @@ sequenceDiagram
   participant UI as Frontend (Telas/App)
   participant API as Backend :4000 (json-server)
   participant AIR as AI routes (/ai/runs)
-  participant GEN as agent/generate5.mjs
+  participant GEN as agent/generate.mjs
   participant DB as server/db.json
   participant FS as generated/runs/<runId>
 
@@ -121,7 +121,7 @@ sequenceDiagram
   API-->>UI: pages[]
 
   UI->>AIR: POST /ai/runs {spec}
-  AIR->>GEN: spawn node generate5.mjs\n(env RUN_ID, GENERATED_DIR)
+  AIR->>GEN: spawn node generate.mjs\n(env RUN_ID, GENERATED_DIR)
   GEN->>FS: write planner/entities/layouts/mocks/metrics
   GEN-->>AIR: exit code 0
   AIR->>DB: upsert generated-pages/layouts-schemas/entities-schemas/endpoints

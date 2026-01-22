@@ -28,11 +28,11 @@ server.use((req, res, next) => {
 
 // Plugar rotas de AI runs
 //const attachAiRunsRoutes = require("./server/ai-runs.cjs"); // ajuste o path conforme onde você salvar
-const attachAiRunsRoutes = require(path.join(SERVER_DIR, "ai-runs4.cjs"));
+const attachAiRunsRoutes = require(path.join(SERVER_DIR, "ai-runs.cjs"));
 attachAiRunsRoutes(server, {
   projectRoot: PROJECT_ROOT_DIR,
   agentDir: path.join(AGENT_DIR),
-  generateScript: path.join(AGENT_DIR, "generate5.mjs"),
+  generateScript: path.join(AGENT_DIR, "generate.mjs"),
   generatedDir: path.join(PROJECT_ROOT_DIR, "generated"),
   db: router.db
 });

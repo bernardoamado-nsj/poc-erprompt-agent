@@ -9,8 +9,8 @@ import { createRequire } from "node:module";
 import "dotenv/config";
 
 import { callOpenAIPlannerStructured } from "./call-openai-planner.mjs";
-import { callOpenAISaveJsonObject } from "./call-openai-save2.mjs";
-import { callOpenAIMockJsonObject } from "./call-openai-mock2.mjs";
+import { callOpenAISaveJsonObject } from "./call-openai-save.mjs";
+import { callOpenAIMockJsonObject } from "./call-openai-mock.mjs";
 
 
 
@@ -48,7 +48,7 @@ function getConfig() {
 
   return {
     plannerTemplate: resolveFromAgentDir(
-      process.env.PLANNER_TEMPLATE || "prompts/planner/gerar_planner7.md"
+      process.env.PLANNER_TEMPLATE || "prompts/planner/gerar_planner.md"
     ),
     entityTemplate: resolveFromAgentDir(
       process.env.ENTITY_TEMPLATE || "prompts/entity/gerar_entidade_full_agent_prompt.md"

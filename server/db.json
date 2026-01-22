@@ -398,7 +398,7 @@
       "id": "Produto",
       "escopo": "cadastros",
       "codigo": "Produto",
-      "descricao": "Cadastro de produtos para listagem com informações de identificação e métricas de estoque e vendas.",
+      "descricao": "Entidade Produto do escopo cadastros",
       "tenant": 0,
       "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
       "grupo_acesso": "00000000-0000-0000-0000-000000000000",
@@ -413,7 +413,9 @@
           "id",
           "codigo",
           "especificacao",
-          "dataCadastro"
+          "dataCadastro",
+          "quantidadeEstoque",
+          "quantidadeVendida"
         ],
         "properties": {
           "id": {
@@ -1464,6 +1466,91 @@
           }
         ]
       }
+    },
+    {
+      "id": "comercial.list-produtos",
+      "escopo": "comercial",
+      "codigo": "list-produtos",
+      "descricao": "Layout de listagem de produtos",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "json_schema": {
+        "id": "comercial_list-produtos",
+        "type": "div",
+        "transaction": {
+          "name": "list-produtos",
+          "entities": [
+            {
+              "name": "produtos",
+              "schema": "cadastros/Produto",
+              "load": true,
+              "loadingMessage": "Carregando produtos",
+              "cardinality": "many",
+              "main": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "div",
+            "children": [
+              {
+                "type": "GenericGrid",
+                "props": {
+                  "dataRef": "produtos",
+                  "style": {
+                    "maxHeight": "400px"
+                  },
+                  "resizable": true
+                },
+                "children": [
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "codigo",
+                      "title": "Código",
+                      "width": "120px"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "especificacao",
+                      "title": "Especificação"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "dataCadastro",
+                      "title": "Data de cadastro"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "quantidadeEstoque",
+                      "title": "Quantidade em estoque",
+                      "width": "190px"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "quantidadeVendida",
+                      "title": "Quantidade vendida",
+                      "width": "190px"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "launcher-itens": [
@@ -1578,6 +1665,13 @@
       "codigo": "Produto",
       "schema": "estoque/Produto",
       "endpoint": "http://localhost:4000/produtos"
+    },
+    {
+      "id": "comercial.Produto",
+      "escopo": "comercial",
+      "codigo": "Produto",
+      "schema": "comercial/Produto",
+      "endpoint": "http://localhost:4000/produtos"
     }
   ],
   "generated-pages": [
@@ -1634,6 +1728,14 @@
       "descricao": "Detalhe do produto.",
       "runId": "run_20260122_133128_2b52bb",
       "updatedAt": "2026-01-22T13:32:05.789Z"
+    },
+    {
+      "id": "comercial.list-produtos",
+      "escopo": "comercial",
+      "codigo": "list-produtos",
+      "descricao": "Listagem de produtos exibindo código, especificação, data de cadastro, quantidade em estoque e quantidade vendida.",
+      "runId": "run_20260122_134624_4cfac4",
+      "updatedAt": "2026-01-22T13:47:01.921Z"
     }
   ],
   "pedido-vendas": [
@@ -1840,84 +1942,84 @@
   ],
   "produtos": [
     {
-      "id": "6fb7ad2e-8aef-4c63-b59a-2f44c08b5c24",
+      "id": "7a0b8b4c-0b9b-4d0b-9c2b-1b9a2b3d1e6f",
       "codigo": "PRD-0001",
-      "especificacao": "Café Torrado e Moído 500g",
-      "dataCadastro": "2025-01-10T09:15:00Z",
+      "especificacao": "Teclado mecânico ABNT2, switches marrons, RGB",
+      "dataCadastro": "2025-01-15T10:22:11Z",
       "quantidadeEstoque": 120,
       "quantidadeVendida": 45
     },
     {
-      "id": "c0fcd4ea-7b86-4d30-97a2-8d7a3c62d9ce",
+      "id": "2d5f0c3a-2c7e-4c1b-ae4d-6a9d8f2c1b10",
       "codigo": "PRD-0002",
-      "especificacao": "Açúcar Refinado 1kg",
-      "dataCadastro": "2025-01-12T14:30:00Z",
-      "quantidadeEstoque": 300,
-      "quantidadeVendida": 110
-    },
-    {
-      "id": "3b7c0a07-0f6a-41cb-bc76-6b3f5608f9c1",
-      "codigo": "PRD-0003",
-      "especificacao": "Arroz Tipo 1 5kg",
-      "dataCadastro": "2025-01-15T11:05:00Z",
-      "quantidadeEstoque": 180,
-      "quantidadeVendida": 72
-    },
-    {
-      "id": "b0b4f4dd-6b33-4b34-a1c6-3d3e1c6b3a90",
-      "codigo": "PRD-0004",
-      "especificacao": "Feijão Carioca 1kg",
-      "dataCadastro": "2025-01-18T16:20:00Z",
-      "quantidadeEstoque": 220,
-      "quantidadeVendida": 95
-    },
-    {
-      "id": "5e4c6c6b-b6fb-4f2a-8fd8-6f8a7d7f5c2b",
-      "codigo": "PRD-0005",
-      "especificacao": "Óleo de Soja 900ml",
-      "dataCadastro": "2025-01-22T08:40:00Z",
-      "quantidadeEstoque": 150,
-      "quantidadeVendida": 60
-    },
-    {
-      "id": "2b9e4f0f-7f8b-4d3a-9f1d-2c7e2d7d3a9a",
-      "codigo": "PRD-0006",
-      "especificacao": "Macarrão Espaguete 500g",
-      "dataCadastro": "2025-01-25T13:10:00Z",
-      "quantidadeEstoque": 260,
-      "quantidadeVendida": 140
-    },
-    {
-      "id": "9d5d3d7a-9f2a-4f7f-8f6e-1b2a3c4d5e6f",
-      "codigo": "PRD-0007",
-      "especificacao": "Molho de Tomate 300g",
-      "dataCadastro": "2025-02-01T10:55:00Z",
-      "quantidadeEstoque": 400,
-      "quantidadeVendida": 210
-    },
-    {
-      "id": "7a2c1b0d-3f4e-4a6b-9c8d-0e1f2a3b4c5d",
-      "codigo": "PRD-0008",
-      "especificacao": "Leite UHT Integral 1L",
-      "dataCadastro": "2025-02-05T17:45:00Z",
-      "quantidadeEstoque": 500,
-      "quantidadeVendida": 320
-    },
-    {
-      "id": "1c2d3e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f",
-      "codigo": "PRD-0009",
-      "especificacao": "Biscoito Cream Cracker 200g",
-      "dataCadastro": "2025-02-10T12:25:00Z",
-      "quantidadeEstoque": 350,
+      "especificacao": "Mouse óptico 16000 DPI, 6 botões programáveis",
+      "dataCadastro": "2025-02-03T14:05:30Z",
+      "quantidadeEstoque": 250,
       "quantidadeVendida": 180
     },
     {
-      "id": "4f3e2d1c-0b9a-4c8d-7e6f-5d4c3b2a1f0e",
+      "id": "b1c2b6b7-1d2c-4f7a-9c4e-2c64d7b18f3a",
+      "codigo": "PRD-0003",
+      "especificacao": "Monitor 24\" IPS Full HD, 75Hz, HDMI",
+      "dataCadastro": "2025-02-20T09:40:00Z",
+      "quantidadeEstoque": 60,
+      "quantidadeVendida": 22
+    },
+    {
+      "id": "f3e5a1c8-7c2f-4a8e-8c7a-8f2f5a2c9d11",
+      "codigo": "PRD-0004",
+      "especificacao": "Headset USB com microfone e cancelamento de ruído",
+      "dataCadastro": "2025-03-01T16:12:45Z",
+      "quantidadeEstoque": 90,
+      "quantidadeVendida": 37
+    },
+    {
+      "id": "0f7c9a2b-3a4d-4f5b-9c8d-1b2c3d4e5f60",
+      "codigo": "PRD-0005",
+      "especificacao": "Cabo HDMI 2.1 2m, 8K, alta velocidade",
+      "dataCadastro": "2025-03-10T11:00:00Z",
+      "quantidadeEstoque": 400,
+      "quantidadeVendida": 265
+    },
+    {
+      "id": "9c1b2a3d-4e5f-4a6b-8c7d-0e1f2a3b4c5d",
+      "codigo": "PRD-0006",
+      "especificacao": "SSD NVMe 1TB, leitura 3500MB/s",
+      "dataCadastro": "2025-03-18T08:25:10Z",
+      "quantidadeEstoque": 75,
+      "quantidadeVendida": 58
+    },
+    {
+      "id": "6a5b4c3d-2e1f-4d0c-9b8a-7c6d5e4f3a21",
+      "codigo": "PRD-0007",
+      "especificacao": "Memória RAM DDR4 16GB 3200MHz",
+      "dataCadastro": "2025-04-02T13:33:33Z",
+      "quantidadeEstoque": 140,
+      "quantidadeVendida": 92
+    },
+    {
+      "id": "3e2d1c0b-9a8f-4e7d-8c6b-5a4f3e2d1c0b",
+      "codigo": "PRD-0008",
+      "especificacao": "Webcam Full HD 1080p com foco automático",
+      "dataCadastro": "2025-04-14T17:45:05Z",
+      "quantidadeEstoque": 110,
+      "quantidadeVendida": 70
+    },
+    {
+      "id": "c7d6e5f4-3a2b-4c1d-9e8f-7a6b5c4d3e2f",
+      "codigo": "PRD-0009",
+      "especificacao": "Roteador Wi‑Fi 6 AX1800, dual band",
+      "dataCadastro": "2025-05-05T12:10:00Z",
+      "quantidadeEstoque": 55,
+      "quantidadeVendida": 41
+    },
+    {
+      "id": "1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5e",
       "codigo": "PRD-0010",
-      "especificacao": "Detergente Neutro 500ml",
-      "dataCadastro": "2025-02-14T09:00:00Z",
-      "quantidadeEstoque": 275,
-      "quantidadeVendida": 130
+      "especificacao": "No-break 1200VA, bivolt automático, 6 tomadas",
+      "dataCadastro": "2025-05-22T09:00:00Z",
+      "quantidadeEstoque": 35,
+      "quantidadeVendida": 19
     }
   ]
 }

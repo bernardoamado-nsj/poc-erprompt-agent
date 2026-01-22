@@ -37,6 +37,6 @@ node render-template.cjs prompts\gerar_layout_full_agent_prompt.md ^
     -o prompts\agent_final\prompt_listagem_nota_fiscal_20260113.md
 
 REM ------------- PLANNER ------------------
-node render-template.cjs prompts/planner/gerar_planner4.md ^
+node render-template.cjs prompts/planner/gerar_planner.md ^
     --user_spec prompts/specs/user_funcionalidade_nfe.md ^
     -o prompts/agent_final/prompt_planner_nfe_20260115.md
