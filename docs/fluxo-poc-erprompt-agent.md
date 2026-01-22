@@ -33,10 +33,11 @@ Servidor do POC: `npm run agent:serve` → `server/server.cjs` (porta 4000).
   - `GET /entities-schemas` e `GET /entities-schemas/:id`
   - `GET /endpoints`
   - Datasets (exemplos): `GET /notas`, `GET /pedido-vendas`, etc.
-- Rotas extras (geração)
+- Rotas extras (geração) adicionadas por `server/ai-runs.cjs`
   - `POST /ai/runs` `{ "spec": "..." }` → dispara geração
   - `GET /ai/runs/:runId/status` → status do run (arquivo `generated/runs/<runId>/status.json`)
-  - `GET /generated-pages/:id/layout` → retorna o JSON de layout do último `runId` associado (quando existir)
+  - `GET /generated-pages/:id/layout` → retorna o JSON de layout do `runId` associado (sem expor paths)
+  - Também existem rotas auxiliares (ex.: `/ai/runs/active`, `/ai/runs/:runId/log`), dependendo da versão do arquivo.
 
 ## Saídas do agent (generated/)
 
@@ -134,4 +135,3 @@ sequenceDiagram
   API->>DB: read dataset
   API-->>UI: data
 ```
-
