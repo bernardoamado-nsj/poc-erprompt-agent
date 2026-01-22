@@ -15,17 +15,39 @@ type GeneratedPage = {
 
 type GeneratedPageDropdownItem = GeneratedPage & { text: string };
 
+type RunStartResponse = {
+  runId?: string;
+  status?: string;
+  statusUrl?: string;
+  error?: string;
+};
+
+type RunStatusResponse = {
+  runId?: string;
+  status?: "queued" | "running" | "done" | "blocked" | "failed" | string;
+  error?: string | null;
+};
+
 export function Telas(erpromptConfig: ERPromptConfig) {
+  const apiBaseUrl = (erpromptConfig as any)?.erpromptApiUrl ?? "http://localhost:4000";
+  const normalizedApiBaseUrl = String(apiBaseUrl).replace(/\/+$/, "");
+  const apiUrl = (p: string) => {
+    if (!p) return normalizedApiBaseUrl;
+    if (p.startsWith("http://") || p.startsWith("https://")) return p;
+    return p.startsWith("/") ? `${normalizedApiBaseUrl}${p}` : `${normalizedApiBaseUrl}/${p}`;
+  };
+
   const [selectedPage, setSelectedPage] = useState<GeneratedPageDropdownItem | undefined>();
   const [pages, setPages] = useState<GeneratedPage[]>([]);
   const [prompt, setPrompt] = useState<string>("");
   const [isLoadingPages, setIsLoadingPages] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [messages, setMessages] = useState<Array<{ role: "user" | "assistant"; content: string }>>([]);
   const [selectedTab, setSelectedTab] = useState<number>(0); // 0: Telas geradas | 1: Gerar nova
 
   const retrievePages = () => {
     setIsLoadingPages(true);
-    fetch("http://localhost:4000/generated-pages")
+    fetch(apiUrl("/generated-pages"))
       .then((res) => res.json())
       .then(setPages)
       .finally(() => setIsLoadingPages(false));
@@ -40,12 +62,94 @@ export function Telas(erpromptConfig: ERPromptConfig) {
     text: page.descricao
   }));
 
-  const sendPrompt = () => {
+  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const sendPrompt = async () => {
     const trimmed = prompt.trim();
     if (!trimmed) return;
 
+    if (isGenerating) return;
+
     setMessages((current) => [...current, { role: "user", content: trimmed }]);
     setPrompt("");
+    setIsGenerating(true);
+
+    try {
+      const resp = await fetch(apiUrl("/ai/runs"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ spec: trimmed })
+      });
+
+      let payload: RunStartResponse | null = null;
+      try {
+        payload = (await resp.json()) as RunStartResponse;
+      } catch {
+        payload = null;
+      }
+
+      if (!resp.ok) {
+        const msg = payload?.error ? String(payload.error) : `HTTP ${resp.status} ${resp.statusText}`;
+        setMessages((current) => [...current, { role: "assistant", content: `Falha ao iniciar geração: ${msg}` }]);
+        return;
+      }
+
+      const runId = payload?.runId ? String(payload.runId) : "";
+      const statusPath = payload?.statusUrl ? String(payload.statusUrl) : runId ? `/ai/runs/${runId}/status` : "";
+
+      setMessages((current) => [
+        ...current,
+        { role: "assistant", content: runId ? `Geração iniciada (runId: ${runId}).` : "Geração iniciada." }
+      ]);
+
+      if (!statusPath) return;
+
+      // Polling simples de status (até ~2 minutos)
+      for (let i = 0; i < 120; i++) {
+        await sleep(1000);
+        const statusResp = await fetch(apiUrl(statusPath));
+        if (!statusResp.ok) continue;
+
+        const statusPayload = (await statusResp.json().catch(() => null)) as RunStatusResponse | null;
+        const status = String(statusPayload?.status ?? "");
+
+        if (status === "done") {
+          setMessages((current) => [
+            ...current,
+            { role: "assistant", content: "Geração concluída. Atualizando lista de telas..." }
+          ]);
+          retrievePages();
+          setSelectedTab(0);
+          return;
+        }
+
+        if (status === "blocked") {
+          setMessages((current) => [
+            ...current,
+            { role: "assistant", content: "Geração bloqueada (existem perguntas pendentes no planner)." }
+          ]);
+          return;
+        }
+
+        if (status === "failed") {
+          const err = statusPayload?.error ? String(statusPayload.error) : "Falha no processo de geração.";
+          setMessages((current) => [...current, { role: "assistant", content: err }]);
+          return;
+        }
+      }
+
+      setMessages((current) => [
+        ...current,
+        { role: "assistant", content: "Geração ainda em andamento. Você pode aguardar e depois atualizar a lista de telas." }
+      ]);
+    } catch (err: any) {
+      setMessages((current) => [
+        ...current,
+        { role: "assistant", content: `Erro ao chamar backend: ${err?.message ?? String(err)}` }
+      ]);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const startNewPage = () => {
@@ -126,14 +230,17 @@ export function Telas(erpromptConfig: ERPromptConfig) {
                       value={prompt}
                       onChange={(e) => setPrompt(e.value)}
                       placeholder="Descreva a tela que você quer gerar..."
+                      disabled={isGenerating}
                     />
                   </div>
 
                   <div style={{ display: "flex", gap: 8 }}>
-                    <Button onClick={sendPrompt} disabled={!prompt.trim()} themeColor="primary">
+                    <Button onClick={sendPrompt} disabled={!prompt.trim() || isGenerating} themeColor="primary">
                       Enviar
                     </Button>
-                    <Button onClick={startNewPage}>Limpar</Button>
+                    <Button onClick={startNewPage} disabled={isGenerating}>
+                      Limpar
+                    </Button>
                   </div>
                 </section>
               </CardBody>
