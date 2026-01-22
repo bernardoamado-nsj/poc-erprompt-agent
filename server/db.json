@@ -393,6 +393,52 @@
           }
         }
       }
+    },
+    {
+      "id": "Produto",
+      "escopo": "cadastros",
+      "codigo": "Produto",
+      "descricao": "Cadastro de produtos para listagem com informações de identificação e métricas de estoque e vendas.",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$id": "cadastros/Produto",
+        "title": "Produto",
+        "type": "object",
+        "required": [
+          "id",
+          "codigo",
+          "especificacao",
+          "dataCadastro"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pk": true
+          },
+          "codigo": {
+            "type": "string"
+          },
+          "especificacao": {
+            "type": "string"
+          },
+          "dataCadastro": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "quantidadeEstoque": {
+            "type": "number"
+          },
+          "quantidadeVendida": {
+            "type": "number"
+          }
+        }
+      }
     }
   ],
   "layouts-schemas": [
@@ -1190,6 +1236,234 @@
           }
         ]
       }
+    },
+    {
+      "id": "estoque.detail-produto",
+      "escopo": "estoque",
+      "codigo": "detail-produto",
+      "descricao": "Tela de detalhe do produto em modo de visualização",
+      "json_schema": {
+        "id": "estoque_detail-produto",
+        "type": "div",
+        "transaction": {
+          "name": "detail-produto",
+          "entities": [
+            {
+              "name": "produtos",
+              "schema": "estoque/Produto",
+              "cardinality": "one",
+              "load": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "Card",
+            "children": [
+              {
+                "type": "CardTitle",
+                "children": [
+                  "Detalhe do Produto"
+                ]
+              },
+              {
+                "type": "CardBody",
+                "children": [
+                  {
+                    "type": "ItensList",
+                    "props": {
+                      "dataRef": "produtos.selected",
+                      "includeItems": [
+                        "codigo",
+                        "especificacao",
+                        "dataCadastro",
+                        "quantidadeEstoque",
+                        "quantidadeVendida"
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "estoque.edit-produto",
+      "escopo": "estoque",
+      "codigo": "edit-produto",
+      "descricao": "Tela de cadastro/edição de produto",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "resumo_prompt_origem": "Cadastro/Edição de Produto com GenericForm e campos codigo, especificacao, dataCadastro, quantidadeEstoque, quantidadeVendida.",
+      "json_schema": {
+        "id": "estoque_edit-produto",
+        "type": "div",
+        "transaction": {
+          "name": "edit-produto",
+          "entities": [
+            {
+              "name": "produtos",
+              "schema": "cadastros/Produto",
+              "cardinality": "one",
+              "load": false,
+              "main": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "div",
+            "children": [
+              {
+                "type": "Card",
+                "children": [
+                  {
+                    "type": "CardTitle",
+                    "children": [
+                      "Produto"
+                    ]
+                  },
+                  {
+                    "type": "CardBody",
+                    "children": [
+                      {
+                        "type": "GenericForm",
+                        "props": {
+                          "dataRef": "produtos.selected"
+                        },
+                        "children": [
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "codigo",
+                              "label": "Código"
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "especificacao",
+                              "label": "Especificação"
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "dataCadastro",
+                              "label": "Data de cadastro"
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "quantidadeEstoque",
+                              "label": "Quantidade em estoque"
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "quantidadeVendida",
+                              "label": "Quantidade vendida"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "estoque.list-produtos",
+      "escopo": "estoque",
+      "codigo": "list-produtos",
+      "descricao": "Layout de listagem de produtos",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "json_schema": {
+        "id": "estoque_list-produtos",
+        "type": "div",
+        "transaction": {
+          "name": "list-produtos",
+          "entities": [
+            {
+              "name": "produtos",
+              "schema": "cadastros/Produto",
+              "load": true,
+              "loadingMessage": "Carregando produtos",
+              "cardinality": "many",
+              "main": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "div",
+            "children": [
+              {
+                "type": "GenericGrid",
+                "props": {
+                  "dataRef": "produtos",
+                  "style": {
+                    "maxHeight": "400px"
+                  },
+                  "resizable": true
+                },
+                "children": [
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "codigo",
+                      "title": "Código"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "especificacao",
+                      "title": "Especificação"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "dataCadastro",
+                      "title": "Data de cadastro"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "quantidadeEstoque",
+                      "title": "Em estoque"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "quantidadeVendida",
+                      "title": "Vendida"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "launcher-itens": [
@@ -1297,6 +1571,13 @@
       "codigo": "PedidoVenda",
       "schema": "vendas/PedidoVenda",
       "endpoint": "http://localhost:4000/pedido-vendas"
+    },
+    {
+      "id": "estoque.Produto",
+      "escopo": "estoque",
+      "codigo": "Produto",
+      "schema": "estoque/Produto",
+      "endpoint": "http://localhost:4000/produtos"
     }
   ],
   "generated-pages": [
@@ -1329,6 +1610,30 @@
       "descricao": "Detalhe de pedido de venda com itens.",
       "runId": "run_20260121_211804_6d5f77",
       "updatedAt": "2026-01-21T21:18:51.525Z"
+    },
+    {
+      "id": "estoque.list-produtos",
+      "escopo": "estoque",
+      "codigo": "list-produtos",
+      "descricao": "Listagem de produtos exibindo código, especificação, data de cadastro, quantidade em estoque e quantidade vendida.",
+      "runId": "run_20260122_133128_2b52bb",
+      "updatedAt": "2026-01-22T13:32:05.786Z"
+    },
+    {
+      "id": "estoque.edit-produto",
+      "escopo": "estoque",
+      "codigo": "edit-produto",
+      "descricao": "Cadastro/Edição de produto.",
+      "runId": "run_20260122_133128_2b52bb",
+      "updatedAt": "2026-01-22T13:32:05.788Z"
+    },
+    {
+      "id": "estoque.detail-produto",
+      "escopo": "estoque",
+      "codigo": "detail-produto",
+      "descricao": "Detalhe do produto.",
+      "runId": "run_20260122_133128_2b52bb",
+      "updatedAt": "2026-01-22T13:32:05.789Z"
     }
   ],
   "pedido-vendas": [
@@ -1531,6 +1836,88 @@
           "valorTotal": 1249.99
         }
       ]
+    }
+  ],
+  "produtos": [
+    {
+      "id": "6fb7ad2e-8aef-4c63-b59a-2f44c08b5c24",
+      "codigo": "PRD-0001",
+      "especificacao": "Café Torrado e Moído 500g",
+      "dataCadastro": "2025-01-10T09:15:00Z",
+      "quantidadeEstoque": 120,
+      "quantidadeVendida": 45
+    },
+    {
+      "id": "c0fcd4ea-7b86-4d30-97a2-8d7a3c62d9ce",
+      "codigo": "PRD-0002",
+      "especificacao": "Açúcar Refinado 1kg",
+      "dataCadastro": "2025-01-12T14:30:00Z",
+      "quantidadeEstoque": 300,
+      "quantidadeVendida": 110
+    },
+    {
+      "id": "3b7c0a07-0f6a-41cb-bc76-6b3f5608f9c1",
+      "codigo": "PRD-0003",
+      "especificacao": "Arroz Tipo 1 5kg",
+      "dataCadastro": "2025-01-15T11:05:00Z",
+      "quantidadeEstoque": 180,
+      "quantidadeVendida": 72
+    },
+    {
+      "id": "b0b4f4dd-6b33-4b34-a1c6-3d3e1c6b3a90",
+      "codigo": "PRD-0004",
+      "especificacao": "Feijão Carioca 1kg",
+      "dataCadastro": "2025-01-18T16:20:00Z",
+      "quantidadeEstoque": 220,
+      "quantidadeVendida": 95
+    },
+    {
+      "id": "5e4c6c6b-b6fb-4f2a-8fd8-6f8a7d7f5c2b",
+      "codigo": "PRD-0005",
+      "especificacao": "Óleo de Soja 900ml",
+      "dataCadastro": "2025-01-22T08:40:00Z",
+      "quantidadeEstoque": 150,
+      "quantidadeVendida": 60
+    },
+    {
+      "id": "2b9e4f0f-7f8b-4d3a-9f1d-2c7e2d7d3a9a",
+      "codigo": "PRD-0006",
+      "especificacao": "Macarrão Espaguete 500g",
+      "dataCadastro": "2025-01-25T13:10:00Z",
+      "quantidadeEstoque": 260,
+      "quantidadeVendida": 140
+    },
+    {
+      "id": "9d5d3d7a-9f2a-4f7f-8f6e-1b2a3c4d5e6f",
+      "codigo": "PRD-0007",
+      "especificacao": "Molho de Tomate 300g",
+      "dataCadastro": "2025-02-01T10:55:00Z",
+      "quantidadeEstoque": 400,
+      "quantidadeVendida": 210
+    },
+    {
+      "id": "7a2c1b0d-3f4e-4a6b-9c8d-0e1f2a3b4c5d",
+      "codigo": "PRD-0008",
+      "especificacao": "Leite UHT Integral 1L",
+      "dataCadastro": "2025-02-05T17:45:00Z",
+      "quantidadeEstoque": 500,
+      "quantidadeVendida": 320
+    },
+    {
+      "id": "1c2d3e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f",
+      "codigo": "PRD-0009",
+      "especificacao": "Biscoito Cream Cracker 200g",
+      "dataCadastro": "2025-02-10T12:25:00Z",
+      "quantidadeEstoque": 350,
+      "quantidadeVendida": 180
+    },
+    {
+      "id": "4f3e2d1c-0b9a-4c8d-7e6f-5d4c3b2a1f0e",
+      "codigo": "PRD-0010",
+      "especificacao": "Detergente Neutro 500ml",
+      "dataCadastro": "2025-02-14T09:00:00Z",
+      "quantidadeEstoque": 275,
+      "quantidadeVendida": 130
     }
   ]
 }
