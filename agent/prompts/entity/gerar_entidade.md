@@ -12,6 +12,10 @@ Crie uma entidade em JSON cujo formato de JSON Schema é este:
 
 ---
 
+@include $entity_identity_envelope
+
+---
+
 Especificação funcional da entidade a ser gerada:
 
 @include $spec

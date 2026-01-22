@@ -78,6 +78,10 @@ function getConfig() {
       entity_examples: resolveFromAgentDir(
         process.env.ENTITY_EXAMPLES ||
           "prompts/includes/exemplos_canonicos_entidades.md"
+      ),
+      identity_envelope: resolveFromAgentDir(
+        process.env.ENTITY_IDENTITY_ENVELOPE ||
+          "prompts/includes/entity_identity_envelope.md"
       )
     },
 
@@ -505,9 +509,21 @@ async function main() {
 
       const specPath = await writeTempFile(tmpDir, `spec_entity_${escopo}_${codigo}.md`, spec);
 
+      // Injetar identidade (escopo/código) no prompt da entidade
+      const entScopePath = await writeTempFile(tmpDir, `entity_scope_${escopo}_${codigo}.txt`, escopo);
+      const entCodePath = await writeTempFile(tmpDir, `entity_code_${escopo}_${codigo}.txt`, codigo);
+
+      const entIncludes = {
+        ...cfg.entityIncludes,
+        spec: specPath,
+        entity_identity_envelope: cfg.entityIncludes.identity_envelope,
+        entity_scope: entScopePath,
+        entity_code: entCodePath,
+      };
+
       const entityPrompt = compileTemplate(
         cfg.entityTemplate,
-        { ...cfg.entityIncludes, spec: specPath },
+        entIncludes,
         cfg.rootDir
       );
 
@@ -537,6 +553,16 @@ async function main() {
       if (!res.ok) {
         console.error(res.error);
         process.exit(2);
+      }
+
+      // Validação: garantir escopo/código iguais ao decidido no planner
+      const entityJson = JSON.parse(await fs.readFile(outPath, "utf8"));
+      if (entityJson.escopo !== escopo || entityJson.codigo !== codigo) {
+        throw new Error(
+          `Entidade gerada com escopo/codigo divergentes. ` +
+          `Esperado ${escopo}/${codigo}, recebido ${entityJson.escopo}/${entityJson.codigo}. ` +
+          `Arquivo: ${outPath}`
+        );
       }
 
       console.log(`OK: entidade gerada ${escopo}/${codigo} -> ${outPath}`);
