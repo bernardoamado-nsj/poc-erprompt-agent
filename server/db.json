@@ -441,6 +441,148 @@
           }
         }
       }
+    },
+    {
+      "id": "Cliente",
+      "escopo": "cadastros",
+      "codigo": "Cliente",
+      "descricao": "Cadastro de clientes para listagem com dados de localização e informações agregadas de compras.",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$id": "cadastros/Cliente",
+        "title": "Cliente",
+        "type": "object",
+        "required": [
+          "id",
+          "nome"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pk": true
+          },
+          "nome": {
+            "type": "string",
+            "label": "Nome"
+          },
+          "estado": {
+            "type": "string",
+            "label": "Estado"
+          },
+          "cidade": {
+            "type": "string",
+            "label": "Cidade"
+          },
+          "dataCadastro": {
+            "type": "string",
+            "format": "datetime",
+            "label": "Data de Cadastro"
+          },
+          "quantidadePedidos": {
+            "type": "number",
+            "label": "Quantidade de Pedidos"
+          },
+          "totalVendas": {
+            "type": "number",
+            "label": "Total de Vendas"
+          }
+        }
+      }
+    },
+    {
+      "id": "Fornecedor",
+      "escopo": "compras",
+      "codigo": "Fornecedor",
+      "descricao": "Entidade Fornecedor do escopo compras",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$id": "compras/Fornecedor",
+        "title": "Fornecedor",
+        "type": "object",
+        "required": [
+          "id",
+          "nome",
+          "dataEntradaSistema"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pk": true
+          },
+          "nome": {
+            "type": "string"
+          },
+          "dataEntradaSistema": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "qtdPedidos": {
+            "type": "integer"
+          },
+          "totalGasto": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    {
+      "id": "Funcionario",
+      "escopo": "rh",
+      "codigo": "Funcionario",
+      "descricao": "Representa um funcionário com dados necessários para listagem.",
+      "json_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "$id": "rh/Funcionario",
+        "title": "Funcionario",
+        "type": "object",
+        "required": [
+          "id",
+          "nome",
+          "departamento",
+          "dataAdmissao",
+          "cargo",
+          "cidade"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "pk": true
+          },
+          "nome": {
+            "type": "string"
+          },
+          "departamento": {
+            "type": "string"
+          },
+          "dataAdmissao": {
+            "type": "string",
+            "format": "date"
+          },
+          "cargo": {
+            "type": "string"
+          },
+          "cidade": {
+            "type": "string"
+          },
+          "dataUltimoExameOcupacional": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      }
     }
   ],
   "layouts-schemas": [
@@ -1551,6 +1693,746 @@
           }
         ]
       }
+    },
+    {
+      "id": "crm.detail-cliente",
+      "escopo": "crm",
+      "codigo": "detail-cliente",
+      "descricao": "Tela de detalhe do cliente exibindo informações cadastrais e indicadores de pedidos e vendas.",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "resumo_prompt_origem": "Detalhe de Cliente: exibir dados do cliente (registro único) via ItensList com campos nome, estado, cidade, dataCadastro, quantidadePedidos e totalVendas. Sem lista de pedidos.",
+      "json_schema": {
+        "id": "crm_detail-cliente",
+        "type": "div",
+        "transaction": {
+          "name": "detail-cliente",
+          "entities": [
+            {
+              "name": "cliente",
+              "schema": "crm/Cliente",
+              "cardinality": "one",
+              "load": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "div",
+            "children": [
+              {
+                "type": "Card",
+                "children": [
+                  {
+                    "type": "CardTitle",
+                    "children": [
+                      "Detalhes do cliente"
+                    ]
+                  },
+                  {
+                    "type": "CardBody",
+                    "children": [
+                      {
+                        "type": "ItensList",
+                        "props": {
+                          "dataRef": "cliente.selected",
+                          "includeItems": [
+                            "nome",
+                            "estado",
+                            "cidade",
+                            "dataCadastro",
+                            "quantidadePedidos",
+                            "totalVendas"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "crm.edit-cliente",
+      "escopo": "crm",
+      "codigo": "edit-cliente",
+      "descricao": "Tela de cadastro/edição de cliente com dados básicos e campos agregados somente leitura",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "resumo_prompt_origem": "Cadastro/Edição de Cliente (crm/edit-cliente) com GenericForm para entidade cliente (crm/Cliente) e campos básicos + agregados somente leitura.",
+      "json_schema": {
+        "id": "crm_edit-cliente",
+        "type": "div",
+        "transaction": {
+          "name": "edit-cliente",
+          "entities": [
+            {
+              "name": "cliente",
+              "schema": "crm/Cliente",
+              "cardinality": "one",
+              "load": true,
+              "main": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "div",
+            "children": [
+              {
+                "type": "Card",
+                "children": [
+                  {
+                    "type": "CardTitle",
+                    "children": [
+                      "Cadastro/Edição de Cliente"
+                    ]
+                  },
+                  {
+                    "type": "CardSubtitle",
+                    "children": [
+                      "Dados básicos e informações agregadas"
+                    ]
+                  },
+                  {
+                    "type": "CardBody",
+                    "children": [
+                      {
+                        "type": "GenericForm",
+                        "props": {
+                          "dataRef": "cliente.selected"
+                        },
+                        "children": [
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "nome",
+                              "label": "Nome"
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "estado",
+                              "label": "Estado"
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "cidade",
+                              "label": "Cidade"
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "dataCadastro",
+                              "label": "Data de Cadastro",
+                              "readOnly": true
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "quantidadePedidos",
+                              "label": "Quantidade de Pedidos",
+                              "readOnly": true
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "totalVendas",
+                              "label": "Total de Vendas",
+                              "readOnly": true
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "crm.list-clientes",
+      "escopo": "crm",
+      "codigo": "list-clientes",
+      "descricao": "Layout de listagem de clientes",
+      "json_schema": {
+        "id": "crm_list-clientes",
+        "type": "div",
+        "transaction": {
+          "name": "list-clientes",
+          "entities": [
+            {
+              "name": "clientes",
+              "schema": "crm/Cliente",
+              "load": true,
+              "loadingMessage": "Carregando clientes",
+              "cardinality": "many",
+              "main": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "div",
+            "children": [
+              {
+                "type": "GenericGrid",
+                "props": {
+                  "dataRef": "clientes",
+                  "style": {
+                    "maxHeight": "400px"
+                  },
+                  "resizable": true
+                },
+                "children": [
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "nome",
+                      "title": "Nome"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "estado",
+                      "title": "Estado",
+                      "width": "90px"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "cidade",
+                      "title": "Cidade"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "dataCadastro",
+                      "title": "Data de Cadastro",
+                      "width": "160px"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "quantidadePedidos",
+                      "title": "Quantidade de Pedidos",
+                      "width": "180px"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "totalVendas",
+                      "title": "Total de Vendas",
+                      "width": "140px"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "compras.detail-fornecedor",
+      "escopo": "compras",
+      "codigo": "detail-fornecedor",
+      "descricao": "Tela de detalhe do fornecedor com indicadores",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "resumo_prompt_origem": "Tela de detalhe do fornecedor exibindo nome, data de entrada no sistema, quantidade de pedidos e total gasto usando ItensList.",
+      "json_schema": {
+        "id": "compras_detail-fornecedor",
+        "type": "div",
+        "transaction": {
+          "name": "detail-fornecedor",
+          "entities": [
+            {
+              "name": "fornecedor",
+              "schema": "compras/Fornecedor",
+              "cardinality": "one",
+              "load": true,
+              "main": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "div",
+            "children": [
+              {
+                "type": "Card",
+                "children": [
+                  {
+                    "type": "CardTitle",
+                    "children": [
+                      "Fornecedor"
+                    ]
+                  },
+                  {
+                    "type": "CardBody",
+                    "children": [
+                      {
+                        "type": "ItensList",
+                        "props": {
+                          "dataRef": "fornecedor.selected",
+                          "includeItems": [
+                            "nome",
+                            "dataEntradaSistema",
+                            "qtdPedidos",
+                            "totalGasto"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "compras.edit-fornecedor",
+      "escopo": "compras",
+      "codigo": "edit-fornecedor",
+      "descricao": "Layout de cadastro/edição de fornecedor (dados básicos)",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "resumo_prompt_origem": "Tela de cadastro/edição de fornecedor com formulário contendo campos nome e dataEntradaSistema; não permitir edição de indicadores agregados (qtdPedidos, totalGasto).",
+      "json_schema": {
+        "id": "compras_edit-fornecedor",
+        "type": "div",
+        "transaction": {
+          "name": "edit-fornecedor",
+          "entities": [
+            {
+              "name": "fornecedor",
+              "schema": "compras/Fornecedor",
+              "cardinality": "one",
+              "load": false,
+              "main": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "div",
+            "children": [
+              {
+                "type": "Card",
+                "children": [
+                  {
+                    "type": "CardTitle",
+                    "children": [
+                      "Fornecedor"
+                    ]
+                  },
+                  {
+                    "type": "CardSubtitle",
+                    "children": [
+                      "Cadastro/Edição"
+                    ]
+                  },
+                  {
+                    "type": "CardBody",
+                    "children": [
+                      {
+                        "type": "GenericForm",
+                        "props": {
+                          "dataRef": "fornecedor"
+                        },
+                        "children": [
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "nome",
+                              "label": "Nome"
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "dataEntradaSistema",
+                              "label": "Data de entrada no sistema"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "compras.list-fornecedores",
+      "escopo": "compras",
+      "codigo": "list-fornecedores",
+      "descricao": "Layout de listagem de fornecedores do escopo compras",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "resumo_prompt_origem": "Tela de listagem de fornecedores com grid exibindo nome, quantidade de pedidos, total gasto e data de entrada no sistema. Entidade principal compras/Fornecedor com carregamento automático.",
+      "json_schema": {
+        "id": "compras_list-fornecedores",
+        "type": "div",
+        "transaction": {
+          "name": "list-fornecedores",
+          "entities": [
+            {
+              "name": "fornecedores",
+              "schema": "compras/Fornecedor",
+              "load": true,
+              "loadingMessage": "Carregando fornecedores",
+              "cardinality": "many",
+              "main": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "div",
+            "children": [
+              {
+                "type": "GenericGrid",
+                "props": {
+                  "dataRef": "fornecedores",
+                  "style": {
+                    "maxHeight": "400px"
+                  },
+                  "resizable": true
+                },
+                "children": [
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "nome",
+                      "title": "Nome"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "qtdPedidos",
+                      "title": "Qtd. de pedidos",
+                      "width": "140px"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "totalGasto",
+                      "title": "Total gasto",
+                      "width": "140px"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "dataEntradaSistema",
+                      "title": "Data de entrada"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "rh.detail-funcionario",
+      "escopo": "rh",
+      "codigo": "detail-funcionario",
+      "descricao": "Tela de detalhe do funcionário selecionado",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "json_schema": {
+        "id": "rh_detail-funcionario",
+        "type": "div",
+        "transaction": {
+          "name": "detail-funcionario",
+          "entities": [
+            {
+              "name": "funcionario",
+              "schema": "rh/Funcionario",
+              "cardinality": "one",
+              "load": true,
+              "main": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "div",
+            "children": [
+              {
+                "type": "Card",
+                "children": [
+                  {
+                    "type": "CardTitle",
+                    "children": [
+                      "Detalhes do funcionário"
+                    ]
+                  },
+                  {
+                    "type": "CardBody",
+                    "children": [
+                      {
+                        "type": "ItensList",
+                        "props": {
+                          "dataRef": "funcionario.selected",
+                          "includeItems": [
+                            "nome",
+                            "departamento",
+                            "dataAdmissao",
+                            "cargo",
+                            "cidade",
+                            "dataUltimoExameOcupacional"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "rh.edit-funcionario",
+      "escopo": "rh",
+      "codigo": "edit-funcionario",
+      "descricao": "Tela de cadastro/edição de funcionário",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "json_schema": {
+        "id": "rh_edit-funcionario",
+        "type": "div",
+        "transaction": {
+          "name": "edit-funcionario",
+          "entities": [
+            {
+              "name": "funcionario",
+              "schema": "rh/Funcionario",
+              "cardinality": "one",
+              "load": true,
+              "main": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "div",
+            "children": [
+              {
+                "type": "Card",
+                "children": [
+                  {
+                    "type": "CardTitle",
+                    "children": [
+                      "Cadastro/Edição de Funcionário"
+                    ]
+                  },
+                  {
+                    "type": "CardBody",
+                    "children": [
+                      {
+                        "type": "GenericForm",
+                        "props": {
+                          "dataRef": "funcionario"
+                        },
+                        "children": [
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "nome",
+                              "label": "Nome",
+                              "required": true
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "departamento",
+                              "label": "Departamento",
+                              "required": true
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "dataAdmissao",
+                              "label": "Data de admissão",
+                              "required": true
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "cargo",
+                              "label": "Cargo",
+                              "required": true
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "cidade",
+                              "label": "Cidade",
+                              "required": true
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "props": {
+                              "field": "dataUltimoExameOcupacional",
+                              "label": "Data do último exame ocupacional"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "rh.list-funcionarios",
+      "escopo": "rh",
+      "codigo": "list-funcionarios",
+      "descricao": "Layout de listagem de funcionários",
+      "tenant": 0,
+      "grupo_empresarial": "00000000-0000-0000-0000-000000000000",
+      "grupo_acesso": "00000000-0000-0000-0000-000000000000",
+      "created_by": "versionamento@nasajon.com.br",
+      "updated_by": "versionamento@nasajon.com.br",
+      "json_schema": {
+        "id": "rh_list-funcionarios",
+        "type": "div",
+        "transaction": {
+          "name": "list-funcionarios",
+          "entities": [
+            {
+              "name": "funcionarios",
+              "schema": "rh/Funcionario",
+              "load": true,
+              "loadingMessage": "Carregando funcionários",
+              "cardinality": "many",
+              "main": true
+            }
+          ]
+        },
+        "children": [
+          {
+            "type": "div",
+            "children": [
+              {
+                "type": "GenericGrid",
+                "props": {
+                  "dataRef": "funcionarios",
+                  "style": {
+                    "maxHeight": "400px"
+                  },
+                  "resizable": true
+                },
+                "children": [
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "nome",
+                      "title": "Nome do funcionário"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "departamento",
+                      "title": "Departamento"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "dataAdmissao",
+                      "title": "Data de admissão"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "cargo",
+                      "title": "Cargo"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "cidade",
+                      "title": "Cidade"
+                    }
+                  },
+                  {
+                    "type": "GridColumn",
+                    "props": {
+                      "field": "dataUltimoExameOcupacional",
+                      "title": "Data do último exame ocupacional"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "launcher-itens": [
@@ -1672,6 +2554,27 @@
       "codigo": "Produto",
       "schema": "comercial/Produto",
       "endpoint": "http://localhost:4000/produtos"
+    },
+    {
+      "id": "crm.Cliente",
+      "escopo": "crm",
+      "codigo": "Cliente",
+      "schema": "crm/Cliente",
+      "endpoint": "http://localhost:4000/clientes"
+    },
+    {
+      "id": "compras.Fornecedor",
+      "escopo": "compras",
+      "codigo": "Fornecedor",
+      "schema": "compras/Fornecedor",
+      "endpoint": "http://localhost:4000/fornecedors"
+    },
+    {
+      "id": "rh.Funcionario",
+      "escopo": "rh",
+      "codigo": "Funcionario",
+      "schema": "rh/Funcionario",
+      "endpoint": "http://localhost:4000/mock/funcionarios"
     }
   ],
   "generated-pages": [
@@ -1736,6 +2639,78 @@
       "descricao": "Listagem de produtos exibindo código, especificação, data de cadastro, quantidade em estoque e quantidade vendida.",
       "runId": "run_20260122_134624_4cfac4",
       "updatedAt": "2026-01-22T13:47:01.921Z"
+    },
+    {
+      "id": "crm.list-clientes",
+      "escopo": "crm",
+      "codigo": "list-clientes",
+      "descricao": "Listagem de clientes com dados cadastrais e indicadores (quantidade de pedidos e total gasto).",
+      "runId": "run_20260122_142139_24009d",
+      "updatedAt": "2026-01-22T14:22:24.715Z"
+    },
+    {
+      "id": "crm.edit-cliente",
+      "escopo": "crm",
+      "codigo": "edit-cliente",
+      "descricao": "Cadastro/edição de cliente (dados básicos).",
+      "runId": "run_20260122_142139_24009d",
+      "updatedAt": "2026-01-22T14:22:24.718Z"
+    },
+    {
+      "id": "crm.detail-cliente",
+      "escopo": "crm",
+      "codigo": "detail-cliente",
+      "descricao": "Detalhe de cliente com visualização dos dados e indicadores.",
+      "runId": "run_20260122_142139_24009d",
+      "updatedAt": "2026-01-22T14:22:24.719Z"
+    },
+    {
+      "id": "compras.list-fornecedores",
+      "escopo": "compras",
+      "codigo": "list-fornecedores",
+      "descricao": "Listagem de fornecedores com nome, quantidade de pedidos, total gasto e data de entrada no sistema.",
+      "runId": "run_20260122_151528_0f1253",
+      "updatedAt": "2026-01-22T15:16:14.904Z"
+    },
+    {
+      "id": "compras.edit-fornecedor",
+      "escopo": "compras",
+      "codigo": "edit-fornecedor",
+      "descricao": "Cadastro/Edição de fornecedor (nome e data de entrada no sistema).",
+      "runId": "run_20260122_151528_0f1253",
+      "updatedAt": "2026-01-22T15:16:14.907Z"
+    },
+    {
+      "id": "compras.detail-fornecedor",
+      "escopo": "compras",
+      "codigo": "detail-fornecedor",
+      "descricao": "Detalhe do fornecedor exibindo dados e indicadores (qtd pedidos e total gasto).",
+      "runId": "run_20260122_151528_0f1253",
+      "updatedAt": "2026-01-22T15:16:14.910Z"
+    },
+    {
+      "id": "rh.list-funcionarios",
+      "escopo": "rh",
+      "codigo": "list-funcionarios",
+      "descricao": "Listagem de funcionários",
+      "runId": "run_20260123_162459_267a33",
+      "updatedAt": "2026-01-23T16:25:49.377Z"
+    },
+    {
+      "id": "rh.edit-funcionario",
+      "escopo": "rh",
+      "codigo": "edit-funcionario",
+      "descricao": "Cadastro/Edição de funcionário",
+      "runId": "run_20260123_162459_267a33",
+      "updatedAt": "2026-01-23T16:25:49.380Z"
+    },
+    {
+      "id": "rh.detail-funcionario",
+      "escopo": "rh",
+      "codigo": "detail-funcionario",
+      "descricao": "Detalhe de funcionário",
+      "runId": "run_20260123_162459_267a33",
+      "updatedAt": "2026-01-23T16:25:49.381Z"
     }
   ],
   "pedido-vendas": [
@@ -2020,6 +2995,262 @@
       "dataCadastro": "2025-05-22T09:00:00Z",
       "quantidadeEstoque": 35,
       "quantidadeVendida": 19
+    }
+  ],
+  "clientes": [
+    {
+      "id": "f4c0c5f2-81fd-4df2-9a4f-1f5f12b77f06",
+      "nome": "Ana Paula Ribeiro",
+      "estado": "SP",
+      "cidade": "São Paulo",
+      "dataCadastro": "2024-02-15T10:23:45Z",
+      "quantidadePedidos": 12,
+      "totalVendas": 8450.75
+    },
+    {
+      "id": "9d0d6c0a-6a5a-4d4b-a7a8-1f5c3af0c0b9",
+      "nome": "Bruno Martins",
+      "estado": "RJ",
+      "cidade": "Rio de Janeiro",
+      "dataCadastro": "2023-11-03T14:05:12Z",
+      "quantidadePedidos": 7,
+      "totalVendas": 3920.2
+    },
+    {
+      "id": "2f4fb2b5-8b23-4e4f-ae34-64f8f07a29e2",
+      "nome": "Carla Souza",
+      "estado": "MG",
+      "cidade": "Belo Horizonte",
+      "dataCadastro": "2024-06-21T09:40:00Z",
+      "quantidadePedidos": 18,
+      "totalVendas": 12780.9
+    },
+    {
+      "id": "7a3e2c46-5c2b-4b5a-9e70-ec56a9df5c1a",
+      "nome": "Diego Almeida",
+      "estado": "RS",
+      "cidade": "Porto Alegre",
+      "dataCadastro": "2023-08-19T16:12:33Z",
+      "quantidadePedidos": 3,
+      "totalVendas": 980.5
+    },
+    {
+      "id": "c0e5a0b2-3b5d-4c8e-b8ad-1a1b4c8f63a4",
+      "nome": "Eduarda Lima",
+      "estado": "PR",
+      "cidade": "Curitiba",
+      "dataCadastro": "2024-01-10T08:00:00Z",
+      "quantidadePedidos": 9,
+      "totalVendas": 5210
+    },
+    {
+      "id": "1c8f3c6b-0f2d-4b5a-9f6c-8d3a4a2b9e10",
+      "nome": "Felipe Nogueira",
+      "estado": "SC",
+      "cidade": "Florianópolis",
+      "dataCadastro": "2023-12-28T19:27:10Z",
+      "quantidadePedidos": 5,
+      "totalVendas": 2145.35
+    },
+    {
+      "id": "b8d2c6a9-7f3e-4c1a-9b0d-3a5f7c8e1d2c",
+      "nome": "Gabriela Santos",
+      "estado": "BA",
+      "cidade": "Salvador",
+      "dataCadastro": "2024-04-05T11:58:22Z",
+      "quantidadePedidos": 14,
+      "totalVendas": 9033.1
+    },
+    {
+      "id": "6e3b9a2d-1c7f-4d8b-8a2f-3f7b2c1a9d0e",
+      "nome": "Henrique Carvalho",
+      "estado": "PE",
+      "cidade": "Recife",
+      "dataCadastro": "2023-07-01T13:15:44Z",
+      "quantidadePedidos": 2,
+      "totalVendas": 450
+    },
+    {
+      "id": "3a9f2c1b-5d7e-4b8c-9a1d-2c3e4f5a6b7c",
+      "nome": "Isabela Ferreira",
+      "estado": "CE",
+      "cidade": "Fortaleza",
+      "dataCadastro": "2024-05-30T07:30:00Z",
+      "quantidadePedidos": 20,
+      "totalVendas": 15890.45
+    },
+    {
+      "id": "d2c1b0a9-8f7e-4d6c-9b5a-1c2d3e4f5a6b",
+      "nome": "João Pedro Costa",
+      "estado": "DF",
+      "cidade": "Brasília",
+      "dataCadastro": "2023-09-14T17:45:09Z",
+      "quantidadePedidos": 11,
+      "totalVendas": 6675.8
+    }
+  ],
+  "fornecedors": [
+    {
+      "id": "d4a4f2f5-7b2b-4bd6-aeb1-f1c3f51c2ac2",
+      "nome": "Alfa Suprimentos LTDA",
+      "dataEntradaSistema": "2024-01-12T09:15:30Z",
+      "qtdPedidos": 18,
+      "totalGasto": 45230.75
+    },
+    {
+      "id": "8f6d2b0c-0f2a-4c46-8df0-c2d2f6f1a93c",
+      "nome": "Beta Distribuidora S.A.",
+      "dataEntradaSistema": "2024-02-03T14:22:10Z",
+      "qtdPedidos": 7,
+      "totalGasto": 12890.4
+    },
+    {
+      "id": "2f1b6c3e-6c5c-4d0e-8fd6-6e43b0b7de1a",
+      "nome": "Gamma Comércio e Serviços",
+      "dataEntradaSistema": "2024-03-18T11:05:45Z",
+      "qtdPedidos": 25,
+      "totalGasto": 98765.12
+    },
+    {
+      "id": "c1f67a5b-3d1d-4f3a-a52d-8b9c0a6f24a7",
+      "nome": "Delta Materiais Industriais",
+      "dataEntradaSistema": "2024-04-09T08:40:00Z",
+      "qtdPedidos": 3,
+      "totalGasto": 3450
+    },
+    {
+      "id": "7b9e2a1c-9a1f-4f0b-9f1a-0b0d7c7b2c51",
+      "nome": "Épsilon Ferramentas e Peças",
+      "dataEntradaSistema": "2024-05-21T16:30:20Z",
+      "qtdPedidos": 12,
+      "totalGasto": 22110.9
+    },
+    {
+      "id": "5a3c9d7e-2f0a-4f46-8a0d-3c3b2c0d4e8f",
+      "nome": "Zeta Papelaria Corporativa",
+      "dataEntradaSistema": "2024-06-02T10:12:55Z",
+      "qtdPedidos": 41,
+      "totalGasto": 30555.33
+    },
+    {
+      "id": "0f2d6b8a-1c3e-4a9b-9c4f-2b1a0d9e7c6b",
+      "nome": "Eta Logística e Apoio",
+      "dataEntradaSistema": "2024-07-14T13:00:00Z",
+      "qtdPedidos": 9,
+      "totalGasto": 16400.25
+    },
+    {
+      "id": "9c7a1b2d-5e3f-4c1a-8b2d-6f0e1a3c4d5e",
+      "nome": "Theta Tecnologia e Equipamentos",
+      "dataEntradaSistema": "2024-08-28T17:48:05Z",
+      "qtdPedidos": 5,
+      "totalGasto": 77990.01
+    },
+    {
+      "id": "3e8b2c1a-7d5f-4a0c-9b1e-2f6a7c8d9e0f",
+      "nome": "Iota Químicos e Insumos",
+      "dataEntradaSistema": "2024-09-06T07:25:15Z",
+      "qtdPedidos": 22,
+      "totalGasto": 56320.8
+    },
+    {
+      "id": "6d1f4a2b-8c3e-4b7a-9d0f-1a2b3c4d5e6f",
+      "nome": "Kappa Manutenção Predial",
+      "dataEntradaSistema": "2024-10-19T12:34:56Z",
+      "qtdPedidos": 14,
+      "totalGasto": 19450.6
+    }
+  ],
+  "funcionarios": [
+    {
+      "id": "3b0b4a1c-0c3b-4d5a-8d6b-4c3f1fd5c8a2",
+      "nome": "Ana Paula Ribeiro",
+      "departamento": "Recursos Humanos",
+      "dataAdmissao": "2019-03-18",
+      "cargo": "Analista de RH",
+      "cidade": "São Paulo",
+      "dataUltimoExameOcupacional": "2024-10-15"
+    },
+    {
+      "id": "a9f2c7d4-4b1a-4f2b-9d8e-2f6c3a1b7e90",
+      "nome": "Bruno Henrique Souza",
+      "departamento": "Financeiro",
+      "dataAdmissao": "2021-07-05",
+      "cargo": "Analista Financeiro",
+      "cidade": "Campinas",
+      "dataUltimoExameOcupacional": "2025-02-12"
+    },
+    {
+      "id": "f1c4d9a2-6a0b-4a9d-bf21-9d6a3e2c1b54",
+      "nome": "Carla Mendes Oliveira",
+      "departamento": "TI",
+      "dataAdmissao": "2020-01-13",
+      "cargo": "Desenvolvedora Backend",
+      "cidade": "Curitiba",
+      "dataUltimoExameOcupacional": "2024-12-03"
+    },
+    {
+      "id": "6d2e9a41-9d6f-4a2b-8c7a-1b2f3c4d5e6f",
+      "nome": "Diego Alves Pereira",
+      "departamento": "Operações",
+      "dataAdmissao": "2018-11-26",
+      "cargo": "Supervisor de Operações",
+      "cidade": "Rio de Janeiro",
+      "dataUltimoExameOcupacional": "2024-08-20"
+    },
+    {
+      "id": "2c9b7a10-3f4e-4b8e-9a2d-7e6f5c4b3a21",
+      "nome": "Elisa Fernandes Lima",
+      "departamento": "Comercial",
+      "dataAdmissao": "2022-04-21",
+      "cargo": "Executiva de Vendas",
+      "cidade": "Belo Horizonte",
+      "dataUltimoExameOcupacional": "2025-01-09"
+    },
+    {
+      "id": "b7e1c3d2-1f2a-4b3c-8d9e-0a1b2c3d4e5f",
+      "nome": "Felipe Santos Costa",
+      "departamento": "Marketing",
+      "dataAdmissao": "2017-06-02",
+      "cargo": "Coordenador de Marketing",
+      "cidade": "Porto Alegre",
+      "dataUltimoExameOcupacional": "2024-06-11"
+    },
+    {
+      "id": "0e4f2c1a-7b6d-4c5e-9f80-1a2b3c4d5e6a",
+      "nome": "Gabriela Rocha Silva",
+      "departamento": "Jurídico",
+      "dataAdmissao": "2023-09-14",
+      "cargo": "Assistente Jurídica",
+      "cidade": "Salvador",
+      "dataUltimoExameOcupacional": "2025-06-18"
+    },
+    {
+      "id": "c5a2b1d0-8e7f-4a6b-9c1d-2e3f4a5b6c7d",
+      "nome": "Hugo Martins Nunes",
+      "departamento": "Logística",
+      "dataAdmissao": "2016-02-29",
+      "cargo": "Analista de Logística",
+      "cidade": "Recife",
+      "dataUltimoExameOcupacional": "2024-09-07"
+    },
+    {
+      "id": "9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d",
+      "nome": "Isabela Carvalho Azevedo",
+      "departamento": "Compras",
+      "dataAdmissao": "2020-10-08",
+      "cargo": "Especialista de Compras",
+      "cidade": "Florianópolis",
+      "dataUltimoExameOcupacional": "2025-03-25"
+    },
+    {
+      "id": "4f3e2d1c-0b9a-4c8d-8e7f-6a5b4c3d2e1f",
+      "nome": "João Victor Barros",
+      "departamento": "Qualidade",
+      "dataAdmissao": "2019-12-16",
+      "cargo": "Técnico de Qualidade",
+      "cidade": "Brasília",
+      "dataUltimoExameOcupacional": "2024-11-28"
     }
   ]
 }

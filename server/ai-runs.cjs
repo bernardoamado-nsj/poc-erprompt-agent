@@ -126,7 +126,9 @@ async function commitMocksFromRun({ generatedDir, runId, db, baseUrl }) {
     if (!escopo || !codigo) continue;
 
     const id = `${escopo}.${codigo}`;
-    const endpointUrl = `${baseUrl.replace(/\/+$/, "")}/${resource}`;
+    // Use um endpoint genérico para evitar precisar reiniciar o json-server quando surgem novos "resources" no db.json.
+    // Esse endpoint é servido por `server/server.cjs` em `/mock/:resource`.
+    const endpointUrl = `${baseUrl.replace(/\/+$/, "")}/mock/${resource}`;
 
     // upsert em endpoints por id
     const existing = db.get("endpoints").find({ id }).value();
@@ -372,7 +374,29 @@ module.exports = function attachAiRunsRoutes(server, opts = {}) {
       if (!fs.existsSync(statusPath)) return res.status(404).json({ error: "Run não encontrado" });
 
       const status = await readJson(statusPath);
-      return res.json(status);
+
+      // Anexa log (tail truncado) ao payload de status
+      let log = null;
+      let logTruncated = false;
+      let logSize = 0;
+      try {
+        const logPath = safeJoin(generatedDir, "runs", runId, "run.log");
+        if (fs.existsSync(logPath)) {
+          const buf = await fsp.readFile(logPath, "utf8");
+          logSize = buf.length;
+          const MAX_CHARS = 20000; // tail ~20k chars para evitar respostas muito grandes
+          if (buf.length > MAX_CHARS) {
+            log = buf.slice(-MAX_CHARS);
+            logTruncated = true;
+          } else {
+            log = buf;
+          }
+        }
+      } catch (_) {
+        // ignora erro de leitura do log
+      }
+
+      return res.json({ ...status, log, logTruncated, logSize });
     } catch (err) {
       return res.status(500).json({ error: err?.message || String(err) });
     }

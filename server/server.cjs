@@ -1,6 +1,7 @@
 const jsonServer = require("json-server");
 const path = require("path");
 //const express = require("express"); // precisa instalar express? json-server já usa express internamente; geralmente está ok
+const crypto = require("crypto");
 
 const server = jsonServer.create();
 const dbPath = path.join(__dirname, "db.json");
@@ -37,24 +38,75 @@ attachAiRunsRoutes(server, {
   db: router.db
 });
 
-// Suas rotas custom
-server.post("/emissor-cte/:cteId/emitir", (req, res) => {
-  res.status(200).json({
-    id: "a8d24805-cfb3-4eec-9ee4-258639f61a8d",
-    chave: "33250618756022000141573000000020011065196757",
-    situacao: "autorizado",
-    situacao_sefaz: "200",
-    mensagem_sefaz: "Autorizado"
-  });
+// Endpoint genérico para datasets dinâmicos (evita precisar reiniciar quando surgem novas keys no db.json)
+// Ex.: GET/POST/PUT/DELETE em /mock/<resource> onde <resource> é o nome da coleção no db.json.
+server.get("/mock/:resource", (req, res) => {
+  const resource = String(req.params.resource || "").trim();
+  if (!resource) return res.status(400).json({ error: "resource inválido" });
+
+  const data = router.db.get(resource).value();
+  if (!data) return res.status(404).json({ error: `resource '${resource}' not found` });
+  return res.json(data);
 });
 
-server.post("/2711/cte/montar-emitir", (req, res) => {});
+server.get("/mock/:resource/:id", (req, res) => {
+  const resource = String(req.params.resource || "").trim();
+  const id = String(req.params.id || "").trim();
+  if (!resource || !id) return res.status(400).json({ error: "resource/id inválidos" });
 
-server.get("/configuracoes", (req, res) => {
-  const db = router.db;
-  const arr = db.get("configuracoes").value();
-  if (Array.isArray(arr) && arr.length > 0) return res.json(arr[0]);
-  return res.status(404).json({ error: "configuracoes not found" });
+  const data = router.db.get(resource).value();
+  if (!Array.isArray(data)) return res.status(404).json({ error: `resource '${resource}' not found` });
+
+  const item = data.find((x) => x && String(x.id) === id);
+  if (!item) return res.status(404).json({ error: "not found" });
+  return res.json(item);
+});
+
+server.post("/mock/:resource", (req, res) => {
+  const resource = String(req.params.resource || "").trim();
+  if (!resource) return res.status(400).json({ error: "resource inválido" });
+
+  const data = router.db.get(resource).value();
+  if (!Array.isArray(data)) return res.status(404).json({ error: `resource '${resource}' not found` });
+
+  const payload = (req.body && typeof req.body === "object") ? { ...req.body } : {};
+  if (!payload.id) payload.id = crypto.randomUUID ? crypto.randomUUID() : crypto.randomBytes(16).toString("hex");
+
+  data.push(payload);
+  router.db.set(resource, data).write();
+  return res.status(201).json(payload);
+});
+
+server.put("/mock/:resource/:id", (req, res) => {
+  const resource = String(req.params.resource || "").trim();
+  const id = String(req.params.id || "").trim();
+  if (!resource || !id) return res.status(400).json({ error: "resource/id inválidos" });
+
+  const data = router.db.get(resource).value();
+  if (!Array.isArray(data)) return res.status(404).json({ error: `resource '${resource}' not found` });
+
+  const idx = data.findIndex((x) => x && String(x.id) === id);
+  if (idx < 0) return res.status(404).json({ error: "not found" });
+
+  const payload = (req.body && typeof req.body === "object") ? { ...req.body } : {};
+  data[idx] = { ...data[idx], ...payload, id };
+  router.db.set(resource, data).write();
+  return res.json(data[idx]);
+});
+
+server.delete("/mock/:resource/:id", (req, res) => {
+  const resource = String(req.params.resource || "").trim();
+  const id = String(req.params.id || "").trim();
+  if (!resource || !id) return res.status(400).json({ error: "resource/id inválidos" });
+
+  const data = router.db.get(resource).value();
+  if (!Array.isArray(data)) return res.status(404).json({ error: `resource '${resource}' not found` });
+
+  const next = data.filter((x) => !(x && String(x.id) === id));
+  if (next.length === data.length) return res.status(404).json({ error: "not found" });
+
+  router.db.set(resource, next).write();
+  return res.status(204).send();
 });
 
 router.render = (req, res) => {
